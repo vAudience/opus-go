@@ -86,6 +86,53 @@ func TestXmallocSmallAllocationsDoNotOverlap(t *testing.T) {
 	}
 }
 
+// TestArenaMemoryIsReclaimed: a long-lived TLS doing malloc/free pairs must
+// hold its live allocations plus one chunk — not every chunk it ever carved.
+func TestArenaMemoryIsReclaimed(t *testing.T) {
+	tls := NewTLS()
+	defer tls.Close()
+	keep := Xmalloc(tls, 100)
+	*(*byte)(unsafe.Pointer(keep)) = 7
+	for i := 0; i < 50*arenaChunkSize/1000; i++ {
+		p := Xmalloc(tls, 1000)
+		b := unsafe.Slice((*byte)(unsafe.Pointer(p)), 1000)
+		for j := range b {
+			if b[j] != 0 {
+				t.Fatalf("iteration %d: reused memory not zeroed at %d", i, j)
+			}
+			b[j] = 0xCD
+		}
+		Xfree(tls, p)
+	}
+	if len(tls.chunks) > 2 {
+		t.Fatalf("arena grew to %d chunks for one live allocation", len(tls.chunks))
+	}
+	if *(*byte)(unsafe.Pointer(keep)) != 7 {
+		t.Fatal("a live allocation was clobbered by reuse")
+	}
+}
+
+// TestArenaChunkReleasedWhenItsLastAllocationIsFreed — a non-current chunk
+// that empties is unmapped.
+func TestArenaChunkReleasedWhenItsLastAllocationIsFreed(t *testing.T) {
+	tls := NewTLS()
+	defer tls.Close()
+	first := Xmalloc(tls, 1000)
+	firstChunk := tls.heap[first].chunk
+	for tls.arena == firstChunk {
+		Xmalloc(tls, 1000)
+	}
+	// Free everything in the first chunk.
+	for p, a := range tls.heap {
+		if a.chunk == firstChunk {
+			Xfree(tls, p)
+		}
+	}
+	if _, still := tls.chunks[firstChunk]; still {
+		t.Fatal("an emptied, non-current chunk is still mapped")
+	}
+}
+
 func TestCloseIsIdempotent(t *testing.T) {
 	tls := NewTLS()
 	Xmalloc(tls, 10)
