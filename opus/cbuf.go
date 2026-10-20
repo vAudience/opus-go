@@ -1,6 +1,7 @@
 package opus
 
 import (
+	"errors"
 	"unsafe"
 
 	libc "github.com/vAudience/opus-go/libcshim"
@@ -19,14 +20,19 @@ type cBuf struct {
 	n int
 }
 
-// ensure makes the buffer at least n bytes and returns its address.
-func (b *cBuf) ensure(tls *libc.TLS, n int) uintptr {
+// ensure makes the buffer at least n bytes and returns its address. It
+// fails when the shim cannot map memory (C's malloc returning NULL), and then
+// records nothing, so a later call retries rather than reusing a NULL buffer.
+func (b *cBuf) ensure(tls *libc.TLS, n int) (uintptr, error) {
 	if n > b.n {
 		b.free(tls)
-		b.p = libc.Xmalloc(tls, uint64(n))
-		b.n = n
+		p := libc.Xmalloc(tls, uint64(n))
+		if p == 0 {
+			return 0, ErrOutOfMemory
+		}
+		b.p, b.n = p, n
 	}
-	return b.p
+	return b.p, nil
 }
 
 func (b *cBuf) free(tls *libc.TLS) {
@@ -43,13 +49,21 @@ func cSlice[T any](p uintptr, n int) []T {
 
 // copyIn copies src into b (growing it as needed) and returns its
 // address, or 0 for an empty src (libopus's "no packet" / packet-loss
-// convention).
-func copyIn[T any](tls *libc.TLS, b *cBuf, src []T) uintptr {
+// convention). ⚠ An allocation failure is an ERROR, never 0: 0 means "packet
+// lost" to the decoder, so returning it would turn out-of-memory into
+// silently concealed audio.
+func copyIn[T any](tls *libc.TLS, b *cBuf, src []T) (uintptr, error) {
 	if len(src) == 0 {
-		return 0
+		return 0, nil
 	}
 	var zero T
-	p := b.ensure(tls, len(src)*int(unsafe.Sizeof(zero)))
+	p, err := b.ensure(tls, len(src)*int(unsafe.Sizeof(zero)))
+	if err != nil {
+		return 0, err
+	}
 	copy(cSlice[T](p, len(src)), src)
-	return p
+	return p, nil
 }
+
+// ErrOutOfMemory reports that the C-runtime shim could not map memory.
+var ErrOutOfMemory = errors.New("opus: out of memory")

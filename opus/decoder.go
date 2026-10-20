@@ -86,7 +86,11 @@ func NewMultistreamDecoder(sampleRate, channels, streams, coupledStreams int, ma
 	// Copied into shim memory for the same reason as cBuf; libopus copies
 	// the mapping into the decoder state, so it's freed right after.
 	var mappingBuf cBuf
-	mappingPtr := copyIn(tls, &mappingBuf, mapping)
+	mappingPtr, err := copyIn(tls, &mappingBuf, mapping)
+	if err != nil {
+		tls.Close()
+		return nil, err
+	}
 	defer mappingBuf.free(tls)
 
 	st, err := opuscc.Opus_opus_multistream_decoder_create(
@@ -162,9 +166,15 @@ func (d *Decoder) Decode(packet []byte, pcm []int16, frameSize int, decodeFEC bo
 		return 0, fmt.Errorf("opus: pcm buffer too small: need %d samples, have %d", nNeeded, len(pcm))
 	}
 
-	dataPtr := copyIn(d.tls, &d.packetBuf, packet)
+	dataPtr, err := copyIn(d.tls, &d.packetBuf, packet)
+	if err != nil {
+		return 0, err
+	}
 	dataLen := int32(len(packet))
-	pcmPtr := d.pcmBuf.ensure(d.tls, nNeeded*2)
+	pcmPtr, err := d.pcmBuf.ensure(d.tls, nNeeded*2)
+	if err != nil {
+		return 0, err
+	}
 	fec := int32(0)
 	if decodeFEC {
 		fec = 1
@@ -208,9 +218,15 @@ func (d *Decoder) DecodeF32(packet []byte, pcm []float32, frameSize int, decodeF
 		return 0, fmt.Errorf("opus: pcm buffer too small: need %d samples, have %d", nNeeded, len(pcm))
 	}
 
-	dataPtr := copyIn(d.tls, &d.packetBuf, packet)
+	dataPtr, err := copyIn(d.tls, &d.packetBuf, packet)
+	if err != nil {
+		return 0, err
+	}
 	dataLen := int32(len(packet))
-	pcmPtr := d.pcmBuf.ensure(d.tls, nNeeded*4)
+	pcmPtr, err := d.pcmBuf.ensure(d.tls, nNeeded*4)
+	if err != nil {
+		return 0, err
+	}
 	fec := int32(0)
 	if decodeFEC {
 		fec = 1
