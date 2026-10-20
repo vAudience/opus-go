@@ -8,9 +8,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestProjectionDecoderInitCReference(t *testing.T) {
 	f, err := os.Open("testdata/projection_init_ref.txt")
 	if err != nil {

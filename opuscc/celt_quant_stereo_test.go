@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestQuantBandStereoOneSampleFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -41,6 +42,7 @@ func TestQuantBandStereoOneSampleFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestQuantBandStereoLocalSplitState(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

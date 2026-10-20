@@ -6,9 +6,9 @@ import (
 	"sync"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 
-	"github.com/kazzmir/opus-go/opusccenc"
+	"github.com/vAudience/opus-go/opusccenc"
 )
 
 var (

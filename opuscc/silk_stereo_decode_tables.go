@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_stereo_decode_pred(tls *libc.TLS, psRangeDec uintptr, pred_Q13 uintptr) {
 	var low_Q13, step_Q13 OpusT_opus_int32
 	var n int32
@@ -49,11 +50,14 @@ func Opus_silk_stereo_decode_pred(tls *libc.TLS, psRangeDec uintptr, pred_Q13 ui
 // C documentation
 //
 //	/* Decode mid-only flag */
+//
+//go:nocheckptr
 func Opus_silk_stereo_decode_mid_only(tls *libc.TLS, psRangeDec uintptr, decode_only_mid uintptr) {
 	/* Decode flag that only mid channel is coded */
 	*(*int32)(unsafe.Pointer(decode_only_mid)) = Opus_ec_dec_icdf(tls, psRangeDec, uintptr(unsafe.Pointer(&Opus_silk_stereo_only_code_mid_iCDF)), uint32(8))
 }
 
+//go:nocheckptr
 func __ccgo_fp(f interface{}) uintptr {
 	type iface [2]uintptr
 	return (*iface)(unsafe.Pointer(&f))[1]

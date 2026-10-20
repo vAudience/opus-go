@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func runNLSF2A(t *testing.T, tls *libc.TLS, nlsf []OpusT_opus_int16) []OpusT_opus_int16 {
 	t.Helper()
 	a_Q12 := make([]OpusT_opus_int16, len(nlsf))
@@ -14,6 +15,7 @@ func runNLSF2A(t *testing.T, tls *libc.TLS, nlsf []OpusT_opus_int16) []OpusT_opu
 	return a_Q12
 }
 
+//go:nocheckptr
 func checkNLSF2A(t *testing.T, label string, got, want []OpusT_opus_int16) {
 	t.Helper()
 	if len(got) != len(want) {
@@ -26,6 +28,7 @@ func checkNLSF2A(t *testing.T, label string, got, want []OpusT_opus_int16) {
 	}
 }
 
+//go:nocheckptr
 func TestNLSF2ALocalArrays(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

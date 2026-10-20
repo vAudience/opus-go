@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_gains_quant(tls *libc.TLS, ind uintptr, gain_Q16 uintptr, prev_ind uintptr, conditional int32, nb_subfr int32) {
 	var double_step_size_threshold, k, v2, v3, v4, v5, v6 int32
 	var v11 uintptr
@@ -126,6 +127,8 @@ func Opus_silk_gains_quant(tls *libc.TLS, ind uintptr, gain_Q16 uintptr, prev_in
 // C documentation
 //
 //	/* Gains scalar dequantization, uniform on log scale */
+//
+//go:nocheckptr
 func Opus_silk_gains_dequant(tls *libc.TLS, gain_Q16 uintptr, ind uintptr, prev_ind uintptr, conditional int32, nb_subfr int32) {
 	var double_step_size_threshold, ind_tmp, k, v2, v3, v4, v6 int32
 	var v11, v12, v13 OpusT_opus_int32
@@ -188,6 +191,8 @@ func Opus_silk_gains_dequant(tls *libc.TLS, gain_Q16 uintptr, ind uintptr, prev_
 // C documentation
 //
 //	/* Compute unique identifier of gain indices vector */
+//
+//go:nocheckptr
 func Opus_silk_gains_ID(tls *libc.TLS, ind uintptr, nb_subfr int32) (r OpusT_opus_int32) {
 	var gainsID OpusT_opus_int32
 	var k int32
@@ -207,6 +212,8 @@ func Opus_silk_gains_ID(tls *libc.TLS, ind uintptr, nb_subfr int32) (r OpusT_opu
 // C documentation
 //
 //	/* Interpolate two vectors */
+//
+//go:nocheckptr
 func Opus_silk_interpolate(tls *libc.TLS, xi uintptr, x0 uintptr, x1 uintptr, ifact_Q2 int32, d int32) {
 	var i int32
 	_ = i
@@ -231,6 +238,8 @@ const silk_int16_MAX5 = 32767
 // C documentation
 //
 //	/* Helper function, interpolates the filter taps */
+//
+//go:nocheckptr
 func silk_LP_interpolate_filter_taps(tls *libc.TLS, B_Q28 uintptr, A_Q28 uintptr, ind int32, fac_Q16 OpusT_opus_int32) {
 	var na, nb, v3, v4 int32
 	_, _, _, _ = na, nb, v3, v4
@@ -300,6 +309,8 @@ func silk_LP_interpolate_filter_taps(tls *libc.TLS, B_Q28 uintptr, A_Q28 uintptr
 //	/* piece-wise linear interpolation between elliptic filters */
 //	/* Start by setting psEncC->mode <> 0;                      */
 //	/* Deactivate by setting psEncC->mode = 0;                  */
+//
+//go:nocheckptr
 func Opus_silk_LP_variable_cutoff(tls *libc.TLS, psLP uintptr, frame uintptr, frame_length int32) {
 	var fac_Q16 OpusT_opus_int32
 	var ind, v1, v2 int32
@@ -342,6 +353,8 @@ const silk_int16_MAX6 = 0x7FFF
 // C documentation
 //
 //	/* Predictive dequantizer for NLSF residuals */
+//
+//go:nocheckptr
 func silk_NLSF_residual_dequant(tls *libc.TLS, x_Q10 uintptr, indices uintptr, pred_coef_Q8 uintptr, quant_step_size_Q16 int32, order OpusT_opus_int16) {
 	var i, out_Q10, pred_Q10 int32
 	_, _, _ = i, out_Q10, pred_Q10

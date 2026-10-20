@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_NLSF_decode(tls *libc.TLS, pNLSF_Q15 uintptr, NLSFIndices uintptr, psNLSF_CB uintptr) {
 	var NLSF_Q15_tmp OpusT_opus_int32
 	var i, v2, v3 int32

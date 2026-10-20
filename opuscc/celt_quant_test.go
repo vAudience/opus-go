@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func TestQuantBandN1FieldAccesses(t *testing.T) {
 	buffer := make([]byte, 16)
 	var encoder OpusT_ec_enc

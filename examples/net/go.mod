@@ -1,12 +1,12 @@
-module github.com/kazzmir/opus-go/examples/play
+module github.com/vAudience/opus-go/examples/play
 
 go 1.25.0
 
-replace github.com/kazzmir/opus-go => ../..
+replace github.com/vAudience/opus-go => ../..
 
 require (
 	github.com/ebitengine/oto/v3 v3.4.0
-	github.com/kazzmir/opus-go v0.0.0-00010101000000-000000000000
+	github.com/vAudience/opus-go v0.0.0-00010101000000-000000000000
 )
 
 require (

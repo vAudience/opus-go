@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_clt_mdct_forward_c(tls *libc.TLS, l uintptr, in uintptr, out uintptr, window uintptr, overlap int32, shift int32, stride int32, arch int32) {
 	var N, N2, N4, i int32
 	var _saved_stack, f, f2, fp, st, st1, t, t1, trig, wp1, wp2, xp1, xp2, yp, yp1, yp11, yp2, v1, v10, v12, v14, v16, v18, v20, v22, v24, v3, v6, v8 uintptr
@@ -301,6 +302,7 @@ func Opus_clt_mdct_forward_c(tls *libc.TLS, l uintptr, in uintptr, out uintptr, 
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_clt_mdct_backward_c(tls *libc.TLS, l uintptr, in uintptr, out uintptr, window uintptr, overlap int32, shift int32, stride int32, arch int32) {
 	var N, N2, N4, i, rev int32
 	var bitrev, t, t1, trig, wp1, wp2, xp1, xp11, xp2, yp, yp0, yp1, yp11, v3 uintptr
@@ -448,6 +450,7 @@ type OpusT_mini_kiss_fft_state = struct {
    C_ADDTO( res , a)    : res += a
  * */
 
+//go:nocheckptr
 func kf_bfly21(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_kiss_fft_cfg, m int32) {
 	var Fout2, tw1 uintptr
 	var t OpusT_mini_kiss_fft_cpx
@@ -473,6 +476,7 @@ func kf_bfly21(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_
 	}
 }
 
+//go:nocheckptr
 func kf_bfly41(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_kiss_fft_cfg, m OpusT_size_t) {
 	var k, m2, m3, v3 OpusT_size_t
 	var scratch [6]OpusT_mini_kiss_fft_cpx
@@ -528,6 +532,7 @@ func kf_bfly41(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_
 	}
 }
 
+//go:nocheckptr
 func kf_bfly31(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_kiss_fft_cfg, m OpusT_size_t) {
 	var epi3 OpusT_mini_kiss_fft_cpx
 	var k, m2, v2 OpusT_size_t
@@ -571,6 +576,7 @@ func kf_bfly31(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_
 	}
 }
 
+//go:nocheckptr
 func kf_bfly51(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_kiss_fft_cfg, m int32) {
 	var Fout0, Fout1, Fout2, Fout3, Fout4, tw, twiddles uintptr
 	var scratch [13]OpusT_mini_kiss_fft_cpx
@@ -635,6 +641,7 @@ func kf_bfly51(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st OpusT_mini_
 	}
 }
 
+//go:nocheckptr
 func kf_work(tls *libc.TLS, Fout uintptr, f uintptr, fstride OpusT_size_t, in_stride int32, factors uintptr, st OpusT_mini_kiss_fft_cfg) {
 	var Fout_beg, Fout_end, v1, v2, v3 uintptr
 	var m, p int32
@@ -699,6 +706,8 @@ var __func__ = [8]int8{'k', 'f', '_', 'w', 'o', 'r', 'k'}
 //	    where
 //	    p[i] * m[i] = m[i-1]
 //	    m0 = n                  */
+//
+//go:nocheckptr
 func kf_factor(tls *libc.TLS, n int32, facbuf uintptr) {
 	var floor_sqrt float64
 	var p int32
@@ -741,6 +750,8 @@ func kf_factor(tls *libc.TLS, n int32, facbuf uintptr) {
 //	 * The return value is a contiguous block of memory, allocated with malloc.  As such,
 //	 * It can be freed with free(), rather than a kiss_fft-specific function.
 //	 * */
+//
+//go:nocheckptr
 func Opus_mini_kiss_fft_alloc(tls *libc.TLS, nfft int32, inverse_fft int32, mem uintptr, lenmem uintptr) (r OpusT_mini_kiss_fft_cfg) {
 	var i int32
 	var memneeded OpusT_size_t
@@ -780,6 +791,7 @@ func Opus_mini_kiss_fft_alloc(tls *libc.TLS, nfft int32, inverse_fft int32, mem 
 	return st
 }
 
+//go:nocheckptr
 func Opus_mini_kiss_fft_stride(tls *libc.TLS, st OpusT_mini_kiss_fft_cfg, fin uintptr, fout uintptr, in_stride int32) {
 	var v1 bool
 	_ = v1
@@ -792,6 +804,7 @@ func Opus_mini_kiss_fft_stride(tls *libc.TLS, st OpusT_mini_kiss_fft_cfg, fin ui
 
 var __func__1 = [21]int8{'m', 'i', 'n', 'i', '_', 'k', 'i', 's', 's', '_', 'f', 'f', 't', '_', 's', 't', 'r', 'i', 'd', 'e'}
 
+//go:nocheckptr
 func Opus_mini_kiss_fft(tls *libc.TLS, cfg OpusT_mini_kiss_fft_cfg, fin uintptr, fout uintptr) {
 	Opus_mini_kiss_fft_stride(tls, cfg, fin, fout, int32(1))
 }
@@ -810,6 +823,7 @@ type OpusT_mini_kiss_fftr_state = struct {
 	Fsuper_twiddles uintptr
 }
 
+//go:nocheckptr
 func Opus_mini_kiss_fftr_alloc(tls *libc.TLS, nfft int32, inverse_fft int32, mem uintptr, lenmem uintptr) (r OpusT_mini_kiss_fftr_cfg) {
 	var i int32
 	var memneeded OpusT_size_t
@@ -860,6 +874,7 @@ func Opus_mini_kiss_fftr_alloc(tls *libc.TLS, nfft int32, inverse_fft int32, mem
 
 var __func__2 = [21]int8{'m', 'i', 'n', 'i', '_', 'k', 'i', 's', 's', '_', 'f', 'f', 't', 'r', '_', 'a', 'l', 'l', 'o', 'c'}
 
+//go:nocheckptr
 func Opus_mini_kiss_fftr(tls *libc.TLS, st OpusT_mini_kiss_fftr_cfg, timedata uintptr, freqdata uintptr) {
 	var f1k, f2k, fpk, fpnk, tdc, tw OpusT_mini_kiss_fft_cpx
 	var k, ncfft int32
@@ -943,6 +958,8 @@ var log2_y_norm_coeff16 = [8]float32{
 // C documentation
 //
 //	/* When called, decay is positive and at most 11456. */
+//
+//go:nocheckptr
 func ec_laplace_get_freq1(tls *libc.TLS, fs0 uint32, decay int32) (r uint32) {
 	var ft uint32
 	_ = ft
@@ -950,6 +967,7 @@ func ec_laplace_get_freq1(tls *libc.TLS, fs0 uint32, decay int32) (r uint32) {
 	return ft * uint32(int32(16384)-decay) >> int32(15)
 }
 
+//go:nocheckptr
 func Opus_ec_laplace_encode(tls *libc.TLS, enc uintptr, value uintptr, fs uint32, decay int32) {
 	var di, i, ndi_max, s, val, v2 int32
 	var fl, v3 uint32
@@ -1004,6 +1022,7 @@ func Opus_ec_laplace_encode(tls *libc.TLS, enc uintptr, value uintptr, fs uint32
 	Opus_ec_encode_bin(tls, enc, fl, fl+fs, uint32(15))
 }
 
+//go:nocheckptr
 func Opus_ec_laplace_decode(tls *libc.TLS, dec uintptr, fs uint32, decay int32) (r int32) {
 	var di, val int32
 	var fl, fm, v1 uint32
@@ -1061,6 +1080,7 @@ func Opus_ec_laplace_decode(tls *libc.TLS, dec uintptr, fs uint32, decay int32) 
 	return val
 }
 
+//go:nocheckptr
 func Opus_ec_laplace_encode_p0(tls *libc.TLS, enc uintptr, value int32, p0 OpusT_opus_uint16, decay OpusT_opus_uint16) {
 	var i, s, v1, v2 int32
 	var icdf [8]OpusT_opus_uint16
@@ -1116,6 +1136,7 @@ func Opus_ec_laplace_encode_p0(tls *libc.TLS, enc uintptr, value int32, p0 OpusT
 	}
 }
 
+//go:nocheckptr
 func Opus_ec_laplace_decode_p0(tls *libc.TLS, dec uintptr, p0 OpusT_opus_uint16, decay OpusT_opus_uint16) (r int32) {
 	var i, s, v, value, v1 int32
 	var icdf [8]OpusT_opus_uint16

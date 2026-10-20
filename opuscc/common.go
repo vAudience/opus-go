@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
@@ -1050,6 +1050,7 @@ type OpusT_opus_copy_channel_out_func = uintptr
 
 type OpusT_downmix_func = uintptr
 
+//go:nocheckptr
 func Opus_opus_pcm_soft_clip_impl(tls *libc.TLS, _x uintptr, N int32, C int32, declip_mem uintptr, arch int32) {
 	var a, delta, maxval, offset, x0, v7, v8, v9 float32
 	var all_within_neg1pos1, c, curr, end, i, peak_pos, special, start, v4 int32
@@ -1196,10 +1197,12 @@ func Opus_opus_pcm_soft_clip_impl(tls *libc.TLS, _x uintptr, N int32, C int32, d
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_pcm_soft_clip(tls *libc.TLS, _x uintptr, N int32, C int32, declip_mem uintptr) {
 	Opus_opus_pcm_soft_clip_impl(tls, _x, N, C, declip_mem, 0)
 }
 
+//go:nocheckptr
 func Opus_encode_size(tls *libc.TLS, size int32, data uintptr) (r int32) {
 	if size < int32(252) {
 		*(*uint8)(unsafe.Pointer(data)) = uint8(size)
@@ -1212,6 +1215,7 @@ func Opus_encode_size(tls *libc.TLS, size int32, data uintptr) (r int32) {
 	return r
 }
 
+//go:nocheckptr
 func parse_size(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, size uintptr) (r int32) {
 	if len1 < int32(1) {
 		*(*OpusT_opus_int16)(unsafe.Pointer(size)) = int16(-int32(1))
@@ -1233,6 +1237,7 @@ func parse_size(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, size uintptr
 	return r
 }
 
+//go:nocheckptr
 func Opus_opus_packet_get_samples_per_frame(tls *libc.TLS, data uintptr, Fs OpusT_opus_int32) (r int32) {
 	var audiosize, v1 int32
 	_, _ = audiosize, v1
@@ -1259,6 +1264,7 @@ func Opus_opus_packet_get_samples_per_frame(tls *libc.TLS, data uintptr, Fs Opus
 	return audiosize
 }
 
+//go:nocheckptr
 func Opus_opus_packet_parse_impl(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, self_delimited int32, out_toc uintptr, frames uintptr, size uintptr, payload_offset uintptr, packet_offset uintptr, padding uintptr, padding_len uintptr) (r int32) {
 	var bytes, cbr, count, framesize, i, p, tmp, v4 int32
 	var ch, toc uint8
@@ -1457,6 +1463,7 @@ func Opus_opus_packet_parse_impl(tls *libc.TLS, data uintptr, len1 OpusT_opus_in
 	return count
 }
 
+//go:nocheckptr
 func Opus_opus_packet_parse(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, out_toc uintptr, frames uintptr, size uintptr, payload_offset uintptr) (r int32) {
 	return Opus_opus_packet_parse_impl(tls, data, len1, 0, out_toc, frames, size, payload_offset, uintptr(uint32(0)), uintptr(uint32(0)), uintptr(uint32(0)))
 }
@@ -2284,6 +2291,7 @@ type OpusDecoder = struct {
 	FrangeFinal           OpusT_opus_uint32
 }
 
+//go:nocheckptr
 func validate_opus_decoder(tls *libc.TLS, st uintptr) {
 	if !((*OpusT_OpusDecoder)(unsafe.Pointer(st)).Fchannels == int32(1) || (*OpusT_OpusDecoder)(unsafe.Pointer(st)).Fchannels == int32(2)) {
 		Opus_celt_fatal(tls, __ccgo_ts, __ccgo_ts+57, int32(99))
@@ -2317,6 +2325,7 @@ func validate_opus_decoder(tls *libc.TLS, st uintptr) {
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	var alignment uint32
 	var celtDecSizeBytes, ret, v1 int32
@@ -2337,6 +2346,7 @@ func Opus_opus_decoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	return v1 + silkDecSizeBytes + celtDecSizeBytes
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_init(tls *libc.TLS, st uintptr, Fs OpusT_opus_int32, channels int32) (r int32) {
 	var alignment uint32
 	var celt_dec, silk_dec uintptr
@@ -2391,6 +2401,7 @@ func Opus_opus_decoder_init(tls *libc.TLS, st uintptr, Fs OpusT_opus_int32, chan
 	return OPUS_OK
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, channels int32) (uintptr, error) {
 	var ret int32
 	var st, v1 uintptr
@@ -2412,6 +2423,7 @@ func Opus_opus_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, channels int32
 	return st, nil
 }
 
+//go:nocheckptr
 func smooth_fade(tls *libc.TLS, in1 uintptr, in2 uintptr, out uintptr, overlap int32, channels int32, window uintptr, Fs OpusT_opus_int32) {
 	var c, i, inc int32
 	var w OpusT_celt_coef
@@ -2435,6 +2447,7 @@ func smooth_fade(tls *libc.TLS, in1 uintptr, in2 uintptr, out uintptr, overlap i
 	}
 }
 
+//go:nocheckptr
 func opus_packet_get_mode(tls *libc.TLS, data uintptr) (r int32) {
 	var mode int32
 	_ = mode
@@ -2450,6 +2463,7 @@ func opus_packet_get_mode(tls *libc.TLS, data uintptr) (r int32) {
 	return mode
 }
 
+//go:nocheckptr
 func opus_decode_frame(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	var F10, F20, F2_5, F5, audiosize, bandwidth, c, celt_accum, celt_frame_size, celt_ret, celt_to_silk, decoded_samples, endband, first_frame, i, lost_flag, mode, pcm_silk_size, pcm_too_small, pcm_transition_celt_size, pcm_transition_silk_size, redundancy, redundancy_bytes, redundant_audio_size, ret, silk_ret, start_band, transition, v31, v32 int32
 	var _saved_stack, celt_dec, pcm_ptr, pcm_silk, pcm_transition, pcm_transition_celt, pcm_transition_silk, redundant_audio, silk_dec, st, window, v1, v10, v11, v13, v15, v17, v19, v21, v3, v5, v6, v8 uintptr
@@ -3331,6 +3345,7 @@ func opus_decode_frame(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus
 	return v31
 }
 
+//go:nocheckptr
 func Opus_opus_decode_native(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32, self_delimited int32, packet_offset uintptr, soft_clip int32, dred uintptr, dred_offset OpusT_opus_int32) (r int32) {
 	var count, duration_copy, i, nb_samples, packet_bandwidth, packet_frame_size, packet_mode, packet_stream_channels, pcm_count, ret, ret1, ret2, v1 int32
 	var v8 OpusT_opus_val16
@@ -3459,6 +3474,7 @@ func Opus_opus_decode_native(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT
 	return nb_samples
 }
 
+//go:nocheckptr
 func Opus_opus_decode(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	var _saved_stack, out, st, v1, v10, v11, v13, v15, v17, v19, v21, v3, v5, v6, v8 uintptr
 	var nb_samples, ret, v31 int32
@@ -3639,6 +3655,7 @@ func Opus_opus_decode(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus_
 	return ret
 }
 
+//go:nocheckptr
 func Opus_opus_decode24(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	var _saved_stack, out, st, v1, v10, v11, v13, v15, v17, v19, v21, v3, v5, v6, v8 uintptr
 	var i, nb_samples, ret, v31 int32
@@ -3826,6 +3843,7 @@ func Opus_opus_decode24(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opu
 	return ret
 }
 
+//go:nocheckptr
 func Opus_opus_decode_float(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	if frame_size <= 0 {
 		return -int32(1)
@@ -3833,6 +3851,7 @@ func Opus_opus_decode_float(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_
 	return Opus_opus_decode_native(tls, st, data, len1, pcm, frame_size, decode_fec, 0, uintptr(uint32(0)), 0, uintptr(uint32(0)), 0)
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_ctl(tls *libc.TLS, st uintptr, request int32, va uintptr) (r int32) {
 	// Forwarded CTLs take a single vararg. Keep its storage stable across
 	// uintptr-taking calls, even if the goroutine stack grows.
@@ -3952,10 +3971,12 @@ bad_arg:
 	return -int32(1)
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_destroy(tls *libc.TLS, st uintptr) {
 	libc.Xfree(tls, st)
 }
 
+//go:nocheckptr
 func Opus_opus_packet_get_bandwidth(tls *libc.TLS, data uintptr) (r int32) {
 	var bandwidth, v1 int32
 	_, _ = bandwidth, v1
@@ -3979,6 +4000,7 @@ func Opus_opus_packet_get_bandwidth(tls *libc.TLS, data uintptr) (r int32) {
 	return bandwidth
 }
 
+//go:nocheckptr
 func Opus_opus_packet_get_nb_channels(tls *libc.TLS, data uintptr) (r int32) {
 	var v1 int32
 	_ = v1
@@ -3990,6 +4012,7 @@ func Opus_opus_packet_get_nb_channels(tls *libc.TLS, data uintptr) (r int32) {
 	return v1
 }
 
+//go:nocheckptr
 func Opus_opus_packet_get_nb_frames(tls *libc.TLS, packet uintptr, len1 OpusT_opus_int32) (r int32) {
 	var count int32
 	_ = count
@@ -4013,6 +4036,7 @@ func Opus_opus_packet_get_nb_frames(tls *libc.TLS, packet uintptr, len1 OpusT_op
 	return r
 }
 
+//go:nocheckptr
 func Opus_opus_packet_get_nb_samples(tls *libc.TLS, packet uintptr, len1 OpusT_opus_int32, Fs OpusT_opus_int32) (r int32) {
 	var count, samples int32
 	_, _ = count, samples
@@ -4030,6 +4054,7 @@ func Opus_opus_packet_get_nb_samples(tls *libc.TLS, packet uintptr, len1 OpusT_o
 	return r
 }
 
+//go:nocheckptr
 func Opus_opus_packet_has_lbrr(tls *libc.TLS, packet uintptr, len1 OpusT_opus_int32) (r int32) {
 	var lbrr, nb_frames, packet_frame_size, packet_mode, packet_stream_channels, ret int32
 	var frames [48]uintptr
@@ -4059,6 +4084,7 @@ func Opus_opus_packet_has_lbrr(tls *libc.TLS, packet uintptr, len1 OpusT_opus_in
 	return lbrr
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_get_nb_samples(tls *libc.TLS, dec uintptr, packet uintptr, len1 OpusT_opus_int32) (r int32) {
 	return Opus_opus_packet_get_nb_samples(tls, packet, len1, (*OpusT_OpusDecoder)(unsafe.Pointer(dec)).FFs)
 }
@@ -4069,10 +4095,12 @@ type OpusDREDDecoder = struct {
 	Fmagic  OpusT_opus_uint32
 }
 
+//go:nocheckptr
 func Opus_opus_dred_decoder_get_size(tls *libc.TLS) (r int32) {
 	return int32(12)
 }
 
+//go:nocheckptr
 func Opus_opus_dred_decoder_init(tls *libc.TLS, dec uintptr) (r int32) {
 	var ret, v1 int32
 	_, _ = ret, v1
@@ -4090,6 +4118,7 @@ func Opus_opus_dred_decoder_init(tls *libc.TLS, dec uintptr) (r int32) {
 	return v1
 }
 
+//go:nocheckptr
 func Opus_opus_dred_decoder_create(tls *libc.TLS) (uintptr, error) {
 	var dec, v1 uintptr
 	var ret int32
@@ -4108,6 +4137,7 @@ func Opus_opus_dred_decoder_create(tls *libc.TLS) (uintptr, error) {
 	return dec, nil
 }
 
+//go:nocheckptr
 func Opus_opus_dred_decoder_destroy(tls *libc.TLS, dec uintptr) {
 	if dec != 0 {
 		(*OpusT_OpusDREDDecoder)(unsafe.Pointer(dec)).Fmagic = uint32(0xDE57801D)
@@ -4115,24 +4145,29 @@ func Opus_opus_dred_decoder_destroy(tls *libc.TLS, dec uintptr) {
 	libc.Xfree(tls, dec)
 }
 
+//go:nocheckptr
 func Opus_opus_dred_decoder_ctl(tls *libc.TLS, dred_dec uintptr, request int32, va uintptr) (r int32) {
 	_ = dred_dec
 	_ = request
 	return -int32(5)
 }
 
+//go:nocheckptr
 func Opus_opus_dred_get_size(tls *libc.TLS) (r int32) {
 	return 0
 }
 
+//go:nocheckptr
 func Opus_opus_dred_alloc(tls *libc.TLS) (uintptr, error) {
 	return uintptr(uint32(0)), opusErrorFromCode(-int32(5))
 }
 
+//go:nocheckptr
 func Opus_opus_dred_free(tls *libc.TLS, dec uintptr) {
 	_ = dec
 }
 
+//go:nocheckptr
 func Opus_opus_dred_parse(tls *libc.TLS, dred_dec uintptr, dred uintptr, data uintptr, len1 OpusT_opus_int32, max_dred_samples OpusT_opus_int32, sampling_rate OpusT_opus_int32, dred_end uintptr, defer_processing int32) (r int32) {
 	_ = dred_dec
 	_ = dred
@@ -4145,6 +4180,7 @@ func Opus_opus_dred_parse(tls *libc.TLS, dred_dec uintptr, dred uintptr, data ui
 	return -int32(5)
 }
 
+//go:nocheckptr
 func Opus_opus_dred_process(tls *libc.TLS, dred_dec uintptr, src uintptr, dst uintptr) (r int32) {
 	_ = dred_dec
 	_ = src
@@ -4152,6 +4188,7 @@ func Opus_opus_dred_process(tls *libc.TLS, dred_dec uintptr, src uintptr, dst ui
 	return -int32(5)
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_dred_decode(tls *libc.TLS, st uintptr, dred uintptr, dred_offset OpusT_opus_int32, pcm uintptr, frame_size OpusT_opus_int32) (r int32) {
 	_ = st
 	_ = dred
@@ -4161,6 +4198,7 @@ func Opus_opus_decoder_dred_decode(tls *libc.TLS, st uintptr, dred uintptr, dred
 	return -int32(5)
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_dred_decode24(tls *libc.TLS, st uintptr, dred uintptr, dred_offset OpusT_opus_int32, pcm uintptr, frame_size OpusT_opus_int32) (r int32) {
 	_ = st
 	_ = dred
@@ -4170,6 +4208,7 @@ func Opus_opus_decoder_dred_decode24(tls *libc.TLS, st uintptr, dred uintptr, dr
 	return -int32(5)
 }
 
+//go:nocheckptr
 func Opus_opus_decoder_dred_decode_float(tls *libc.TLS, st uintptr, dred uintptr, dred_offset OpusT_opus_int32, pcm uintptr, frame_size OpusT_opus_int32) (r int32) {
 	_ = st
 	_ = dred
@@ -4250,6 +4289,7 @@ var tapset_icdf2 = [3]uint8{
    POSSIBILITY OF SUCH DAMAGE.
 */
 
+//go:nocheckptr
 func Opus_validate_layout(tls *libc.TLS, layout uintptr) (r int32) {
 	var i, max_channel int32
 	_, _ = i, max_channel
@@ -4271,6 +4311,7 @@ func Opus_validate_layout(tls *libc.TLS, layout uintptr) (r int32) {
 	return int32(1)
 }
 
+//go:nocheckptr
 func Opus_get_left_channel(tls *libc.TLS, layout uintptr, stream_id int32, prev int32) (r int32) {
 	var i, v1 int32
 	_, _ = i, v1
@@ -4292,6 +4333,7 @@ func Opus_get_left_channel(tls *libc.TLS, layout uintptr, stream_id int32, prev 
 	return -int32(1)
 }
 
+//go:nocheckptr
 func Opus_get_right_channel(tls *libc.TLS, layout uintptr, stream_id int32, prev int32) (r int32) {
 	var i, v1 int32
 	_, _ = i, v1
@@ -4313,6 +4355,7 @@ func Opus_get_right_channel(tls *libc.TLS, layout uintptr, stream_id int32, prev
 	return -int32(1)
 }
 
+//go:nocheckptr
 func Opus_get_mono_channel(tls *libc.TLS, layout uintptr, stream_id int32, prev int32) (r int32) {
 	var i, v1 int32
 	_, _ = i, v1
@@ -4388,10 +4431,12 @@ var tapset_icdf3 = [3]uint8{
 
 /* DECODER */
 
+//go:nocheckptr
 func validate_ms_decoder(tls *libc.TLS, st uintptr) {
 	Opus_validate_layout(tls, st)
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_get_size(tls *libc.TLS, nb_streams int32, nb_coupled_streams int32) (r OpusT_opus_int32) {
 	var alignment uint32
 	var coupled_size, mono_size, v1, v3, v5 int32
@@ -4410,6 +4455,7 @@ func Opus_opus_multistream_decoder_get_size(tls *libc.TLS, nb_streams int32, nb_
 	return v1 + nb_coupled_streams*v3 + (nb_streams-nb_coupled_streams)*v5
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_init(tls *libc.TLS, st uintptr, Fs OpusT_opus_int32, channels int32, streams int32, coupled_streams int32, mapping uintptr) (r int32) {
 	var alignment uint32
 	var coupled_size, i1, mono_size, ret, v2 int32
@@ -4469,6 +4515,7 @@ func Opus_opus_multistream_decoder_init(tls *libc.TLS, st uintptr, Fs OpusT_opus
 	return OPUS_OK
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, channels int32, streams int32, coupled_streams int32, mapping uintptr) (uintptr, error) {
 	var ret int32
 	var st, v1 uintptr
@@ -4490,6 +4537,7 @@ func Opus_opus_multistream_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, ch
 	return st, nil
 }
 
+//go:nocheckptr
 func opus_multistream_packet_validate(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, nb_streams int32, Fs OpusT_opus_int32) (r int32) {
 	// Parser outputs cross a uintptr API; use named fields in pinned storage
 	// rather than addresses into the movable goroutine stack.
@@ -4530,6 +4578,7 @@ func opus_multistream_packet_validate(tls *libc.TLS, data uintptr, len1 OpusT_op
 
 type OpusT___ccgo_fp__Xopus_multistream_decode_native_4 = func(*libc.TLS, uintptr, int32, int32, uintptr, int32, int32, uintptr)
 
+//go:nocheckptr
 func Opus_opus_multistream_decode_native(tls *libc.TLS, st1 uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, __ccgo_fp_copy_channel_out OpusT_opus_copy_channel_out_func, frame_size int32, decode_fec int32, soft_clip int32, user_data uintptr) (r int32) {
 	// CTL and decode output pointers cross deep uintptr-taking calls. Keep
 	// their named storage pinned rather than on the movable Go stack.
@@ -4881,6 +4930,7 @@ func Opus_opus_multistream_decode_native(tls *libc.TLS, st1 uintptr, data uintpt
 	return frame_size
 }
 
+//go:nocheckptr
 func opus_copy_channel_out_float(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var float_dst uintptr
 	var i OpusT_opus_int32
@@ -4908,6 +4958,7 @@ func opus_copy_channel_out_float(tls *libc.TLS, dst uintptr, dst_stride int32, d
 	}
 }
 
+//go:nocheckptr
 func opus_copy_channel_out_short(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var i OpusT_opus_int32
 	var short_dst uintptr
@@ -4952,6 +5003,7 @@ func opus_copy_channel_out_short(tls *libc.TLS, dst uintptr, dst_stride int32, d
 	}
 }
 
+//go:nocheckptr
 func opus_copy_channel_out_int24(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var i OpusT_opus_int32
 	var short_dst uintptr
@@ -4979,18 +5031,22 @@ func opus_copy_channel_out_int24(tls *libc.TLS, dst uintptr, dst_stride int32, d
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decode(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, st, data, len1, pcm, __ccgo_fp(opus_copy_channel_out_short), frame_size, decode_fec, int32(OPTIONAL_CLIP), uintptr(uint32(0)))
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decode24(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, st, data, len1, pcm, __ccgo_fp(opus_copy_channel_out_int24), frame_size, decode_fec, 0, uintptr(uint32(0)))
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decode_float(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, st, data, len1, pcm, __ccgo_fp(opus_copy_channel_out_float), frame_size, decode_fec, 0, uintptr(uint32(0)))
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_ctl_va_list(tls *libc.TLS, st uintptr, request int32, ap OpusT_va_list) (r int32) {
 	// Both the forwarded vararg and range output cross uintptr-taking CTLs.
 	// Pin their named storage so stack growth cannot invalidate the pointers.
@@ -5142,6 +5198,7 @@ bad_arg:
 	return r
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_ctl(tls *libc.TLS, st uintptr, request int32, va uintptr) (r int32) {
 	var ap OpusT_va_list
 	var ret int32
@@ -5152,6 +5209,7 @@ func Opus_opus_multistream_decoder_ctl(tls *libc.TLS, st uintptr, request int32,
 	return ret
 }
 
+//go:nocheckptr
 func Opus_opus_multistream_decoder_destroy(tls *libc.TLS, st uintptr) {
 	libc.Xfree(tls, st)
 }
@@ -5188,6 +5246,7 @@ type OpusT_MappingMatrix = struct {
 	Fgain int32
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_get_size(tls *libc.TLS, rows int32, cols int32) (r OpusT_opus_int32) {
 	var alignment uint32
 	var size OpusT_opus_int32
@@ -5211,6 +5270,7 @@ func Opus_mapping_matrix_get_size(tls *libc.TLS, rows int32, cols int32) (r Opus
 	return v1 + v3
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_get_data(tls *libc.TLS, matrix uintptr) (r uintptr) {
 	var alignment uint32
 	var v1 int32
@@ -5221,6 +5281,7 @@ func Opus_mapping_matrix_get_data(tls *libc.TLS, matrix uintptr) (r uintptr) {
 	return matrix + uintptr(v1)
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_init(tls *libc.TLS, matrix uintptr, rows int32, cols int32, gain int32, data uintptr, data_size OpusT_opus_int32) {
 	var alignment uint32
 	var i1, v1, v3 int32
@@ -5248,6 +5309,7 @@ func Opus_mapping_matrix_init(tls *libc.TLS, matrix uintptr, rows int32, cols in
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_in_float(tls *libc.TLS, matrix uintptr, input uintptr, input_rows int32, output uintptr, output_row int32, output_rows int32, frame_size int32) {
 	var col, i int32
 	var matrix_data uintptr
@@ -5276,6 +5338,7 @@ func Opus_mapping_matrix_multiply_channel_in_float(tls *libc.TLS, matrix uintptr
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_out_float(tls *libc.TLS, matrix uintptr, input uintptr, input_row int32, input_rows int32, output uintptr, output_rows int32, frame_size int32) {
 	var i, row int32
 	var input_sample, tmp float32
@@ -5304,6 +5367,7 @@ func Opus_mapping_matrix_multiply_channel_out_float(tls *libc.TLS, matrix uintpt
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_in_short(tls *libc.TLS, matrix uintptr, input uintptr, input_rows int32, output uintptr, output_row int32, output_rows int32, frame_size int32) {
 	var col, i int32
 	var matrix_data uintptr
@@ -5332,6 +5396,7 @@ func Opus_mapping_matrix_multiply_channel_in_short(tls *libc.TLS, matrix uintptr
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_out_short(tls *libc.TLS, matrix uintptr, input uintptr, input_row int32, input_rows int32, output uintptr, output_rows int32, frame_size int32) {
 	var i, row int32
 	var input_sample, tmp OpusT_opus_int32
@@ -5378,6 +5443,7 @@ func Opus_mapping_matrix_multiply_channel_out_short(tls *libc.TLS, matrix uintpt
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_in_int24(tls *libc.TLS, matrix uintptr, input uintptr, input_rows int32, output uintptr, output_row int32, output_rows int32, frame_size int32) {
 	var col, i int32
 	var matrix_data uintptr
@@ -5406,6 +5472,7 @@ func Opus_mapping_matrix_multiply_channel_in_int24(tls *libc.TLS, matrix uintptr
 	}
 }
 
+//go:nocheckptr
 func Opus_mapping_matrix_multiply_channel_out_int24(tls *libc.TLS, matrix uintptr, input uintptr, input_row int32, input_rows int32, output uintptr, output_rows int32, frame_size int32) {
 	var i, row int32
 	var input_sample OpusT_opus_int32
@@ -5488,6 +5555,7 @@ type OpusProjectionDecoder = struct {
 	Fdemixing_matrix_size_in_bytes OpusT_opus_int32
 }
 
+//go:nocheckptr
 func opus_projection_copy_channel_out_float(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var float_dst, matrix uintptr
 	_, _ = float_dst, matrix
@@ -5501,6 +5569,7 @@ func opus_projection_copy_channel_out_float(tls *libc.TLS, dst uintptr, dst_stri
 	}
 }
 
+//go:nocheckptr
 func opus_projection_copy_channel_out_short(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var matrix, short_dst uintptr
 	_, _ = matrix, short_dst
@@ -5514,6 +5583,7 @@ func opus_projection_copy_channel_out_short(tls *libc.TLS, dst uintptr, dst_stri
 	}
 }
 
+//go:nocheckptr
 func opus_projection_copy_channel_out_int24(tls *libc.TLS, dst uintptr, dst_stride int32, dst_channel int32, src uintptr, src_stride int32, frame_size int32, user_data uintptr) {
 	var matrix, short_dst uintptr
 	_, _ = matrix, short_dst
@@ -5527,6 +5597,7 @@ func opus_projection_copy_channel_out_int24(tls *libc.TLS, dst uintptr, dst_stri
 	}
 }
 
+//go:nocheckptr
 func get_dec_demixing_matrix(tls *libc.TLS, st uintptr) (r uintptr) {
 	var alignment uint32
 	var v1 int32
@@ -5537,6 +5608,7 @@ func get_dec_demixing_matrix(tls *libc.TLS, st uintptr) (r uintptr) {
 	return st + uintptr(v1)
 }
 
+//go:nocheckptr
 func get_multistream_decoder(tls *libc.TLS, st uintptr) (r uintptr) {
 	var alignment uint32
 	var v1 int32
@@ -5547,6 +5619,7 @@ func get_multistream_decoder(tls *libc.TLS, st uintptr) (r uintptr) {
 	return st + uintptr(v1)
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decoder_get_size(tls *libc.TLS, channels int32, streams int32, coupled_streams int32) (r OpusT_opus_int32) {
 	var alignment uint32
 	var decoder_size, matrix_size OpusT_opus_int32
@@ -5565,6 +5638,7 @@ func Opus_opus_projection_decoder_get_size(tls *libc.TLS, channels int32, stream
 	return v1 + matrix_size + decoder_size
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decoder_init(tls *libc.TLS, st1 uintptr, Fs OpusT_opus_int32, channels int32, streams int32, coupled_streams int32, demixing_matrix uintptr, demixing_matrix_size OpusT_opus_int32) (r int32) {
 	// Initialization descends through uintptr APIs; pin the identity mapping
 	// so its address remains valid across goroutine stack growth.
@@ -5771,6 +5845,7 @@ func Opus_opus_projection_decoder_init(tls *libc.TLS, st1 uintptr, Fs OpusT_opus
 	return ret
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, channels int32, streams int32, coupled_streams int32, demixing_matrix uintptr, demixing_matrix_size OpusT_opus_int32) (uintptr, error) {
 	var ret, size1 int32
 	var st, v1 uintptr
@@ -5795,18 +5870,22 @@ func Opus_opus_projection_decoder_create(tls *libc.TLS, Fs OpusT_opus_int32, cha
 	return st, nil
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decode(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, get_multistream_decoder(tls, st), data, len1, pcm, __ccgo_fp(opus_projection_copy_channel_out_short), frame_size, decode_fec, int32(OPTIONAL_CLIP), get_dec_demixing_matrix(tls, st))
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decode24(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, get_multistream_decoder(tls, st), data, len1, pcm, __ccgo_fp(opus_projection_copy_channel_out_int24), frame_size, decode_fec, 0, get_dec_demixing_matrix(tls, st))
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decode_float(tls *libc.TLS, st uintptr, data uintptr, len1 OpusT_opus_int32, pcm uintptr, frame_size int32, decode_fec int32) (r int32) {
 	return Opus_opus_multistream_decode_native(tls, get_multistream_decoder(tls, st), data, len1, pcm, __ccgo_fp(opus_projection_copy_channel_out_float), frame_size, decode_fec, 0, get_dec_demixing_matrix(tls, st))
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decoder_ctl(tls *libc.TLS, st uintptr, request int32, va uintptr) (r int32) {
 	var ap OpusT_va_list
 	var ret int32
@@ -5818,6 +5897,7 @@ func Opus_opus_projection_decoder_ctl(tls *libc.TLS, st uintptr, request int32, 
 	return ret
 }
 
+//go:nocheckptr
 func Opus_opus_projection_decoder_destroy(tls *libc.TLS, st uintptr) {
 	libc.Xfree(tls, st)
 }
@@ -5852,6 +5932,8 @@ var tapset_icdf6 = [3]uint8{
 //	   N.B., a "Repeat These Extensions" extension (ID==2) does not advance past
 //	    the repeated extension payloads.
 //	   That requires higher-level logic. */
+//
+//go:nocheckptr
 func skip_extension_payload(tls *libc.TLS, pdata uintptr, len1 OpusT_opus_int32, pheader_size uintptr, id_byte int32, trailing_short_len OpusT_opus_int32) (r OpusT_opus_int32) {
 	var L, id int32
 	var bytes, header_size, lacing OpusT_opus_int32
@@ -5910,6 +5992,8 @@ func skip_extension_payload(tls *libc.TLS, pdata uintptr, len1 OpusT_opus_int32,
 //	    extension ID byte.
 //	   Higher-level logic is required to skip the extension payloads that come
 //	    after it.*/
+//
+//go:nocheckptr
 func skip_extension(tls *libc.TLS, pdata uintptr, len1 OpusT_opus_int32, pheader_size uintptr) (r OpusT_opus_int32) {
 	var id_byte int32
 	var data, v1 uintptr
@@ -5934,6 +6018,7 @@ func skip_extension(tls *libc.TLS, pdata uintptr, len1 OpusT_opus_int32, pheader
 	return len1
 }
 
+//go:nocheckptr
 func Opus_opus_extension_iterator_init(tls *libc.TLS, iter uintptr, data uintptr, len1 OpusT_opus_int32, nb_frames OpusT_opus_int32) {
 	var v1, v2 uintptr
 	var v4 OpusT_opus_int32
@@ -5976,6 +6061,8 @@ func Opus_opus_extension_iterator_init(tls *libc.TLS, iter uintptr, data uintptr
 //
 //	/* Reset the iterator so it can start iterating again from the first
 //	    extension. */
+//
+//go:nocheckptr
 func Opus_opus_extension_iterator_reset(tls *libc.TLS, iter uintptr) {
 	var v1 uintptr
 	var v2 int32
@@ -5997,6 +6084,8 @@ func Opus_opus_extension_iterator_reset(tls *libc.TLS, iter uintptr) {
 //	    frame_max or larger.
 //	   This can allow it to stop iterating early if these extensions are not
 //	    needed. */
+//
+//go:nocheckptr
 func Opus_opus_extension_iterator_set_frame_max(tls *libc.TLS, iter uintptr, frame_max int32) {
 	(*OpusT_OpusExtensionIterator)(unsafe.Pointer(iter)).Fframe_max = frame_max
 }
@@ -6006,6 +6095,8 @@ func Opus_opus_extension_iterator_set_frame_max(tls *libc.TLS, iter uintptr, fra
 //	/* Return the next repeated extension.
 //	   The return value is non-zero if one is found, negative on error, or 0 if we
 //	    have finished repeating extensions. */
+//
+//go:nocheckptr
 func opus_extension_iterator_next_repeat(tls *libc.TLS, iter uintptr, ext uintptr) (r int32) {
 	var curr_data0 uintptr
 	var repeat_id_byte int32
@@ -6083,6 +6174,8 @@ func opus_extension_iterator_next_repeat(tls *libc.TLS, iter uintptr, ext uintpt
 //	    indicators, but including the repeated extensions) in bitstream order.
 //	   Due to the extension repetition mechanism, extensions are not necessarily
 //	    returned in frame order. */
+//
+//go:nocheckptr
 func Opus_opus_extension_iterator_next(tls *libc.TLS, iter uintptr, ext uintptr) (r int32) {
 	var L, id, ret, ret1 int32
 	var curr_data0 uintptr
@@ -6172,6 +6265,7 @@ func Opus_opus_extension_iterator_next(tls *libc.TLS, iter uintptr, ext uintptr)
 	return 0
 }
 
+//go:nocheckptr
 func Opus_opus_extension_iterator_find(tls *libc.TLS, iter uintptr, ext uintptr, id int32) (r int32) {
 	var ret int32
 	var curr_ext OpusT_opus_extension_data
@@ -6193,6 +6287,8 @@ func Opus_opus_extension_iterator_find(tls *libc.TLS, iter uintptr, ext uintptr,
 //
 //	/* Count the number of extensions, excluding real padding, separators, and
 //	    repeat indicators, but including the repeated extensions. */
+//
+//go:nocheckptr
 func Opus_opus_packet_extensions_count(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, nb_frames int32) (r OpusT_opus_int32) {
 	var count int32
 	var iter OpusT_OpusExtensionIterator
@@ -6212,6 +6308,8 @@ func Opus_opus_packet_extensions_count(tls *libc.TLS, data uintptr, len1 OpusT_o
 //
 //	/* Count the number of extensions for each frame, excluding real padding and
 //	    separators and repeat indicators, but including the repeated extensions. */
+//
+//go:nocheckptr
 func Opus_opus_packet_extensions_count_ext(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, nb_frame_exts uintptr, nb_frames int32) (r OpusT_opus_int32) {
 	var count int32
 	var ext OpusT_opus_extension_data
@@ -6237,6 +6335,8 @@ func Opus_opus_packet_extensions_count_ext(tls *libc.TLS, data uintptr, len1 Opu
 //	    order.
 //	   Due to the extension repetition mechanism, extensions are not necessarily
 //	    returned in frame order. */
+//
+//go:nocheckptr
 func Opus_opus_packet_extensions_parse(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, extensions uintptr, nb_extensions uintptr, nb_frames int32) (r OpusT_opus_int32) {
 	var count, ret int32
 	var ext OpusT_opus_extension_data
@@ -6272,6 +6372,8 @@ func Opus_opus_packet_extensions_parse(tls *libc.TLS, data uintptr, len1 OpusT_o
 //	    order.
 //	   nb_frame_exts must be filled with the output of
 //	    opus_packet_extensions_count_ext(). */
+//
+//go:nocheckptr
 func Opus_opus_packet_extensions_parse_ext(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, extensions uintptr, nb_extensions uintptr, nb_frame_exts uintptr, nb_frames int32) (r OpusT_opus_int32) {
 	var count, prev_total, ret, total int32
 	var idx, v3 OpusT_opus_int32
@@ -6324,6 +6426,7 @@ func Opus_opus_packet_extensions_parse_ext(tls *libc.TLS, data uintptr, len1 Opu
 	return ret
 }
 
+//go:nocheckptr
 func write_extension_payload(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, pos OpusT_opus_int32, ext uintptr, last int32) (r int32) {
 	var j, length_bytes OpusT_opus_int32
 	_, _ = j, length_bytes
@@ -6379,6 +6482,7 @@ func write_extension_payload(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32,
 	return pos
 }
 
+//go:nocheckptr
 func write_extension(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, pos OpusT_opus_int32, ext uintptr, last int32) (r int32) {
 	var v1 int32
 	_ = v1
@@ -6400,6 +6504,7 @@ func write_extension(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, pos Opu
 	return write_extension_payload(tls, data, len1, pos, ext, last)
 }
 
+//go:nocheckptr
 func Opus_opus_packet_extensions_generate(tls *libc.TLS, data uintptr, len1 OpusT_opus_int32, extensions uintptr, nb_extensions OpusT_opus_int32, nb_frames int32, pad int32) (r OpusT_opus_int32) {
 	var curr_frame, diff, f, g, g1, j, j1, last, nb_repeated, repeat_count, v3 int32
 	var frame_min_idx, frame_repeat_idx [48]OpusT_opus_int32

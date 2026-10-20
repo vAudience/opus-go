@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func kf_bfly2(tls *libc.TLS, Fout uintptr, m int32, N int32) {
 	var Fout2 uintptr
 	var i int32
@@ -58,6 +59,7 @@ func kf_bfly2(tls *libc.TLS, Fout uintptr, m int32, N int32) {
 	}
 }
 
+//go:nocheckptr
 func kf_bfly4(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m int32, N int32, mm int32) {
 	var Fout_beg, tw1, tw2, tw3, v3, v4 uintptr
 	var i, j, m2, m3 int32
@@ -144,6 +146,7 @@ func kf_bfly4(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m i
 	}
 }
 
+//go:nocheckptr
 func kf_bfly3(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m int32, N int32, mm int32) {
 	var Fout_beg, tw1, tw2, v2 uintptr
 	var epi3 OpusT_kiss_twiddle_cpx
@@ -197,6 +200,7 @@ func kf_bfly3(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m i
 	}
 }
 
+//go:nocheckptr
 func kf_bfly5(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m int32, N int32, mm int32) {
 	var Fout0, Fout1, Fout2, Fout3, Fout4, Fout_beg, tw uintptr
 	var i, u int32
@@ -270,6 +274,7 @@ func kf_bfly5(tls *libc.TLS, Fout uintptr, fstride OpusT_size_t, st uintptr, m i
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_fft_impl(tls *libc.TLS, st uintptr, fout uintptr) {
 	var L, i, m, m2, p, shift, v1 int32
 	var fstride [8]int32
@@ -317,6 +322,7 @@ func Opus_opus_fft_impl(tls *libc.TLS, st uintptr, fout uintptr) {
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_fft_c(tls *libc.TLS, st uintptr, fin uintptr, fout uintptr) {
 	var i int32
 	var scale OpusT_celt_coef
@@ -340,6 +346,7 @@ func Opus_opus_fft_c(tls *libc.TLS, st uintptr, fin uintptr, fout uintptr) {
 	Opus_opus_fft_impl(tls, st, fout)
 }
 
+//go:nocheckptr
 func Opus_opus_ifft_c(tls *libc.TLS, st uintptr, fin uintptr, fout uintptr) {
 	var i int32
 	_ = i
@@ -401,6 +408,8 @@ var log2_y_norm_coeff6 = [8]float32{
 //	/*Compute floor(sqrt(_val)) with exact arithmetic.
 //	  _val must be greater than 0.
 //	  This has been tested on all possible 32-bit inputs greater than 0.*/
+//
+//go:nocheckptr
 func Opus_isqrt32(tls *libc.TLS, _val OpusT_opus_uint32) (r uint32) {
 	var b, g uint32
 	var bshift int32
@@ -425,6 +434,7 @@ func Opus_isqrt32(tls *libc.TLS, _val OpusT_opus_uint32) (r uint32) {
 	return g
 }
 
+//go:nocheckptr
 func Opus_celt_float2int16_c(tls *libc.TLS, in uintptr, out uintptr, cnt int32) {
 	if cnt <= 0 {
 		return
@@ -443,6 +453,7 @@ func Opus_celt_float2int16_c(tls *libc.TLS, in uintptr, out uintptr, cnt int32) 
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_limit2_checkwithin1_c(tls *libc.TLS, samples uintptr, cnt int32) (r int32) {
 	var clippedVal, v2 float32
 	var i int32

@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_reset_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 	var v1 int32
 	_ = v1
@@ -34,6 +35,8 @@ func Opus_silk_reset_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 //	/************************/
 //	/* Init Decoder State   */
 //	/************************/
+//
+//go:nocheckptr
 func Opus_silk_init_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 	/* Clear the entire encoder state, except anything copied */
 	libc.Xmemset(tls, psDec, 0, uint64(unsafe.Sizeof(OpusT_silk_decoder_state{})))
@@ -48,6 +51,8 @@ const silk_int16_MAX3 = 32767
 //	/**********************************************************/
 //	/* Core decoder. Performs inverse NSQ operation LTP + LPC */
 //	/**********************************************************/
+//
+//go:nocheckptr
 func Opus_silk_decode_core(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, xq uintptr, pulses uintptr, arch int32) {
 	var A_Q12, B_Q14, _saved_stack, pexc_Q14, pred_lag_ptr, pres_Q14, pxq, res_Q14, sLPC_Q14, sLTP, sLTP_Q15, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var Gain_Q10, LPC_pred_Q10, LTP_pred_Q13, a32_nrm, b32_inv, b32_inv1, b32_nrm, b32_nrm1, err_Q32, gain_adj_Q16, inv_gain_Q31, offset_Q10, rand_seed, result, result1, v103, v106, v107, v110, v117, v118, v121 OpusT_opus_int32

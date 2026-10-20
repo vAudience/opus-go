@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestAmp2Log2LocalUnion(t *testing.T) {
 	mode := OpusT_OpusCustomMode{FnbEBands: 3}
 	bandE := []OpusT_celt_ener{0.75, 1.5, 3.25, 0.625, 2.25, 4.5}
@@ -22,6 +23,7 @@ func TestAmp2Log2LocalUnion(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestQuantCoarseEnergyLocalQI(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -75,6 +77,7 @@ func TestQuantCoarseEnergyLocalQI(t *testing.T) {
  * ../opus/.libs/libopus.a and calls the C quant_coarse_energy with the same
  * inputs (fake mode with nbEBands=3, C=2, start=0, end=3, effEnd=3,
  * 32-byte buffer). */
+//go:nocheckptr
 func TestQuantCoarseEnergyWrapperCReference(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

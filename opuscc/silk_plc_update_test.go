@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func TestPLCUpdateFieldAccesses(t *testing.T) {
 	dec := OpusT_silk_decoder_state{
 		Ffs_kHz:       16,

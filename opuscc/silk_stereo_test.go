@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestStereoMSToLRFieldAccesses(t *testing.T) {
 	state := OpusT_stereo_dec_state{
 		Fpred_prev_Q13: [2]OpusT_opus_int16{1200, -900},
@@ -42,6 +43,7 @@ func TestStereoMSToLRFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestLin2LogLocalScalars(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -58,6 +60,7 @@ func TestLin2LogLocalScalars(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestLPCInversePredictionGainLocalArray(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_NLSF2A(tls *libc.TLS, a_Q12 uintptr, NLSF uintptr, d int32, arch int32) {
 	var Ptmp, Qtmp, cos_val, delta, f_frac, f_int OpusT_opus_int32
 	var dd, i, k int32
@@ -188,6 +189,8 @@ POSSIBILITY OF SUCH DAMAGE.
 // C documentation
 //
 //	/* NLSF stabilizer, for a single input data vector */
+//
+//go:nocheckptr
 func Opus_silk_NLSF_stabilize(tls *libc.TLS, NLSF_Q15 uintptr, NDeltaMin_Q15 uintptr, L int32) {
 	var I, i, k, loops, v10, v5, v6, v7, v8, v9 int32
 	var center_freq_Q15 OpusT_opus_int16
@@ -435,6 +438,8 @@ Signal Processing, pp. 641-644, 1991.
 // C documentation
 //
 //	/* Laroia low complexity NLSF weights */
+//
+//go:nocheckptr
 func Opus_silk_NLSF_VQ_weights_laroia(tls *libc.TLS, pNLSFW_Q_OUT uintptr, pNLSF_Q15 uintptr, D int32) {
 	var k, v1, v2, v3, v5 int32
 	var tmp1_int, tmp2_int OpusT_opus_int32

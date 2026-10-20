@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_VAD_Init(tls *libc.TLS, psSilk_VAD uintptr) (r int32) {
 	var b1, ret, v6 int32
 	var v2, v3, v4 OpusT_opus_int32
@@ -76,6 +77,8 @@ var tiltWeights = [4]OpusT_opus_int32{
 //	/***************************************/
 //	/* Get the speech activity level in Q8 */
 //	/***************************************/
+//
+//go:nocheckptr
 func Opus_silk_VAD_GetSA_Q8_c(tls *libc.TLS, psEncC uintptr, pIn uintptr) (r1 int32) {
 	var HPstateTmp OpusT_opus_int16
 	var NrgToNoiseRatio_Q8 [4]OpusT_opus_int32
@@ -540,6 +543,8 @@ _57:
 //	/**************************/
 //	/* Noise level estimation */
 //	/**************************/
+//
+//go:nocheckptr
 func silk_VAD_GetNoiseLevels(tls *libc.TLS, pX uintptr, psSilk_VAD uintptr) {
 	var coef, k, min_coef, v2, v3, v4, v5 int32
 	var inv_nrg, nl, nrg OpusT_opus_int32
@@ -617,6 +622,8 @@ const silk_uint8_MAX2 = 0xFF
 // C documentation
 //
 //	/* Compute quantization errors for an LPC_order element input vector for a VQ codebook */
+//
+//go:nocheckptr
 func Opus_silk_NLSF_VQ(tls *libc.TLS, err_Q24 uintptr, in_Q15 uintptr, pCB_Q8 uintptr, pWght_Q9 uintptr, K int32, LPC_order int32) {
 	var cb_Q8_ptr, w_Q9_ptr uintptr
 	var diff_Q15, diffw_Q24, pred_Q24, sum_error_Q24 OpusT_opus_int32
@@ -673,6 +680,8 @@ func Opus_silk_NLSF_VQ(tls *libc.TLS, err_Q24 uintptr, in_Q15 uintptr, pCB_Q8 ui
 // C documentation
 //
 //	/* Unpack predictor values and indices for entropy coding tables */
+//
+//go:nocheckptr
 func Opus_silk_NLSF_unpack(tls *libc.TLS, ec_ix uintptr, pred_Q8 uintptr, psNLSF_CB uintptr, CB1_index int32) {
 	var ec_sel_ptr, v2 uintptr
 	var entry OpusT_opus_uint8
@@ -698,6 +707,8 @@ func Opus_silk_NLSF_unpack(tls *libc.TLS, ec_ix uintptr, pred_Q8 uintptr, psNLSF
 // C documentation
 //
 //	/* Delayed-decision quantizer for NLSF residuals */
+//
+//go:nocheckptr
 func Opus_silk_NLSF_del_dec_quant(tls *libc.TLS, indices uintptr, x_Q10 uintptr, w_Q5 uintptr, pred_coef_Q8 uintptr, ec_ix uintptr, ec_rates_Q5 uintptr, quant_step_size_Q16 int32, inv_quant_step_size_Q6 OpusT_opus_int16, mu_Q20 OpusT_opus_int32, order OpusT_opus_int16) (r OpusT_opus_int32) {
 	var RD_Q25 [8]OpusT_opus_int32
 	var RD_max_Q25, RD_min_Q25 [4]OpusT_opus_int32

@@ -12,8 +12,8 @@ import (
     "math"
     // "log"
 
-    "github.com/kazzmir/opus-go/ogg"
-    "github.com/kazzmir/opus-go/opus"
+    "github.com/vAudience/opus-go/ogg"
+    "github.com/vAudience/opus-go/opus"
 )
 
 type DataType interface {

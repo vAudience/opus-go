@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func setupResamplerPseudostack(tls *libc.TLS) {
 	pseudostack := libc.Xmalloc(tls, 16)
 	scratch := libc.Xmalloc(tls, GLOBAL_STACK_SIZE)
@@ -17,6 +18,7 @@ func setupResamplerPseudostack(tls *libc.TLS) {
 	libc.Xpthread_setspecific(tls, 0x6f707573, pseudostack)
 }
 
+//go:nocheckptr
 func TestDownFIRResamplerFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -57,6 +59,7 @@ func TestDownFIRResamplerFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestIIRFIRResamplerFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

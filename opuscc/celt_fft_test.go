@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestMiniFFTAllocUsesFields(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -34,6 +35,7 @@ func TestMiniFFTAllocUsesFields(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestMiniFFTRAllocUsesLocalSubsize(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -58,6 +60,7 @@ func TestMiniFFTRAllocUsesLocalSubsize(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestFFTImplUsesFactorsField(t *testing.T) {
 	state := OpusT_kiss_fft_state{
 		Fnfft:    4,
@@ -87,6 +90,7 @@ func TestFFTImplUsesFactorsField(t *testing.T) {
 
 }
 
+//go:nocheckptr
 func TestRadix3ButterflyUsesTwiddlesField(t *testing.T) {
 	state := struct {
 		OpusT_mini_kiss_fft_state

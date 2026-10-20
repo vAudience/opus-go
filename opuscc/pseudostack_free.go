@@ -1,7 +1,7 @@
 package opuscc
 
 import (
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // Matches the ccgo-only pseudostack storage in celt/stack_alloc.h.
@@ -10,6 +10,8 @@ const opusPseudostackTLSKey libc.Tpthread_key_t = 0x6f707573 // 'opus'
 // FreePseudostackTLS frees the per-decoder pseudostack scratch buffer, if any.
 //
 // Safe to call multiple times. Call before tls.Close().
+//
+//go:nocheckptr
 func FreePseudostackTLS(tls *libc.TLS) {
 	if tls == nil {
 		return

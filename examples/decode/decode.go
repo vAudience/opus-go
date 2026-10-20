@@ -6,7 +6,7 @@ import (
     "fmt"
     "time"
 
-    "github.com/kazzmir/opus-go"
+    "github.com/vAudience/opus-go"
 )
 
 func decode(filename string) error {

@@ -13,6 +13,7 @@ type OpusError struct {
 	Message string
 }
 
+//go:nocheckptr
 func (e *OpusError) Error() string {
 	if e == nil {
 		return "opusccenc: (nil error)"
@@ -23,6 +24,7 @@ func (e *OpusError) Error() string {
 	return fmt.Sprintf("opusccenc: error code %d", e.Code)
 }
 
+//go:nocheckptr
 func opusErrorFromCode(code int32) error {
 	if code == OPUS_OK {
 		return nil

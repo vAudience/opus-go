@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_encode_signs(tls *libc.TLS, psRangeEnc uintptr, pulses uintptr, length int32, signalType int32, quantOffsetType int32, sum_pulses uintptr) {
 	var i, j, p, v2 int32
 	var icdf_ptr, q_ptr uintptr
@@ -54,6 +55,8 @@ func Opus_silk_encode_signs(tls *libc.TLS, psRangeEnc uintptr, pulses uintptr, l
 // C documentation
 //
 //	/* Decodes signs of excitation */
+//
+//go:nocheckptr
 func Opus_silk_decode_signs(tls *libc.TLS, psRangeDec uintptr, pulses uintptr, length int32, signalType int32, quantOffsetType int32, sum_pulses uintptr) {
 	var i, j, p, v2 int32
 	var icdf_ptr, q_ptr, v4 uintptr

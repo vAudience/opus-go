@@ -3,7 +3,7 @@ package opus
 import (
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // cBuf is scratch memory the transpiled libopus code can safely be handed

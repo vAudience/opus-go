@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_decoder_set_fs(tls *libc.TLS, psDec uintptr, fs_kHz int32, fs_API_Hz OpusT_opus_int32) (r int32) {
 	var frame_length, ret int32
 	_, _ = frame_length, ret
@@ -135,6 +136,7 @@ type OpusT_silk_decoder = struct {
 /*********************/
 /* Decoder functions */
 /*********************/
+//go:nocheckptr
 func Opus_silk_LoadOSCEModels(tls *libc.TLS, decState uintptr, data uintptr, len1 int32) (r int32) {
 	_ = decState
 	_ = data
@@ -142,6 +144,7 @@ func Opus_silk_LoadOSCEModels(tls *libc.TLS, decState uintptr, data uintptr, len
 	return SILK_NO_ERROR
 }
 
+//go:nocheckptr
 func Opus_silk_Get_Decoder_Size(tls *libc.TLS, decSizeBytes uintptr) (r int32) {
 	var ret int32
 	_ = ret
@@ -153,6 +156,8 @@ func Opus_silk_Get_Decoder_Size(tls *libc.TLS, decSizeBytes uintptr) (r int32) {
 // C documentation
 //
 //	/* Reset decoder state */
+//
+//go:nocheckptr
 func Opus_silk_ResetDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	var channel_state uintptr
 	var n, ret int32
@@ -173,6 +178,7 @@ func Opus_silk_ResetDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	return ret
 }
 
+//go:nocheckptr
 func Opus_silk_InitDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	var channel_state uintptr
 	var n, ret int32
@@ -198,6 +204,8 @@ func Opus_silk_InitDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 // C documentation
 //
 //	/* Decode a frame */
+//
+//go:nocheckptr
 func Opus_silk_Decode(tls *libc.TLS, decState uintptr, decControl uintptr, lostFlag int32, newPacketFlag int32, psRangeDec uintptr, samplesOut uintptr, nSamplesOut uintptr, arch int32) (r int32) {
 	var FrameIndex, condCoding, condCoding1, fs_kHz_dec, has_side, i, n, ret, stereo_to_mono, v51 int32
 	var LBRR_symbol OpusT_opus_int32

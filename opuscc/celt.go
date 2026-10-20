@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
@@ -73,6 +73,7 @@ type OpusT_cookie_io_functions_t = struct {
 
 type _IO_cookie_io_functions_t = OpusT_cookie_io_functions_t
 
+//go:nocheckptr
 func Opus_celt_fatal(tls *libc.TLS, str uintptr, file uintptr, line int32) {
 	// Format directly: the fprintf shim ignores varargs. Go strings also avoid
 	// passing stack-backed va_list storage through uintptr-taking callees.
@@ -122,6 +123,7 @@ var log2_y_norm_coeff3 = [8]float32{
 	7: float32(0.9068905711174011),
 }
 
+//go:nocheckptr
 func Opus_resampling_factor(tls *libc.TLS, rate OpusT_opus_int32) (r int32) {
 	var ret int32
 	_ = ret
@@ -149,6 +151,8 @@ func Opus_resampling_factor(tls *libc.TLS, rate OpusT_opus_int32) (r int32) {
 // C documentation
 //
 //	/* This version should be faster on ARM */
+//
+//go:nocheckptr
 func comb_filter_const_c(tls *libc.TLS, y uintptr, x uintptr, T int32, N int32, g10 OpusT_celt_coef, g11 OpusT_celt_coef, g12 OpusT_celt_coef) {
 	var i int32
 	var x0, x1, x2, x3, x4 OpusT_opus_val32
@@ -173,6 +177,7 @@ func comb_filter_const_c(tls *libc.TLS, y uintptr, x uintptr, T int32, N int32, 
 	}
 }
 
+//go:nocheckptr
 func Opus_comb_filter(tls *libc.TLS, y uintptr, x uintptr, T0 int32, T1 int32, N int32, g0 OpusT_opus_val16, g1 OpusT_opus_val16, tapset0 int32, tapset1 int32, window uintptr, overlap int32, arch int32) {
 	var f, g00, g01, g02, g10, g11, g12 OpusT_celt_coef
 	var i, v1 int32
@@ -256,6 +261,7 @@ var gains = [3][3]OpusT_opus_val16{
 	},
 }
 
+//go:nocheckptr
 func Opus_init_caps(tls *libc.TLS, m uintptr, cap1 uintptr, LM int32, C int32) {
 	var N, i int32
 	_, _ = N, i
@@ -270,6 +276,7 @@ func Opus_init_caps(tls *libc.TLS, m uintptr, cap1 uintptr, LM int32, C int32) {
 	}
 }
 
+//go:nocheckptr
 func Opus_opus_strerror(error1 int32) string {
 	if error1 > 0 || error1 < -int32(7) {
 		return opus_unknown_error_string
@@ -277,6 +284,7 @@ func Opus_opus_strerror(error1 int32) string {
 	return error_strings[-error1]
 }
 
+//go:nocheckptr
 func __ccgo_cstring(s string, start int) string {
 	for i := start; i < len(s); i++ {
 		if s[i] == 0 {
@@ -299,6 +307,7 @@ var error_strings = []string{
 	__ccgo_cstring(__ccgo_ts1, 3252),
 }
 
+//go:nocheckptr
 func Opus_opus_get_version_string(tls *libc.TLS) (r uintptr) {
 	return __ccgo_ts + 3291
 }

@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_PLC_Reset(tls *libc.TLS, psDec uintptr) {
 	decoder := (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec))
 	plc := &decoder.FsPLC
@@ -22,6 +23,7 @@ func Opus_silk_PLC_Reset(tls *libc.TLS, psDec uintptr) {
 	plc.Fnb_subfr = 2
 }
 
+//go:nocheckptr
 func Opus_silk_PLC(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, lost int32, arch int32) {
 	/* PLC control function */
 	if (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).Ffs_kHz != (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).FsPLC.Ffs_kHz {
@@ -47,6 +49,8 @@ func Opus_silk_PLC(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintpt
 //	/**************************************************/
 //	/* Update state of PLC                            */
 //	/**************************************************/
+//
+//go:nocheckptr
 func silk_PLC_update(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr) {
 	var LTP_Gain_Q14, temp_LTP_Gain_Q14, tmp, tmp1 OpusT_opus_int32
 	var i, j, scale_Q10, scale_Q14, v3 int32
@@ -134,6 +138,7 @@ func silk_PLC_update(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr) {
 	plc.Fnb_subfr = decoder.Fnb_subfr
 }
 
+//go:nocheckptr
 func silk_PLC_energy(tls *libc.TLS, energy1 uintptr, shift1 uintptr, energy2 uintptr, shift2 uintptr, exc_Q14 uintptr, prevGain_Q10 uintptr, subfr_length int32, nb_subfr int32) {
 	var _saved_stack, exc_buf, exc_buf_ptr, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var i, k, v31, v32 int32
@@ -260,6 +265,7 @@ func silk_PLC_energy(tls *libc.TLS, energy1 uintptr, shift1 uintptr, energy2 uin
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func silk_PLC_conceal(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, arch int32) {
 	var B_Q14, _saved_stack, pred_lag_ptr, psPLC, rand_ptr, sLPC_Q14_ptr, sLTP, sLTP_Q14, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var LPC_pred_Q10, LTP_pred_Q12, b32_inv, b32_nrm, down_scale_Q30, err_Q32, harm_Gain_Q15, invGain_Q30, inv_gain_Q30, rand_Gain_Q15, rand_seed, result, v84, v85, v86, v89 OpusT_opus_int32
@@ -850,6 +856,8 @@ _102:
 // C documentation
 //
 //	/* Glues concealed frames with new good received frames */
+//
+//go:nocheckptr
 func Opus_silk_PLC_glue_frames(tls *libc.TLS, psDec uintptr, frame uintptr, length int32) {
 	var LZ, energy, frac_Q24, frac_Q7, gain_Q16, lz, lzeros, slope_Q16, y, v1, v11, v12, v2, v5, v6, v7 OpusT_opus_int32
 	var energy_shift int32

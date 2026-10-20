@@ -1,4 +1,31 @@
-# opusgo
+# opusgo (vAudience fork)
+
+> **Fork notes.** `github.com/vAudience/opus-go` is a fork of
+> [kazzmir/opus-go](https://github.com/kazzmir/opus-go) at `v1.6.0`, kept for its
+> **encoder**, which go-vaicap uses to compress TTS audio. It differs from upstream in
+> one place, the C-runtime shim (`libcshim`):
+>
+> - **The pseudo-stack never moves.** Upstream grows `TLS.Alloc`'s stack by copying it
+>   into a larger slice, which leaves every outstanding `uintptr` into the old one
+>   pointing at memory nothing keeps alive (a use-after-free). Here it is a fixed 1 MiB
+>   reservation, and running out of it panics instead of moving.
+> - **C memory lives outside the Go heap.** On Linux, macOS and the BSDs, `Xmalloc` and
+>   the stack come from anonymous `mmap` regions (other platforms fall back to Go
+>   memory). The collector never scans, moves or frees them, so a `uintptr` into them is
+>   an ordinary address. `TLS.Close` releases them, with a finalizer as a backstop.
+> - **The transpiled packages and the shim are marked `//go:nocheckptr`.** They take
+>   addresses into package-level tables by design, which checkptr (enabled by `-race`)
+>   rejects even though the data segment never moves. Data-race detection stays on, and
+>   so does checkptr for the hand-written wrappers.
+> - ⚠ **The decoder (`opuscc`) is not held to the encoder's bar.** It passes
+>   `uintptr(unsafe.Pointer(&local))` into deep call chains. When the goroutine stack
+>   moves mid-call, the callee reads the abandoned copy, and two decoder tests return
+>   wrong values under `-race` for exactly that reason (they are skipped there, with the
+>   reason). `internal/unsafeaudit` finds the pattern, and a guard test holds `opusccenc`
+>   at zero. **Use the decoder in production only after that is fixed.**
+>
+> `go test -race ./...` is green.
+
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/kazzmir/opus-go.svg)](https://pkg.go.dev/github.com/kazzmir/opus-go)
 

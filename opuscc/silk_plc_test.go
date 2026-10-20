@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestPLCResetFieldAccesses(t *testing.T) {
 	dec := OpusT_silk_decoder_state{Fframe_length: 319, FsPLC: OpusT_silk_PLC_struct{FpitchL_Q8: -111, FprevGain_Q16: [2]OpusT_opus_int32{222222, -333333}, Fsubfr_length: 47, Fnb_subfr: 4, Ffs_kHz: 16}}
 	Opus_silk_PLC_Reset(nil, uintptr(unsafe.Pointer(&dec)))
@@ -27,6 +28,7 @@ func TestPLCResetFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestPLCConcealFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -52,6 +54,7 @@ func TestPLCConcealFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func equalInt16s(got, want []int16) bool {
 	if len(got) != len(want) {
 		return false
@@ -64,6 +67,7 @@ func equalInt16s(got, want []int16) bool {
 	return true
 }
 
+//go:nocheckptr
 func fnv1aInt16s(v []int16) uint32 {
 	h := uint32(2166136261)
 	for _, x := range v {
@@ -87,6 +91,7 @@ type plcCallState struct {
 	sLPC_Q14_buf [16]int32
 }
 
+//go:nocheckptr
 func plcConcealState(dec *OpusT_silk_decoder_state, ctrl *OpusT_silk_decoder_control) plcCallState {
 	return plcCallState{
 		lossCnt:      dec.FlossCnt,
@@ -105,6 +110,8 @@ func plcConcealState(dec *OpusT_silk_decoder_state, ctrl *OpusT_silk_decoder_con
 // first lost frame and a follow-up concealment). Covers the voiced and
 // unvoiced first-frame paths, attenuation tables, pitch drift and state
 // carry-over between concealed frames.
+//
+//go:nocheckptr
 func TestPLCConcealCReference(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

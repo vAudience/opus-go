@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestDecodeIndicesFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -33,6 +34,7 @@ func TestDecodeIndicesFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func equalInt8s(got, want []int8) bool {
 	if len(got) != len(want) {
 		return false

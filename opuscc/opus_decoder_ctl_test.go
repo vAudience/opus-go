@@ -7,9 +7,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestOpusDecoderCtlCReference(t *testing.T) {
 	// Replay the C-generated transcript; generator and build command are in testdata.
 	f, err := os.Open("testdata/decoder_ctl_ref.txt")

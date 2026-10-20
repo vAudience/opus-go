@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_opus_custom_mode_create(tls *libc.TLS, Fs OpusT_opus_int32, frame_size int32) (uintptr, error) {
 	var i, j int32
 	_, _ = i, j
@@ -138,6 +139,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */
 
+//go:nocheckptr
 func exp_rotation1(tls *libc.TLS, X uintptr, len1 int32, stride int32, c OpusT_opus_val16, s OpusT_opus_val16) {
 	var Xptr, v2 uintptr
 	var i int32
@@ -175,6 +177,7 @@ func exp_rotation1(tls *libc.TLS, X uintptr, len1 int32, stride int32, c OpusT_o
 	}
 }
 
+//go:nocheckptr
 func Opus_exp_rotation(tls *libc.TLS, X uintptr, len1 int32, dir int32, stride int32, K int32, spread int32) {
 	var c, gain, s, theta OpusT_opus_val16
 	var factor, i, stride2 int32
@@ -232,6 +235,8 @@ var SPREAD_FACTOR = [3]int32{
 // C documentation
 //
 //	/** Normalizes the decoded integer pvq codeword to unit norm. */
+//
+//go:nocheckptr
 func normalise_residual(tls *libc.TLS, iy uintptr, X uintptr, N int32, Ryy OpusT_opus_val32, gain OpusT_opus_val32, shift int32) {
 	var g, t OpusT_opus_val32
 	var i, v1 int32
@@ -250,6 +255,7 @@ func normalise_residual(tls *libc.TLS, iy uintptr, X uintptr, N int32, Ryy OpusT
 	}
 }
 
+//go:nocheckptr
 func extract_collapse_mask(tls *libc.TLS, iy uintptr, N int32, B int32) (r uint32) {
 	var N0, i, j, v4 int32
 	var collapse_mask, tmp uint32
@@ -287,6 +293,7 @@ func extract_collapse_mask(tls *libc.TLS, iy uintptr, N int32, B int32) (r uint3
 	return collapse_mask
 }
 
+//go:nocheckptr
 func Opus_op_pvq_search_c(tls *libc.TLS, X uintptr, iy uintptr, K int32, N int32, arch int32) (r OpusT_opus_val16) {
 	var Rxy, Ryy, best_den, rcp, tmp, yy, v55 OpusT_opus_val16
 	var _saved_stack, signx, st, y, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -594,6 +601,7 @@ func Opus_op_pvq_search_c(tls *libc.TLS, X uintptr, iy uintptr, K int32, N int32
 	return yy
 }
 
+//go:nocheckptr
 func Opus_alg_quant(tls *libc.TLS, X uintptr, N int32, K int32, spread int32, B int32, enc uintptr, gain OpusT_opus_val32, resynth int32, arch int32) (r uint32) {
 	var _saved_stack, iy, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var collapse_mask uint32
@@ -711,6 +719,8 @@ func Opus_alg_quant(tls *libc.TLS, X uintptr, N int32, K int32, spread int32, B 
 //
 //	/** Decode pulse vector and combine the result with the pitch vector to produce
 //	    the final normalised signal in the current band. */
+//
+//go:nocheckptr
 func Opus_alg_unquant(tls *libc.TLS, X uintptr, N int32, K int32, spread int32, B int32, dec uintptr, gain OpusT_opus_val32) (r uint32) {
 	var Ryy OpusT_opus_val32
 	var _saved_stack, iy, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -819,6 +829,7 @@ func Opus_alg_unquant(tls *libc.TLS, X uintptr, N int32, K int32, spread int32, 
 	return collapse_mask
 }
 
+//go:nocheckptr
 func Opus_renormalise_vector(tls *libc.TLS, X uintptr, N1 int32, gain OpusT_opus_val32, arch int32) {
 	var E, t, xy, v2 OpusT_opus_val32
 	var g OpusT_opus_val16
@@ -852,6 +863,7 @@ func Opus_renormalise_vector(tls *libc.TLS, X uintptr, N1 int32, gain OpusT_opus
 	/*return celt_sqrt(E);*/
 }
 
+//go:nocheckptr
 func Opus_stereo_itheta(tls *libc.TLS, X uintptr, Y uintptr, stereo int32, N1 int32, arch int32) (r OpusT_opus_int32) {
 	var Emid, Eside, mid, side, xy, v1 OpusT_opus_val32
 	var i, i1, itheta int32
@@ -998,6 +1010,7 @@ var LOG2_FRAC_TABLE = [24]uint8{
 	23: uint8(37),
 }
 
+//go:nocheckptr
 func interp_bits2pulses(tls *libc.TLS, m uintptr, start int32, end int32, skip_start int32, bits1 uintptr, bits2 uintptr, thresh uintptr, cap1 uintptr, total OpusT_opus_int32, _balance uintptr, skip_rsv int32, intensity uintptr, intensity_rsv int32, dual_stereo uintptr, dual_stereo_rsv int32, bits uintptr, ebits uintptr, fine_priority uintptr, C int32, LM int32, ec uintptr, encode int32, prev int32, signalBandwidth int32) (r int32) {
 	var N, N0, NClogN, alloc_floor, band_bits, band_width, codedBands, den, depth_threshold, done, extra_bits, extra_fine, hi, i, j, lo, logM, mid, offset, rem, stereo, tmp, tmp1, tmp2, v7, v8 int32
 	var _saved_stack, st, v1, v3 uintptr
@@ -1378,6 +1391,7 @@ func interp_bits2pulses(tls *libc.TLS, m uintptr, start int32, end int32, skip_s
 // stack, making decoded PCM depend on the caller's stack depth.
 //
 //go:uintptrescapes
+//go:nocheckptr
 func Opus_clt_compute_allocation(tls *libc.TLS, m uintptr, start int32, end int32, offsets uintptr, cap1 uintptr, alloc_trim int32, intensity uintptr, dual_stereo uintptr, total OpusT_opus_int32, balance uintptr, pulses uintptr, ebits uintptr, fine_priority uintptr, C int32, LM int32, ec uintptr, encode int32, prev int32, signalBandwidth int32) (r int32) {
 	var N, N1, bits1j, bits2j, bitsj, codedBands, done, dual_stereo_rsv, hi, intensity_rsv, j, len1, lo, mid, psum, skip_rsv, skip_start, v5 int32
 	var _saved_stack, bits1, bits2, st, thresh, trim_offset, v1, v11, v13, v15, v17, v19, v21, v23, v25, v27, v3, v9 uintptr
@@ -1862,6 +1876,8 @@ func Opus_clt_compute_allocation(tls *libc.TLS, m uintptr, start int32, end int3
 //	/* This is a faster version of ec_tell_frac() that takes advantage
 //	   of the low (1/8 bit) resolution to use just a linear function
 //	   followed by a lookup to determine the exact transition thresholds. */
+//
+//go:nocheckptr
 func Opus_ec_tell_frac(tls *libc.TLS, _this uintptr) (r1 OpusT_opus_uint32) {
 	var b uint32
 	var l int32
@@ -1934,6 +1950,7 @@ var log2_y_norm_coeff14 = [8]float32{
 	7: float32(0.9068905711174011),
 }
 
+//go:nocheckptr
 func Opus_hysteresis_decision(tls *libc.TLS, val OpusT_opus_val16, thresholds uintptr, hysteresis uintptr, N int32, prev int32) (r int32) {
 	var i int32
 	_ = i
@@ -1956,6 +1973,7 @@ func Opus_hysteresis_decision(tls *libc.TLS, val OpusT_opus_val16, thresholds ui
 	return i
 }
 
+//go:nocheckptr
 func Opus_celt_lcg_rand(tls *libc.TLS, seed OpusT_opus_uint32) (r OpusT_opus_uint32) {
 	return uint32(1664525)*seed + uint32(1013904223)
 }
@@ -1964,6 +1982,8 @@ func Opus_celt_lcg_rand(tls *libc.TLS, seed OpusT_opus_uint32) (r OpusT_opus_uin
 //
 //	/* This is a cos() approximation designed to be bit-exact on any platform. Bit exactness
 //	   with this approximation is important because it has an impact on the bit allocation */
+//
+//go:nocheckptr
 func Opus_bitexact_cos(tls *libc.TLS, x OpusT_opus_int16) (r OpusT_opus_int16) {
 	var tmp OpusT_opus_int32
 	var x2 OpusT_opus_int16
@@ -1976,6 +1996,7 @@ func Opus_bitexact_cos(tls *libc.TLS, x OpusT_opus_int16) (r OpusT_opus_int16) {
 	return int16(int32(1) + int32(x2))
 }
 
+//go:nocheckptr
 func Opus_bitexact_log2tan(tls *libc.TLS, isin int32, icos int32) (r int32) {
 	var lc, ls int32
 	_, _ = lc, ls
@@ -1989,6 +2010,8 @@ func Opus_bitexact_log2tan(tls *libc.TLS, isin int32, icos int32) (r int32) {
 // C documentation
 //
 //	/* Compute the amplitude (sqrt energy) in each of the bands */
+//
+//go:nocheckptr
 func Opus_compute_band_energies(tls *libc.TLS, m uintptr, X uintptr, bandE uintptr, end int32, C int32, LM int32, arch int32) {
 	var N1, c, i, i1, v1 int32
 	var eBands uintptr
@@ -2031,6 +2054,8 @@ func Opus_compute_band_energies(tls *libc.TLS, m uintptr, X uintptr, bandE uintp
 // C documentation
 //
 //	/* Normalise each band such that the energy is one. */
+//
+//go:nocheckptr
 func Opus_normalise_bands(tls *libc.TLS, m uintptr, freq uintptr, X uintptr, bandE uintptr, end int32, C int32, M int32) {
 	var N, c, i, j, v1 int32
 	var eBands uintptr
@@ -2067,6 +2092,8 @@ func Opus_normalise_bands(tls *libc.TLS, m uintptr, freq uintptr, X uintptr, ban
 // C documentation
 //
 //	/* De-normalise the energy to produce the synthesis from the unit-energy bands */
+//
+//go:nocheckptr
 func Opus_denormalise_bands(tls *libc.TLS, m uintptr, X uintptr, freq uintptr, bandLogE uintptr, start int32, end int32, M int32, downsample int32, silence int32) {
 	var N, band_end, bound, i, j, v1 int32
 	var eBands, f, x1, v4 uintptr
@@ -2156,6 +2183,8 @@ func Opus_denormalise_bands(tls *libc.TLS, m uintptr, X uintptr, freq uintptr, b
 // C documentation
 //
 //	/* This prevents energy collapse for transients with multiple short MDCTs */
+//
+//go:nocheckptr
 func Opus_anti_collapse(tls *libc.TLS, m uintptr, X_ uintptr, collapse_masks uintptr, LM int32, C int32, size int32, start int32, end int32, logE uintptr, prev1logE uintptr, prev2logE uintptr, pulses uintptr, seed OpusT_opus_uint32, encode int32, arch int32) {
 	var Ediff, v13 OpusT_opus_val32
 	var N0, c, depth, i, j, k, renormalize, v8 int32
@@ -2297,6 +2326,8 @@ func Opus_anti_collapse(tls *libc.TLS, m uintptr, X_ uintptr, collapse_masks uin
 //	   corresponds to some quick-and-dirty perceptual experiments I ran to
 //	   measure inter-aural masking (there doesn't seem to be any published data
 //	   on the topic). */
+//
+//go:nocheckptr
 func compute_channel_weights(tls *libc.TLS, Ex OpusT_celt_ener, Ey OpusT_celt_ener, w uintptr) {
 	var minE, v1 OpusT_celt_ener
 	_, _ = minE, v1
@@ -2313,6 +2344,7 @@ func compute_channel_weights(tls *libc.TLS, Ex OpusT_celt_ener, Ey OpusT_celt_en
 	*(*OpusT_opus_val16)(unsafe.Pointer(w + 1*4)) = Ey
 }
 
+//go:nocheckptr
 func intensity_stereo(tls *libc.TLS, m uintptr, X uintptr, Y uintptr, bandE uintptr, bandID int32, N int32) {
 	var a1, a2, left, norm, right OpusT_opus_val16
 	var i, j int32
@@ -2334,6 +2366,7 @@ func intensity_stereo(tls *libc.TLS, m uintptr, X uintptr, Y uintptr, bandE uint
 	}
 }
 
+//go:nocheckptr
 func stereo_split(tls *libc.TLS, X uintptr, Y uintptr, N int32) {
 	var j int32
 	var l, r OpusT_opus_val32
@@ -2351,6 +2384,7 @@ func stereo_split(tls *libc.TLS, X uintptr, Y uintptr, N int32) {
 	}
 }
 
+//go:nocheckptr
 func stereo_merge(tls *libc.TLS, X uintptr, Y uintptr, mid OpusT_opus_val32, N1 int32, arch int32) {
 	var El, Er, lgain, rgain, side, t, xp, xy, v2 OpusT_opus_val32
 	var i, j int32
@@ -2413,6 +2447,8 @@ func stereo_merge(tls *libc.TLS, X uintptr, Y uintptr, mid OpusT_opus_val32, N1 
 // C documentation
 //
 //	/* Decide whether we should spread the pulses in the current frame */
+//
+//go:nocheckptr
 func Opus_spreading_decision(tls *libc.TLS, m uintptr, X uintptr, average uintptr, last_decision int32, hf_average uintptr, tapset_decision uintptr, update_hf int32, end int32, C int32, M int32, spread_weight uintptr) (r int32) {
 	var N, N0, c, decision, hf_sum, i, j, nbBands, sum, tmp, v1 int32
 	var eBands, x uintptr
@@ -2576,6 +2612,7 @@ var ordery_table = [30]int32{
 	29: int32(5),
 }
 
+//go:nocheckptr
 func deinterleave_hadamard(tls *libc.TLS, X uintptr, N0 int32, stride int32, hadamard int32) {
 	var N, i, j int32
 	var _saved_stack, ordery, st, tmp, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -2709,6 +2746,7 @@ func deinterleave_hadamard(tls *libc.TLS, X uintptr, N0 int32, stride int32, had
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func interleave_hadamard(tls *libc.TLS, X uintptr, N0 int32, stride int32, hadamard int32) {
 	var N, i, j int32
 	var _saved_stack, ordery, st, tmp, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -2839,6 +2877,7 @@ func interleave_hadamard(tls *libc.TLS, X uintptr, N0 int32, stride int32, hadam
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_haar1(tls *libc.TLS, X uintptr, N0 int32, stride int32) {
 	var i, j int32
 	var tmp1, tmp2 OpusT_opus_val32
@@ -2864,6 +2903,7 @@ func Opus_haar1(tls *libc.TLS, X uintptr, N0 int32, stride int32) {
 	}
 }
 
+//go:nocheckptr
 func compute_qn(tls *libc.TLS, N int32, b int32, offset int32, pulse_cap int32, stereo int32) (r int32) {
 	var N2, qb, qn, v4 int32
 	var v1, v2 OpusT_opus_int32
@@ -2945,6 +2985,7 @@ type split_ctx = struct {
 // remain at stable addresses while nested entropy calls can grow the stack.
 //
 //go:uintptrescapes
+//go:nocheckptr
 func compute_theta(tls *libc.TLS, ctx uintptr, sctx uintptr, X uintptr, Y uintptr, N int32, b uintptr, B int32, B0 int32, LM int32, stereo int32, fill uintptr) {
 	var bandE, ec, m uintptr
 	var bias, delta, down, encode, fl, fl1, fm, fs, fs1, ft, ft1, i, imid, intensity, inv, iside, itheta, itheta_q30, j, offset, p0, pulse_cap, qalloc, qn, unquantized, x, x0, v1, v5, v6, v7 int32
@@ -3195,6 +3236,7 @@ func compute_theta(tls *libc.TLS, ctx uintptr, sctx uintptr, X uintptr, Y uintpt
 	(*split_ctx)(unsafe.Pointer(sctx)).Fqalloc = qalloc
 }
 
+//go:nocheckptr
 func quant_band_n1(tls *libc.TLS, ctx uintptr, X uintptr, Y uintptr, lowband_out uintptr) (r uint32) {
 	var c, encode, sign, stereo, v1 int32
 	var ec, x uintptr
@@ -3244,6 +3286,8 @@ func quant_band_n1(tls *libc.TLS, ctx uintptr, X uintptr, Y uintptr, lowband_out
 //	   It can split the band in two and transmit the energy difference with
 //	   the two half-bands. It can be called recursively so bands can end up being
 //	   split in 8 parts. */
+//
+//go:nocheckptr
 func quant_partition(tls *libc.TLS, ctx *band_ctx, X uintptr, N int32, _b int32, B int32, lowband uintptr, LM2 int32, gain OpusT_opus_val32, _fill int32) (r uint32) {
 	b := _b
 	fill := _fill
@@ -3474,6 +3518,8 @@ func quant_partition(tls *libc.TLS, ctx *band_ctx, X uintptr, N int32, _b int32,
 // C documentation
 //
 //	/* This function is responsible for encoding and decoding a band for the mono case. */
+//
+//go:nocheckptr
 func quant_band(tls *libc.TLS, ctx uintptr, X uintptr, N int32, b int32, B int32, lowband uintptr, LM int32, lowband_out uintptr, gain OpusT_opus_val32, lowband_scratch uintptr, fill int32) (r uint32) {
 	var B0, N0, N_B, N_B0, encode, j, k, longBlocks, recombine, tf_change, time_divide int32
 	var cm uint32
@@ -3633,6 +3679,8 @@ var bit_deinterleave_table = [16]uint8{
 // C documentation
 //
 //	/* This function is responsible for encoding and decoding a band for the stereo case. */
+//
+//go:nocheckptr
 func quant_band_stereo(tls *libc.TLS, ctx uintptr, X uintptr, Y uintptr, N int32, _b int32, B int32, lowband uintptr, LM int32, lowband_out uintptr, lowband_scratch uintptr, _fill int32) (r uint32) {
 	b := _b
 	fill := _fill
@@ -3795,6 +3843,7 @@ func quant_band_stereo(tls *libc.TLS, ctx uintptr, X uintptr, Y uintptr, N int32
 	return cm
 }
 
+//go:nocheckptr
 func special_hybrid_folding(tls *libc.TLS, m uintptr, norm uintptr, norm2 uintptr, start int32, M int32, dual_stereo int32) {
 	var eBands uintptr
 	var n1, n2 int32
@@ -3810,6 +3859,7 @@ func special_hybrid_folding(tls *libc.TLS, m uintptr, norm uintptr, norm2 uintpt
 	}
 }
 
+//go:nocheckptr
 func Opus_quant_all_bands(tls *libc.TLS, encode int32, m uintptr, start int32, end int32, X_ uintptr, Y_ uintptr, collapse_masks uintptr, bandE uintptr, pulses uintptr, shortBlocks int32, spread int32, dual_stereo int32, intensity int32, tf_res uintptr, total_bits OpusT_opus_int32, balance OpusT_opus_int32, ec uintptr, LM int32, codedBands int32, seed uintptr, complexity int32, arch int32, disable_inv int32) {
 	/* ctx and w keep the transpiled uintptr calling convention into
 	   quant_band/quant_band_stereo/compute_channel_weights, so they are

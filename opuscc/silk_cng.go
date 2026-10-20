@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
@@ -15,6 +15,8 @@ var _ unsafe.Pointer
 // C documentation
 //
 //	/* Generates excitation for CNG LPC synthesis */
+//
+//go:nocheckptr
 func silk_CNG_exc(tls *libc.TLS, exc_Q14 uintptr, exc_buf_Q14 uintptr, length int32, rand_seed uintptr) {
 	var exc_mask, i, idx int32
 	var seed OpusT_opus_int32
@@ -39,6 +41,7 @@ func silk_CNG_exc(tls *libc.TLS, exc_Q14 uintptr, exc_buf_Q14 uintptr, length in
 	*(*OpusT_opus_int32)(unsafe.Pointer(rand_seed)) = seed
 }
 
+//go:nocheckptr
 func Opus_silk_CNG_Reset(tls *libc.TLS, psDec uintptr) {
 	var NLSF_acc_Q15, NLSF_step_Q15, i int32
 	_, _, _ = NLSF_acc_Q15, NLSF_step_Q15, i
@@ -62,6 +65,8 @@ func Opus_silk_CNG_Reset(tls *libc.TLS, psDec uintptr) {
 // C documentation
 //
 //	/* Updates CNG estimate, and applies the CNG when packet was lost   */
+//
+//go:nocheckptr
 func Opus_silk_CNG(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, length int32) {
 	var CNG_sig_Q14, _saved_stack, st, v1, v11, v13, v15, v17, v19, v21, v23, v25, v3, v6, v9 uintptr
 	var LPC_pred_Q10, gain_Q10, gain_Q16, lzeros, max_Gain_Q16, y, v33, v34, v36, v37, v38, v41, v43 OpusT_opus_int32

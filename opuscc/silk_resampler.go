@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_resampler_init(tls *libc.TLS, S uintptr, Fs_Hz_in OpusT_opus_int32, Fs_Hz_out OpusT_opus_int32, forEnc int32) (r int32) {
 	var up2x, v1, v2 int32
 	_, _, _ = up2x, v1, v2
@@ -134,6 +135,8 @@ func Opus_silk_resampler_init(tls *libc.TLS, S uintptr, Fs_Hz_in OpusT_opus_int3
 //
 //	/* Resampler: convert from one sampling rate to another */
 //	/* Input and output sampling rate are at most 48000 Hz  */
+//
+//go:nocheckptr
 func Opus_silk_resampler(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) (r int32) {
 	var nSamples int32
 	_ = nSamples
@@ -186,6 +189,8 @@ var silk_resampler_up2_hq_11 = [3]OpusT_opus_int16{
 // C documentation
 //
 //	/* Downsample by a factor 2/3, low quality */
+//
+//go:nocheckptr
 func Opus_silk_resampler_down2_3(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var _saved_stack, buf, buf_ptr, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var counter, nSamplesIn, res_Q6 OpusT_opus_int32
@@ -364,6 +369,8 @@ var silk_resampler_up2_hq_12 = [3]OpusT_opus_int16{
 // C documentation
 //
 //	/* Downsample by a factor 2 */
+//
+//go:nocheckptr
 func Opus_silk_resampler_down2(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var X, Y, in32, k, len2, out32 OpusT_opus_int32
 	var v2, v3 int32
@@ -430,6 +437,8 @@ var silk_resampler_up2_hq_13 = [3]OpusT_opus_int16{
 // C documentation
 //
 //	/* Second order AR filter with single delay elements */
+//
+//go:nocheckptr
 func Opus_silk_resampler_private_AR2(tls *libc.TLS, S uintptr, out_Q8 uintptr, in uintptr, A_Q14 uintptr, len1 OpusT_opus_int32) {
 	var k, out32 OpusT_opus_int32
 	_, _ = k, out32
@@ -462,6 +471,7 @@ var silk_resampler_up2_hq_14 = [3]OpusT_opus_int16{
 	2: int16(int32(55542) - int32(65536)),
 }
 
+//go:nocheckptr
 func silk_resampler_private_down_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uintptr, FIR_Coefs uintptr, FIR_Order int32, FIR_Fracs int32, max_index_Q16 OpusT_opus_int32, index_increment_Q16 OpusT_opus_int32) (r uintptr) {
 	var buf_ptr, interpol_ptr, v9 uintptr
 	var index_Q16, interpol_ind, res_Q6 OpusT_opus_int32
@@ -626,6 +636,8 @@ _5:
 // C documentation
 //
 //	/* Resample with a 2nd order AR filter followed by FIR interpolation */
+//
+//go:nocheckptr
 func Opus_silk_resampler_private_down_FIR(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var FIR_Coefs, _saved_stack, buf, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var index_increment_Q16, max_index_Q16, nSamplesIn OpusT_opus_int32
@@ -763,6 +775,7 @@ var silk_resampler_up2_hq_15 = [3]OpusT_opus_int16{
 	2: int16(int32(55542) - int32(65536)),
 }
 
+//go:nocheckptr
 func silk_resampler_private_IIR_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uintptr, max_index_Q16 OpusT_opus_int32, index_increment_Q16 OpusT_opus_int32) (r uintptr) {
 	var buf_ptr, v2 uintptr
 	var index_Q16, res_Q15, table_index OpusT_opus_int32
@@ -805,6 +818,8 @@ func silk_resampler_private_IIR_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uin
 // C documentation
 //
 //	/* Upsample using a combination of allpass-based 2x upsampling and FIR interpolation */
+//
+//go:nocheckptr
 func Opus_silk_resampler_private_IIR_FIR(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var _saved_stack, buf, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var index_increment_Q16, max_index_Q16, nSamplesIn OpusT_opus_int32
@@ -945,6 +960,8 @@ var silk_resampler_up2_hq_16 = [3]OpusT_opus_int16{
 //	/* Upsample by a factor 2, high quality */
 //	/* Uses 2nd order allpass filters for the 2x upsampling, followed by a      */
 //	/* notch filter just above Nyquist.                                         */
+//
+//go:nocheckptr
 func Opus_silk_resampler_private_up2_HQ(tls *libc.TLS, S uintptr, out uintptr, in uintptr, len1 OpusT_opus_int32) {
 	var X, Y, in32, k, out32_1, out32_2 OpusT_opus_int32
 	var v2, v3 int32
@@ -1021,6 +1038,7 @@ func Opus_silk_resampler_private_up2_HQ(tls *libc.TLS, S uintptr, out uintptr, i
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_resampler_private_up2_HQ_wrapper(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, len1 OpusT_opus_int32) {
 	var S uintptr
 	_ = S
@@ -1137,6 +1155,7 @@ var sigm_LUT_neg_Q15 = [6]OpusT_opus_int32{
 	5: int32(219),
 }
 
+//go:nocheckptr
 func Opus_silk_sigm_Q15(tls *libc.TLS, in_Q5 int32) (r int32) {
 	var ind int32
 	_ = ind
@@ -1221,6 +1240,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */
 
+//go:nocheckptr
 func Opus_silk_insertion_sort_increasing(tls *libc.TLS, a uintptr, idx uintptr, L int32, K int32) {
 	var i, j int32
 	var value OpusT_opus_int32
@@ -1289,6 +1309,7 @@ func Opus_silk_insertion_sort_increasing(tls *libc.TLS, a uintptr, idx uintptr, 
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_insertion_sort_increasing_all_values_int16(tls *libc.TLS, a uintptr, L int32) {
 	var i, j, value int32
 	_, _, _ = i, j, value
@@ -1378,6 +1399,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Compute number of bits to right shift the sum of squares of a vector */
 //	/* of int16s to make it fit in an int32                                 */
+//
+//go:nocheckptr
 func Opus_silk_sum_sqr_shift(tls *libc.TLS, energy uintptr, shift uintptr, x uintptr, len1 int32) {
 	var i, shft, v4, v9 int32
 	var nrg, v1, v10, v2, v6, v7 OpusT_opus_int32

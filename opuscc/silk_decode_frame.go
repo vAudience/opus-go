@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_decode_frame(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, pOut uintptr, pN uintptr, lostFlag int32, condCoding int32, arch int32) (r int32) {
 	var L, mv_len, ret int32
 	var _saved_stack, psDecCtrl, pulses, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -247,6 +248,8 @@ func Opus_silk_decode_frame(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, pO
 // C documentation
 //
 //	/* Decode parameters from payload */
+//
+//go:nocheckptr
 func Opus_silk_decode_parameters(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, condCoding int32) {
 	var Ix, i, k int32
 	var cbk_ptr_Q7 uintptr
@@ -330,6 +333,8 @@ func Opus_silk_decode_parameters(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr
 // C documentation
 //
 //	/* Decode side-information parameters from payload */
+//
+//go:nocheckptr
 func Opus_silk_decode_indices(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, FrameIndex int32, decode_LBRR int32, condCoding int32) {
 	var Ix, decode_absolute_lagIndex, delta_lagIndex, i, k int32
 	var v1 uintptr
@@ -458,6 +463,8 @@ func Opus_silk_decode_indices(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, 
 //	/*********************************************/
 //	/* Decode quantization indices of excitation */
 //	/*********************************************/
+//
+//go:nocheckptr
 func Opus_silk_decode_pulses(tls *libc.TLS, psRangeDec uintptr, pulses uintptr, signalType int32, quantOffsetType int32, frame_length int32) {
 	var RateLevelIndex, abs_q, i, iter, j, k, nLS int32
 	var cdf_ptr, pulses_ptr uintptr

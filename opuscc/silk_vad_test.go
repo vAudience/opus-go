@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func TestVADGetNoiseLevelsFieldAccesses(t *testing.T) {
 	energies := [4]OpusT_opus_int32{187000, 59000, 1210000, 318000}
 	state := OpusT_silk_VAD_state{

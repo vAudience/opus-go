@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestCNGUpdatesSmoothedGain(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -65,6 +66,7 @@ func TestCNGUpdatesSmoothedGain(t *testing.T) {
 
 }
 
+//go:nocheckptr
 func TestCNGResetFieldAccesses(t *testing.T) {
 	dec := OpusT_silk_decoder_state{
 		FLPC_order: 10,
@@ -91,6 +93,7 @@ func TestCNGResetFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestCNGLossPathFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -138,6 +141,7 @@ func TestCNGLossPathFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestCNGLossPathHighGainLocalArrays(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

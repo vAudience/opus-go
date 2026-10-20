@@ -8,9 +8,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestPacketExtensionsGenerateCReference(t *testing.T) {
 	// Retained C generator covers repeated short/long extensions (including
 	// interleaved frame order), separators, 255-byte length coding, padding,

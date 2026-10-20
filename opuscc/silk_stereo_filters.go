@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_stereo_MS_to_LR(tls *libc.TLS, state uintptr, x1 uintptr, x2 uintptr, pred_Q13 uintptr, fs_kHz int32, frame_length int32) {
 	var delta0_Q13, delta1_Q13, denom_Q16, n, v2, v3 int32
 	var diff, pred0_Q13, pred1_Q13, sum OpusT_opus_int32
@@ -177,6 +178,8 @@ var A_fb1_21 = int16(-int32(24290)) /* (opus_int16)(20623 << 1) */
 // C documentation
 //
 //	/* Split signal into two decimated bands using first-order allpass filters */
+//
+//go:nocheckptr
 func Opus_silk_ana_filt_bank_1(tls *libc.TLS, in uintptr, S uintptr, outL uintptr, outH uintptr, N OpusT_opus_int32) {
 	var N2, k, v2, v3 int32
 	var X, Y, in32, out_1, out_2 OpusT_opus_int32
@@ -290,6 +293,8 @@ POSSIBILITY OF SUCH DAMAGE.
 // C documentation
 //
 //	/* Second order ARMA filter, alternative implementation */
+//
+//go:nocheckptr
 func Opus_silk_biquad_alt_stride1(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S uintptr, out uintptr, len1 OpusT_opus_int32) {
 	var A0_L_Q28, A0_U_Q28, A1_L_Q28, A1_U_Q28, inval, out32_Q14 OpusT_opus_int32
 	var k, v2, v3 int32
@@ -329,6 +334,7 @@ func Opus_silk_biquad_alt_stride1(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q2
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_biquad_alt_stride2_c(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S uintptr, out uintptr, len1 OpusT_opus_int32) {
 	var A0_L_Q28, A0_U_Q28, A1_L_Q28, A1_U_Q28 OpusT_opus_int32
 	var k, v2, v3 int32
@@ -450,6 +456,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Chirp (bandwidth expand) LP AR filter.
 //	   This logic is reused in _celt_lpc(). Any bug fixes should also be applied there. */
+//
+//go:nocheckptr
 func Opus_silk_bwexpander_32(tls *libc.TLS, ar uintptr, d int32, chirp_Q16 OpusT_opus_int32) {
 	var chirp_minus_one_Q16 OpusT_opus_int32
 	var i int32
@@ -528,6 +536,8 @@ POSSIBILITY OF SUCH DAMAGE.
 // C documentation
 //
 //	/* Chirp (bandwidth expand) LP AR filter */
+//
+//go:nocheckptr
 func Opus_silk_bwexpander(tls *libc.TLS, ar uintptr, d int32, chirp_Q16 OpusT_opus_int32) {
 	var chirp_minus_one_Q16 OpusT_opus_int32
 	var i int32
@@ -833,6 +843,7 @@ const SILK_PE_MAX_COMPLEX = 2
 const SILK_PE_MID_COMPLEX = 1
 const SILK_PE_MIN_COMPLEX = 0
 
+//go:nocheckptr
 func Opus_silk_decode_pitch(tls *libc.TLS, lagIndex OpusT_opus_int16, contourIndex OpusT_opus_int8, pitch_lags uintptr, Fs_kHz int32, nb_subfr int32) {
 	var Lag_CB_ptr uintptr
 	var cbk_size, k, lag, max_lag, min_lag, v2, v3, v4, v5, v6 int32
@@ -957,6 +968,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */
 
+//go:nocheckptr
 func Opus_silk_inner_prod_aligned_scale(tls *libc.TLS, inVec1 uintptr, inVec2 uintptr, scale int32, len1 int32) (r OpusT_opus_int32) {
 	var i int32
 	var sum OpusT_opus_int32
@@ -1035,6 +1047,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Approximation of 128 * log2() (very close inverse of silk_log2lin()) */
 //	/* Convert input to a log scale    */
+//
+//go:nocheckptr
 func Opus_silk_lin2log(tls *libc.TLS, inLin OpusT_opus_int32) (r1 OpusT_opus_int32) {
 	var frac_Q7, lz, lzeros, v1, v2, v3, v6, v8 OpusT_opus_int32
 	var m, r, x OpusT_opus_uint32
@@ -1135,6 +1149,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Approximation of 2^() (very close inverse of silk_lin2log()) */
 //	/* Convert input to a linear scale    */
+//
+//go:nocheckptr
 func Opus_silk_log2lin(tls *libc.TLS, inLog_Q7 OpusT_opus_int32) (r OpusT_opus_int32) {
 	var frac_Q7, out OpusT_opus_int32
 	_, _ = frac_Q7, out
@@ -1173,6 +1189,7 @@ const silk_int16_MAX13 = 32767
    this should be safe in pretty much all cases, even though it is not technically
    C89-compliant. */
 
+//go:nocheckptr
 func Opus_silk_LPC_analysis_filter(tls *libc.TLS, out uintptr, in uintptr, B uintptr, len1 OpusT_opus_int32, d OpusT_opus_int32, arch int32) {
 	var in_ptr uintptr
 	var ix, j, v3, v4 int32
@@ -1503,6 +1520,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Compute inverse of LPC prediction gain, and                          */
 //	/* test if LPC coefficients are stable (all poles within unit circle)   */
+//
+//go:nocheckptr
 func LPC_inverse_pred_gain_QA_c(tls *libc.TLS, A_QA uintptr, order int32) (r OpusT_opus_int32) {
 	var b32_inv, b32_nrm, err_Q32, invGain_Q30, rc_Q31, rc_mult1_Q30, rc_mult2, result, tmp1, tmp2, v10, v3, v4, v7 OpusT_opus_int32
 	var b_headrm, k, lshift, mult2Q, n, v13, v16, v17, v18, v19, v2, v6, v8, v9 int32
@@ -1753,6 +1772,8 @@ func LPC_inverse_pred_gain_QA_c(tls *libc.TLS, A_QA uintptr, order int32) (r Opu
 // C documentation
 //
 //	/* For input in Q12 domain */
+//
+//go:nocheckptr
 func Opus_silk_LPC_inverse_pred_gain_c(tls *libc.TLS, A_Q12 uintptr, order int32) (r OpusT_opus_int32) {
 	var DC_resp OpusT_opus_int32
 	var k int32
@@ -1840,6 +1861,8 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Convert int32 coefficients to int16 coefs and make sure there's no wrap-around.
 //	   This logic is reused in _celt_lpc(). Any bug fixes should also be applied there. */
+//
+//go:nocheckptr
 func Opus_silk_LPC_fit(tls *libc.TLS, a_QOUT uintptr, a_QIN uintptr, QOUT int32, QIN int32, d int32) {
 	var absval, chirp_Q16, maxabs OpusT_opus_int32
 	var i, idx, k, v3, v4, v5, v7, v8 int32
@@ -1951,6 +1974,8 @@ const QA1 = 16
 // C documentation
 //
 //	/* helper function for NLSF2A(..) */
+//
+//go:nocheckptr
 func silk_NLSF2A_find_poly(tls *libc.TLS, out uintptr, cLSF uintptr, dd int32) {
 	var ftmp OpusT_opus_int32
 	var k, n int32

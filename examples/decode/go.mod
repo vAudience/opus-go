@@ -1,7 +1,7 @@
-module github.com/kazzmir/opus-go/examples/decode
+module github.com/vAudience/opus-go/examples/decode
 
 go 1.25.0
 
-replace github.com/kazzmir/opus-go => ../..
+replace github.com/vAudience/opus-go => ../..
 
-require github.com/kazzmir/opus-go v0.0.0-00010101000000-000000000000
+require github.com/vAudience/opus-go v0.0.0-00010101000000-000000000000

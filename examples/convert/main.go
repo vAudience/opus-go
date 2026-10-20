@@ -15,8 +15,8 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/go-mp3"
-	"github.com/kazzmir/opus-go/ogg"
-	"github.com/kazzmir/opus-go/opus"
+	"github.com/vAudience/opus-go/ogg"
+	"github.com/vAudience/opus-go/opus"
 )
 
 type decodeChunk struct {
@@ -464,7 +464,7 @@ func main() {
 
 	tags := ogg.OpusTags{
 		Vendor:   "opusgo",
-		Comments: []string{"ENCODER=github.com/kazzmir/opus-go", "ENCODED=" + time.Now().UTC().Format(time.RFC3339)},
+		Comments: []string{"ENCODER=github.com/vAudience/opus-go", "ENCODED=" + time.Now().UTC().Format(time.RFC3339)},
 	}
 	tagsPkt, err := ogg.BuildOpusTagsPacket(tags)
 	if err != nil {
