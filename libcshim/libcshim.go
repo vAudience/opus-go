@@ -61,11 +61,13 @@ type TLS struct {
 
 	heapMu sync.Mutex
 	heap   map[uintptr]*heapAlloc
-	// arena is the chunk small allocations are currently carved from; chunks
-	// holds every chunk ever mapped, released together by Close.
-	arena    []byte
+	// arena is the chunk small allocations are currently carved from. A chunk
+	// is unmapped as soon as its last allocation is freed (or rewound, if it
+	// is the current one), so a long-lived TLS doing malloc/free pairs holds
+	// only its live allocations plus one chunk — never its whole history.
+	arena    *arenaChunk
 	arenaOff int
-	chunks   [][]byte
+	chunks   map[*arenaChunk]struct{}
 
 	keysMu sync.Mutex
 	keys   map[Tpthread_key_t]uintptr
@@ -73,9 +75,16 @@ type TLS struct {
 
 type heapAlloc struct {
 	buf []byte
-	// dedicated marks an allocation with its own mapping, unmapped by Xfree.
-	// Arena allocations are released only when their TLS closes.
-	dedicated bool
+	// chunk is the arena chunk an allocation was carved from, or nil for an
+	// allocation with its own mapping (unmapped by Xfree).
+	chunk *arenaChunk
+}
+
+// arenaChunk is one mapping small allocations are carved from, with the count
+// of its allocations not yet freed.
+type arenaChunk struct {
+	buf  []byte
+	live int
 }
 
 // NewTLS returns a TLS, or nil if its pseudo-stack cannot be mapped.
@@ -105,12 +114,12 @@ func (t *TLS) Close() {
 	}
 	t.heapMu.Lock()
 	for _, a := range t.heap {
-		if a.dedicated {
+		if a.chunk == nil {
 			osFree(a.buf)
 		}
 	}
-	for _, c := range t.chunks {
-		osFree(c)
+	for c := range t.chunks {
+		osFree(c.buf)
 	}
 	if t.stack != nil {
 		osFree(t.stack)
@@ -250,25 +259,39 @@ func Xmalloc(tls *TLS, size uint64) uintptr {
 			return 0
 		}
 		p := alignedAddr(buf)
-		tls.heap[p] = &heapAlloc{buf: buf, dedicated: true}
+		tls.heap[p] = &heapAlloc{buf: buf}
 		return p
 	}
-	if tls.arena == nil || tls.arenaOff+n > len(tls.arena) {
-		chunk, err := osAlloc(arenaChunkSize)
+	if tls.arena == nil || tls.arenaOff+n > len(tls.arena.buf) {
+		mapped, err := osAlloc(arenaChunkSize)
 		if err != nil {
 			return 0
 		}
-		tls.chunks = append(tls.chunks, chunk)
+		c := &arenaChunk{buf: mapped}
+		if tls.chunks == nil {
+			tls.chunks = make(map[*arenaChunk]struct{})
+		}
+		tls.chunks[c] = struct{}{}
+		// The chunk it replaces stays mapped only while something in it is
+		// live.
+		if old := tls.arena; old != nil && old.live == 0 {
+			tls.releaseChunkLocked(old)
+		}
 		// A mapping is page-aligned, so every offset that is a multiple of
-		// 16 stays 16-byte aligned. Carved memory is never reused, so it is
-		// still zero.
-		tls.arena, tls.arenaOff = chunk, 0
+		// 16 stays 16-byte aligned, and fresh mapped memory is zero.
+		tls.arena, tls.arenaOff = c, 0
 	}
-	buf := tls.arena[tls.arenaOff : tls.arenaOff+n : tls.arenaOff+n]
+	buf := tls.arena.buf[tls.arenaOff : tls.arenaOff+n : tls.arenaOff+n]
 	tls.arenaOff += n
+	tls.arena.live++
 	p := uintptr(unsafe.Pointer(unsafe.SliceData(buf)))
-	tls.heap[p] = &heapAlloc{buf: buf}
+	tls.heap[p] = &heapAlloc{buf: buf, chunk: tls.arena}
 	return p
+}
+
+func (tls *TLS) releaseChunkLocked(c *arenaChunk) {
+	delete(tls.chunks, c)
+	osFree(c.buf)
 }
 
 // alignedAddr returns the first 16-byte aligned address inside buf.
@@ -291,9 +314,23 @@ func Xfree(tls *TLS, p uintptr) {
 		return
 	}
 	delete(tls.heap, p)
-	if a.dedicated {
+	c := a.chunk
+	if c == nil {
 		osFree(a.buf)
+		return
 	}
+	c.live--
+	if c.live > 0 {
+		return
+	}
+	if c != tls.arena {
+		tls.releaseChunkLocked(c)
+		return
+	}
+	// The current chunk is empty: rewind it. Xmalloc promises zeroed memory,
+	// so the carved prefix is cleared before it is handed out again.
+	clear(c.buf[:tls.arenaOff])
+	tls.arenaOff = 0
 }
 
 //go:nocheckptr
