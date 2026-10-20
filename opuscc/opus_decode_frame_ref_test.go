@@ -5,7 +5,7 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // C reference values from /tmp/opencode/decodeframe_ref.c (links
@@ -59,6 +59,7 @@ var decodeFrameRefA = []struct {
 	{"back2silk", 0, 0, 5760, frameExpect{2880, 0x052a1179, 0x50373c71, [4]uint32{0x3813a17a, 0x3766de6c, 0x3831c915, 0x3801e941}, true}},
 }
 
+//go:nocheckptr
 func TestOpusDecodeFrameCReferencePartA(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -155,6 +156,7 @@ func TestOpusDecodeFrameCReferencePartA(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestOpusDecodeFrameCReferencePartB(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

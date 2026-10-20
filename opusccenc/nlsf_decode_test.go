@@ -5,10 +5,11 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
-	"github.com/kazzmir/opus-go/opuscc"
+	libc "github.com/vAudience/opus-go/libcshim"
+	"github.com/vAudience/opus-go/opuscc"
 )
 
+//go:nocheckptr
 func shimSlice[T any](tls *libc.TLS, n int) (uintptr, []T) {
 	var z T
 	p := libc.Xmalloc(tls, uint64(n)*uint64(unsafe.Sizeof(z)))
@@ -21,6 +22,8 @@ func shimSlice[T any](tls *libc.TLS, n int) (uintptr, []T) {
 // (uint32)(int8) conversion in libcshim, so the encoder rebuilt
 // nonsense spectra for almost every frame and SILK/hybrid output was
 // garbage.
+//
+//go:nocheckptr
 func TestNLSFDecodeMatchesDecoder(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

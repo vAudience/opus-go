@@ -5,8 +5,8 @@ package opusgo
 import (
     "io"
 
-    "github.com/kazzmir/opus-go/player"
-    "github.com/kazzmir/opus-go/ogg"
+    "github.com/vAudience/opus-go/player"
+    "github.com/vAudience/opus-go/ogg"
 )
 
 type OpusPlayer[T player.DataType] = player.OpusPlayer[T]

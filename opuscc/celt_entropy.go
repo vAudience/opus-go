@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func ec_read_byte(_this *OpusT_ec_dec) (r int32) {
 	var v1 int32
 	var v2 OpusT_opus_uint32
@@ -26,6 +27,7 @@ func ec_read_byte(_this *OpusT_ec_dec) (r int32) {
 	return v1
 }
 
+//go:nocheckptr
 func ec_read_byte_from_end(_this *OpusT_ec_dec) (r int32) {
 	var v1 int32
 	var v2 OpusT_opus_uint32
@@ -44,6 +46,8 @@ func ec_read_byte_from_end(_this *OpusT_ec_dec) (r int32) {
 //
 //	/*Normalizes the contents of val and rng so that rng lies entirely in the
 //	   high-order symbol.*/
+//
+//go:nocheckptr
 func ec_dec_normalize(tls *libc.TLS, _this *OpusT_ec_dec) {
 	var sym int32
 	_ = sym
@@ -62,6 +66,7 @@ func ec_dec_normalize(tls *libc.TLS, _this *OpusT_ec_dec) {
 	}
 }
 
+//go:nocheckptr
 func Opus_ec_dec_init(tls *libc.TLS, _this uintptr, _buf uintptr, _storage OpusT_opus_uint32) {
 	(*OpusT_ec_dec)(unsafe.Pointer(_this)).Fbuf = _buf
 	(*OpusT_ec_dec)(unsafe.Pointer(_this)).Fstorage = _storage
@@ -81,6 +86,7 @@ func Opus_ec_dec_init(tls *libc.TLS, _this uintptr, _buf uintptr, _storage OpusT
 	ec_dec_normalize(tls, (*OpusT_ec_dec)(unsafe.Pointer(_this)))
 }
 
+//go:nocheckptr
 func Opus_ec_decode(tls *libc.TLS, _this uintptr, _ft uint32) (r uint32) {
 	var s uint32
 	var v1, v2 OpusT_opus_uint32
@@ -93,6 +99,7 @@ func Opus_ec_decode(tls *libc.TLS, _this uintptr, _ft uint32) (r uint32) {
 	return _ft - (s + uint32(1) + (_ft-(s+uint32(1)))&uint32(-libc.BoolInt32(_ft < s+uint32(1))))
 }
 
+//go:nocheckptr
 func Opus_ec_decode_bin(tls *libc.TLS, _this uintptr, _bits uint32) (r uint32) {
 	var s uint32
 	_ = s
@@ -101,6 +108,7 @@ func Opus_ec_decode_bin(tls *libc.TLS, _this uintptr, _bits uint32) (r uint32) {
 	return uint32(1)<<_bits - (s + uint32(1) + (uint32(1)<<_bits-(s+uint32(1)))&uint32(-libc.BoolInt32(uint32(1)<<_bits < s+uint32(1))))
 }
 
+//go:nocheckptr
 func Opus_ec_dec_update(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _ft uint32) {
 	var s OpusT_opus_uint32
 	var v1 uint32
@@ -119,6 +127,8 @@ func Opus_ec_dec_update(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _f
 // C documentation
 //
 //	/*The probability of having a "one" is 1/(1<<_logp).*/
+//
+//go:nocheckptr
 func Opus_ec_dec_bit_logp(tls *libc.TLS, _this uintptr, _logp uint32) (r1 int32) {
 	var d, r, s OpusT_opus_uint32
 	var ret int32
@@ -141,6 +151,7 @@ func Opus_ec_dec_bit_logp(tls *libc.TLS, _this uintptr, _logp uint32) (r1 int32)
 	return ret
 }
 
+//go:nocheckptr
 func Opus_ec_dec_icdf(tls *libc.TLS, _this uintptr, _icdf uintptr, _ftb uint32) (r1 int32) {
 	var d, r, s, t OpusT_opus_uint32
 	var ret, v1 int32
@@ -161,6 +172,7 @@ func Opus_ec_dec_icdf(tls *libc.TLS, _this uintptr, _icdf uintptr, _ftb uint32) 
 	return ret
 }
 
+//go:nocheckptr
 func Opus_ec_dec_icdf16(tls *libc.TLS, _this uintptr, _icdf uintptr, _ftb uint32) (r1 int32) {
 	var d, r, s, t OpusT_opus_uint32
 	var ret, v1 int32
@@ -181,6 +193,7 @@ func Opus_ec_dec_icdf16(tls *libc.TLS, _this uintptr, _icdf uintptr, _ftb uint32
 	return ret
 }
 
+//go:nocheckptr
 func Opus_ec_dec_uint(tls *libc.TLS, _this uintptr, _ft OpusT_opus_uint32) (r OpusT_opus_uint32) {
 	var ft, s uint32
 	var ftb int32
@@ -212,6 +225,7 @@ func Opus_ec_dec_uint(tls *libc.TLS, _this uintptr, _ft OpusT_opus_uint32) (r Op
 	return r
 }
 
+//go:nocheckptr
 func Opus_ec_dec_bits(tls *libc.TLS, _this uintptr, _bits uint32) (r OpusT_opus_uint32) {
 	var available int32
 	var ret OpusT_opus_uint32
@@ -1538,6 +1552,7 @@ var CELT_PVQ_U_ROW = [15]uintptr{
 	14: uintptr(unsafe.Pointer(&CELT_PVQ_U_DATA)) + uintptr(1257)*4,
 }
 
+//go:nocheckptr
 func icwrs(tls *libc.TLS, _n int32, _y uintptr) (r OpusT_opus_uint32) {
 	var i OpusT_opus_uint32
 	var j, k, v1, v2 int32
@@ -1579,6 +1594,7 @@ func icwrs(tls *libc.TLS, _n int32, _y uintptr) (r OpusT_opus_uint32) {
 	return i
 }
 
+//go:nocheckptr
 func Opus_encode_pulses(tls *libc.TLS, _y uintptr, _n int32, _k int32, _enc uintptr) {
 	var v1, v2, v3, v4 int32
 	_, _, _, _ = v1, v2, v3, v4
@@ -1608,6 +1624,7 @@ func Opus_encode_pulses(tls *libc.TLS, _y uintptr, _n int32, _k int32, _enc uint
 	Opus_ec_enc_uint(tls, _enc, icwrs(tls, _n, _y), *(*OpusT_opus_uint32)(unsafe.Pointer(CELT_PVQ_U_ROW[v1] + uintptr(v2)*4))+*(*OpusT_opus_uint32)(unsafe.Pointer(CELT_PVQ_U_ROW[v3] + uintptr(v4)*4)))
 }
 
+//go:nocheckptr
 func cwrsi(tls *libc.TLS, _n int32, _k int32, _i OpusT_opus_uint32, _y uintptr) (r OpusT_opus_val32) {
 	var k0, s, v1 int32
 	var p, q OpusT_opus_uint32
@@ -1709,6 +1726,7 @@ func cwrsi(tls *libc.TLS, _n int32, _k int32, _i OpusT_opus_uint32, _y uintptr) 
 	return yy
 }
 
+//go:nocheckptr
 func Opus_decode_pulses(tls *libc.TLS, _y uintptr, _n int32, _k int32, _dec uintptr) (r OpusT_opus_val32) {
 	var v1, v2, v3, v4 int32
 	_, _, _, _ = v1, v2, v3, v4

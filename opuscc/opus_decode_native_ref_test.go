@@ -5,7 +5,7 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // C reference values from /tmp/opencode/nativeref.c, which calls the exported
@@ -21,6 +21,7 @@ import (
 // decode loop with packet_offset out-param, the decode_fec early-PLC branch,
 // bad-arg checks, and the int16 opus_decode wrapper (soft-clip path).
 
+//go:nocheckptr
 func TestOpusDecodeNativeCReference(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

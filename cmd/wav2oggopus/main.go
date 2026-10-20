@@ -13,10 +13,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kazzmir/opus-go/ogg"
-	"github.com/kazzmir/opus-go/opus"
-	"github.com/kazzmir/opus-go/resample"
-	"github.com/kazzmir/opus-go/wav"
+	"github.com/vAudience/opus-go/ogg"
+	"github.com/vAudience/opus-go/opus"
+	"github.com/vAudience/opus-go/resample"
+	"github.com/vAudience/opus-go/wav"
 )
 
 func main() {

@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func TestValidateLayoutFieldAccesses(t *testing.T) {
 	valid := OpusT_ChannelLayout{
 		Fnb_channels:        6,

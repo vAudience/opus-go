@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestNLSFDecodeLocalArrays(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -21,6 +22,7 @@ func TestNLSFDecodeLocalArrays(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestNLSFDecodeNegativeResidualIndices(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

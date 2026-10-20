@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_silk_A2NLSF(tls *libc.TLS, NLSF uintptr, a_Q16 uintptr, d int32) {
 	bp := tls.Alloc(112)
 	defer tls.Free(112)
@@ -226,6 +227,7 @@ var A_fb1_21 = int16(-int32(24290)) /* (opus_int16)(20623 << 1) */
 //
 //	/* Split signal into two decimated bands using first-order allpass filters */
 
+//go:nocheckptr
 func Opus_silk_A2NLSF_FLP(tls *libc.TLS, NLSF_Q15 uintptr, pAR uintptr, LPC_order int32) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -249,6 +251,7 @@ func Opus_silk_A2NLSF_FLP(tls *libc.TLS, NLSF_Q15 uintptr, pAR uintptr, LPC_orde
 //
 //	/* Convert LSF parameters to AR prediction filter coefficients */
 
+//go:nocheckptr
 func Opus_silk_CNG(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, length int32) {
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
@@ -657,6 +660,7 @@ const silk_int16_MAX2 = 0x7FFF
 //
 //	/* Encodes signs of excitation */
 
+//go:nocheckptr
 func Opus_silk_CNG_Reset(tls *libc.TLS, psDec uintptr) {
 	var NLSF_acc_Q15, NLSF_step_Q15, i int32
 	_, _, _ = NLSF_acc_Q15, NLSF_step_Q15, i
@@ -679,6 +683,7 @@ func Opus_silk_CNG_Reset(tls *libc.TLS, psDec uintptr) {
 //
 //	/* Updates CNG estimate, and applies the CNG when packet was lost   */
 
+//go:nocheckptr
 func Opus_silk_Decode(tls *libc.TLS, decState uintptr, decControl uintptr, lostFlag int32, newPacketFlag int32, psRangeDec uintptr, samplesOut uintptr, nSamplesOut uintptr, arch int32) (r int32) {
 	bp := tls.Alloc(656)
 	defer tls.Free(656)
@@ -1228,6 +1233,7 @@ const silk_int16_MAX5 = 32767
 /* Encoder functions                    */
 /****************************************/
 
+//go:nocheckptr
 func Opus_silk_Encode(tls *libc.TLS, encState uintptr, encControl uintptr, samplesIn uintptr, nSamplesIn int32, psRangeEnc uintptr, nBytesOut uintptr, prefillFlag int32, activity int32) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -2029,6 +2035,7 @@ const silk_int16_MAX6 = 0x7FFF
 //
 //	/* Encode side-information parameters to payload */
 
+//go:nocheckptr
 func Opus_silk_Get_Decoder_Size(tls *libc.TLS, decSizeBytes uintptr) (r int32) {
 	var ret int32
 	_ = ret
@@ -2041,6 +2048,7 @@ func Opus_silk_Get_Decoder_Size(tls *libc.TLS, decSizeBytes uintptr) (r int32) {
 //
 //	/* Reset decoder state */
 
+//go:nocheckptr
 func Opus_silk_Get_Encoder_Size(tls *libc.TLS, encSizeBytes uintptr, channels int32) (r int32) {
 	var ret int32
 	var v1 uintptr
@@ -2061,6 +2069,7 @@ func Opus_silk_Get_Encoder_Size(tls *libc.TLS, encSizeBytes uintptr, channels in
 //	/* Init or Reset encoder */
 //	/*************************/
 
+//go:nocheckptr
 func Opus_silk_HP_variable_cutoff(tls *libc.TLS, state_Fxx uintptr) {
 	var delta_freq_Q7, pitch_freq_Hz_Q16, pitch_freq_log_Q7 OpusT_opus_int32
 	var psEncC1 uintptr
@@ -2149,6 +2158,7 @@ const silk_int16_MAX14 = 0x7FFF
 //	/* NLSF vector encoder */
 //	/***********************/
 
+//go:nocheckptr
 func Opus_silk_InitDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	var channel_state uintptr
 	var n, ret int32
@@ -2175,6 +2185,7 @@ func Opus_silk_InitDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 //
 //	/* Decode a frame */
 
+//go:nocheckptr
 func Opus_silk_InitEncoder(tls *libc.TLS, encState uintptr, channels int32, arch int32, encStatus uintptr) (r int32) {
 	var n, ret int32
 	var psEnc uintptr
@@ -2214,6 +2225,7 @@ func Opus_silk_InitEncoder(tls *libc.TLS, encState uintptr, channels int32, arch
 //	/* Read control structure from encoder */
 //	/***************************************/
 
+//go:nocheckptr
 func Opus_silk_LPC_analysis_filter(tls *libc.TLS, out uintptr, in uintptr, B uintptr, len1 OpusT_opus_int32, d OpusT_opus_int32, arch int32) {
 	var in_ptr uintptr
 	var ix, j, v3, v4 int32
@@ -2545,6 +2557,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Compute inverse of LPC prediction gain, and                          */
 //	/* test if LPC coefficients are stable (all poles within unit circle)   */
 
+//go:nocheckptr
 func Opus_silk_LPC_analysis_filter_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32, Order int32) {
 	if !(Order <= length) {
 		Opus_celt_fatal(tls, __ccgo_ts+11490, __ccgo_ts+11524, int32(218))
@@ -2570,6 +2583,7 @@ func Opus_silk_LPC_analysis_filter_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef ui
 	libc.Xmemset(tls, r_LPC, 0, libc.Uint64FromInt32(Order)*libc.Uint64FromInt64(4))
 }
 
+//go:nocheckptr
 func Opus_silk_LPC_fit(tls *libc.TLS, a_QOUT uintptr, a_QIN uintptr, QOUT int32, QIN int32, d int32) {
 	var absval, chirp_Q16, maxabs OpusT_opus_int32
 	var i, idx, k, v3, v4, v5, v7, v8 int32
@@ -2684,6 +2698,7 @@ const PI2 = 3.1415926536
 //	/*  1 -> sine window from 0 to pi/2     */
 //	/*  2 -> sine window from pi/2 to pi    */
 
+//go:nocheckptr
 func Opus_silk_LPC_inverse_pred_gain_FLP(tls *libc.TLS, A uintptr, order OpusT_opus_int32) (r float32) {
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
@@ -2761,6 +2776,7 @@ var tapset_icdf22 = [3]uint8{
 //	/* CORE PITCH ANALYSIS FUNCTION                             */
 //	/************************************************************/
 
+//go:nocheckptr
 func Opus_silk_LPC_inverse_pred_gain_c(tls *libc.TLS, A_Q12 uintptr, order int32) (r OpusT_opus_int32) {
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
@@ -2793,6 +2809,7 @@ const QA1 = 16
 //
 //	/* helper function for NLSF2A(..) */
 
+//go:nocheckptr
 func Opus_silk_LP_variable_cutoff(tls *libc.TLS, psLP uintptr, frame uintptr, frame_length int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -2838,6 +2855,7 @@ const silk_int16_MAX8 = 0x7FFF
 //
 //	/* Predictive dequantizer for NLSF residuals */
 
+//go:nocheckptr
 func Opus_silk_LTP_analysis_filter_FLP(tls *libc.TLS, LTP_res uintptr, x uintptr, B uintptr, pitchL uintptr, invGains uintptr, subfr_length int32, nb_subfr int32, pre_length int32) {
 	var Btmp [5]float32
 	var LTP_res_ptr, x_lag_ptr, x_ptr uintptr
@@ -2888,6 +2906,7 @@ func Opus_silk_LTP_analysis_filter_FLP(tls *libc.TLS, LTP_res uintptr, x uintptr
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_LTP_scale_ctrl_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, condCoding int32) {
 	var round_loss int32
 	var v1 uintptr
@@ -3036,6 +3055,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Note: A monic filter is one with the first coefficient equal to 1.0. In Silk we omit the first */
 //	/* coefficient in an array of coefficients, for monic filters.                                    */
 
+//go:nocheckptr
 func Opus_silk_LoadOSCEModels(tls *libc.TLS, decState uintptr, data uintptr, len1 int32) (r int32) {
 	_ = decState
 	_ = data
@@ -3043,6 +3063,7 @@ func Opus_silk_LoadOSCEModels(tls *libc.TLS, decState uintptr, data uintptr, len
 	return SILK_NO_ERROR
 }
 
+//go:nocheckptr
 func Opus_silk_NLSF2A(tls *libc.TLS, a_Q12 uintptr, NLSF uintptr, d int32, arch int32) {
 	bp := tls.Alloc(304)
 	defer tls.Free(304)
@@ -3226,6 +3247,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* NLSF stabilizer, for a single input data vector */
 
+//go:nocheckptr
 func Opus_silk_NLSF2A_FLP(tls *libc.TLS, pAR uintptr, NLSF_Q15 uintptr, LPC_order int32, arch int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -3249,6 +3271,7 @@ func Opus_silk_NLSF2A_FLP(tls *libc.TLS, pAR uintptr, NLSF_Q15 uintptr, LPC_orde
 //	/* Floating-point NLSF processing wrapper */
 //	/******************************************/
 
+//go:nocheckptr
 func Opus_silk_NLSF_VQ(tls *libc.TLS, err_Q24 uintptr, in_Q15 uintptr, pCB_Q8 uintptr, pWght_Q9 uintptr, K int32, LPC_order int32) {
 	var cb_Q8_ptr, w_Q9_ptr uintptr
 	var diff_Q15, diffw_Q24, pred_Q24, sum_error_Q24 OpusT_opus_int32
@@ -3306,6 +3329,7 @@ func Opus_silk_NLSF_VQ(tls *libc.TLS, err_Q24 uintptr, in_Q15 uintptr, pCB_Q8 ui
 //
 //	/* Unpack predictor values and indices for entropy coding tables */
 
+//go:nocheckptr
 func Opus_silk_NLSF_VQ_weights_laroia(tls *libc.TLS, pNLSFW_Q_OUT uintptr, pNLSF_Q15 uintptr, D int32) {
 	var k, v1, v2, v3, v5 int32
 	var tmp1_int, tmp2_int OpusT_opus_int32
@@ -3500,6 +3524,7 @@ var delay_matrix_dec = [3][6]OpusT_opus_int8{
 //
 //	/* Initialize/reset the resampler state for a given pair of input/output sampling rates */
 
+//go:nocheckptr
 func Opus_silk_NLSF_decode(tls *libc.TLS, pNLSF_Q15 uintptr, NLSFIndices uintptr, psNLSF_CB uintptr) {
 	bp := tls.Alloc(80)
 	defer tls.Free(80)
@@ -3542,6 +3567,7 @@ func Opus_silk_NLSF_decode(tls *libc.TLS, pNLSF_Q15 uintptr, NLSFIndices uintptr
 
 const silk_int16_MAX9 = 32767
 
+//go:nocheckptr
 func Opus_silk_NLSF_del_dec_quant(tls *libc.TLS, indices uintptr, x_Q10 uintptr, w_Q5 uintptr, pred_coef_Q8 uintptr, ec_ix uintptr, ec_rates_Q5 uintptr, quant_step_size_Q16 int32, inv_quant_step_size_Q6 OpusT_opus_int16, mu_Q20 OpusT_opus_int32, order OpusT_opus_int16) (r OpusT_opus_int32) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -3774,6 +3800,7 @@ func Opus_silk_NLSF_del_dec_quant(tls *libc.TLS, indices uintptr, x_Q10 uintptr,
 //
 //	/* Limit, stabilize, convert and quantize NLSFs */
 
+//go:nocheckptr
 func Opus_silk_NLSF_encode(tls *libc.TLS, NLSFIndices uintptr, pNLSF_Q15 uintptr, psNLSF_CB uintptr, pW_Q2 uintptr, NLSF_mu_Q20 int32, nSurvivors int32, signalType int32) (r OpusT_opus_int32) {
 	bp := tls.Alloc(128)
 	defer tls.Free(128)
@@ -4209,6 +4236,7 @@ func Opus_silk_NLSF_encode(tls *libc.TLS, NLSFIndices uintptr, pNLSF_Q15 uintptr
 //
 //	/* Compute quantization errors for an LPC_order element input vector for a VQ codebook */
 
+//go:nocheckptr
 func Opus_silk_NLSF_stabilize(tls *libc.TLS, NLSF_Q15 uintptr, NDeltaMin_Q15 uintptr, L int32) {
 	var I, i, k, loops, v10, v5, v6, v7, v8, v9 int32
 	var center_freq_Q15 OpusT_opus_int16
@@ -4457,6 +4485,7 @@ Signal Processing, pp. 641-644, 1991.
 //
 //	/* Laroia low complexity NLSF weights */
 
+//go:nocheckptr
 func Opus_silk_NLSF_unpack(tls *libc.TLS, ec_ix uintptr, pred_Q8 uintptr, psNLSF_CB uintptr, CB1_index int32) {
 	var ec_sel_ptr, v2 uintptr
 	var entry OpusT_opus_uint8
@@ -4483,6 +4512,7 @@ func Opus_silk_NLSF_unpack(tls *libc.TLS, ec_ix uintptr, pred_Q8 uintptr, psNLSF
 //
 //	/* Delayed-decision quantizer for NLSF residuals */
 
+//go:nocheckptr
 func Opus_silk_NSQ_c(tls *libc.TLS, psEncC uintptr, NSQ uintptr, psIndices uintptr, x16 uintptr, pulses uintptr, PredCoef_Q12 uintptr, LTPCoef_Q14 uintptr, AR_Q13 uintptr, HarmShapeGain_Q14 uintptr, Tilt_Q14 uintptr, LF_shp_Q14 uintptr, Gains_Q16 uintptr, pitchL uintptr, Lambda_Q10 int32, LTP_scale_Q14 int32) {
 	var AR_shp_Q13, A_Q12, B_Q14, _saved_stack, pxq, sLTP, sLTP_Q15, st, x_sc_Q10, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var HarmShapeFIRPacked_Q14 OpusT_opus_int32
@@ -4768,6 +4798,7 @@ func Opus_silk_NSQ_c(tls *libc.TLS, psEncC uintptr, NSQ uintptr, psIndices uintp
 /* silk_noise_shape_quantizer */
 /******************************/
 
+//go:nocheckptr
 func Opus_silk_NSQ_del_dec_c(tls *libc.TLS, psEncC uintptr, NSQ uintptr, psIndices uintptr, x16 uintptr, pulses uintptr, PredCoef_Q12 uintptr, LTPCoef_Q14 uintptr, AR_Q13 uintptr, HarmShapeGain_Q14 uintptr, Tilt_Q14 uintptr, LF_shp_Q14 uintptr, Gains_Q16 uintptr, pitchL uintptr, Lambda_Q10 int32, LTP_scale_Q14 int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -5354,6 +5385,7 @@ func Opus_silk_NSQ_del_dec_c(tls *libc.TLS, psEncC uintptr, NSQ uintptr, psIndic
 //	/* Noise shape quantizer for one subframe */
 //	/******************************************/
 
+//go:nocheckptr
 func Opus_silk_NSQ_wrapper_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, psIndices uintptr, psNSQ uintptr, pulses uintptr, x1 uintptr) {
 	bp := tls.Alloc(1008)
 	defer tls.Free(1008)
@@ -5469,6 +5501,7 @@ func Opus_silk_NSQ_wrapper_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, 
 //	/* Floating-point Silk LTP quantiation wrapper */
 //	/***********************************************/
 
+//go:nocheckptr
 func Opus_silk_PLC(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, lost int32, arch int32) {
 	/* PLC control function */
 	if (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).Ffs_kHz != (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).FsPLC.Ffs_kHz {
@@ -5495,6 +5528,7 @@ func Opus_silk_PLC(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintpt
 //	/* Update state of PLC                            */
 //	/**************************************************/
 
+//go:nocheckptr
 func Opus_silk_PLC_Reset(tls *libc.TLS, psDec uintptr) {
 	(*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).FsPLC.FpitchL_Q8 = libc.Int32FromUint32(libc.Uint32FromInt32((*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).Fframe_length) << (libc.Int32FromInt32(8) - libc.Int32FromInt32(1)))
 	*(*OpusT_opus_int32)(unsafe.Pointer(psDec + 4292 + 72)) = int32(float64(int64(libc.Int32FromInt32(1))*(libc.Int64FromInt32(1)<<libc.Int32FromInt32(16))) + libc.Float64FromFloat64(0.5))
@@ -5503,6 +5537,7 @@ func Opus_silk_PLC_Reset(tls *libc.TLS, psDec uintptr) {
 	(*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).FsPLC.Fnb_subfr = int32(2)
 }
 
+//go:nocheckptr
 func Opus_silk_PLC_glue_frames(tls *libc.TLS, psDec uintptr, frame uintptr, length int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -5628,6 +5663,7 @@ const silk_int16_MAX10 = 0x7FFF
 
 /* shell coder; pulse-subframe length is hardcoded */
 
+//go:nocheckptr
 func Opus_silk_ResetDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	var channel_state uintptr
 	var n, ret int32
@@ -5648,6 +5684,7 @@ func Opus_silk_ResetDecoder(tls *libc.TLS, decState uintptr) (r int32) {
 	return ret
 }
 
+//go:nocheckptr
 func Opus_silk_VAD_GetSA_Q8_c(tls *libc.TLS, psEncC uintptr, pIn uintptr) (r1 int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -6115,6 +6152,7 @@ _57:
 //	/* Noise level estimation */
 //	/**************************/
 
+//go:nocheckptr
 func Opus_silk_VAD_Init(tls *libc.TLS, psSilk_VAD uintptr) (r int32) {
 	var b1, ret, v6 int32
 	var v2, v3, v4 OpusT_opus_int32
@@ -6179,6 +6217,7 @@ var tiltWeights = [4]OpusT_opus_int32{
 //	/* Get the speech activity level in Q8 */
 //	/***************************************/
 
+//go:nocheckptr
 func Opus_silk_VQ_WMat_EC_c(tls *libc.TLS, ind uintptr, res_nrg_Q15 uintptr, rate_dist_Q8 uintptr, gain_Q7 uintptr, XX_Q17 uintptr, xX_Q17 uintptr, cb_Q7 uintptr, cb_gain_Q7 uintptr, cl_Q5 uintptr, subfr_len int32, max_gain_Q7 OpusT_opus_int32, L int32) {
 	var bits_res_Q8, bits_tot_Q8, penalty, sum1_Q15, sum2_Q24 OpusT_opus_int32
 	var cb_row_Q7 uintptr
@@ -6377,6 +6416,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* High-pass filter with cutoff frequency adaptation based on pitch lag statistics */
 
+//go:nocheckptr
 func Opus_silk_ana_filt_bank_1(tls *libc.TLS, in uintptr, S uintptr, outL uintptr, outH uintptr, N OpusT_opus_int32) {
 	var N2, k, v2, v3 int32
 	var X, Y, in32, out_1, out_2 OpusT_opus_int32
@@ -6491,6 +6531,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Second order ARMA filter, alternative implementation */
 
+//go:nocheckptr
 func Opus_silk_apply_sine_window_FLP(tls *libc.TLS, px_win uintptr, px uintptr, win_type int32, length int32) {
 	var S0, S1, c, freq float32
 	var k int32
@@ -6540,6 +6581,7 @@ const PI3 = "3.1415926536f"
 //
 //	/* Calculates correlation vector X'*t */
 
+//go:nocheckptr
 func Opus_silk_autocorrelation_FLP(tls *libc.TLS, results uintptr, inputData uintptr, inputDataSize int32, correlationCount int32, arch int32) {
 	var i int32
 	_ = i
@@ -6698,6 +6740,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Compute reflection coefficients from input signal */
 
+//go:nocheckptr
 func Opus_silk_biquad_alt_stride1(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S uintptr, out uintptr, len1 OpusT_opus_int32) {
 	var A0_L_Q28, A0_U_Q28, A1_L_Q28, A1_U_Q28, inval, out32_Q14 OpusT_opus_int32
 	var k, v2, v3 int32
@@ -6737,6 +6780,7 @@ func Opus_silk_biquad_alt_stride1(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q2
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_biquad_alt_stride2_c(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S uintptr, out uintptr, len1 OpusT_opus_int32) {
 	var A0_L_Q28, A0_U_Q28, A1_L_Q28, A1_U_Q28 OpusT_opus_int32
 	var k, v2, v3 int32
@@ -6859,6 +6903,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Chirp (bandwidth expand) LP AR filter.
 //	   This logic is reused in _celt_lpc(). Any bug fixes should also be applied there. */
 
+//go:nocheckptr
 func Opus_silk_burg_modified_FLP(tls *libc.TLS, A uintptr, x uintptr, minInvGain float32, subfr_length int32, nb_subfr int32, D int32, arch int32) (r float32) {
 	bp := tls.Alloc(784)
 	defer tls.Free(784)
@@ -7073,6 +7118,7 @@ func Opus_silk_burg_modified_FLP(tls *libc.TLS, A uintptr, x uintptr, minInvGain
 //
 //	/* Chirp (bw expand) LP AR filter */
 
+//go:nocheckptr
 func Opus_silk_bwexpander(tls *libc.TLS, ar uintptr, d int32, chirp_Q16 OpusT_opus_int32) {
 	var chirp_minus_one_Q16 OpusT_opus_int32
 	var i int32
@@ -7359,6 +7405,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 type OpusT_prevent_empty_translation_unit_warning = int32
 
+//go:nocheckptr
 func Opus_silk_bwexpander_32(tls *libc.TLS, ar uintptr, d int32, chirp_Q16 OpusT_opus_int32) {
 	var chirp_minus_one_Q16 OpusT_opus_int32
 	var i int32
@@ -7438,6 +7485,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Chirp (bandwidth expand) LP AR filter */
 
+//go:nocheckptr
 func Opus_silk_bwexpander_FLP(tls *libc.TLS, ar uintptr, d int32, chirp float32) {
 	var cfac float32
 	var i int32
@@ -7459,6 +7507,7 @@ func Opus_silk_bwexpander_FLP(tls *libc.TLS, ar uintptr, d int32, chirp float32)
 //
 //	/* sum of squares of a silk_float array, with result as double */
 
+//go:nocheckptr
 func Opus_silk_control_SNR(tls *libc.TLS, psEncC uintptr, TargetRate_bps OpusT_opus_int32) (r int32) {
 	var bound, id, v1 int32
 	var snr_table uintptr
@@ -7635,6 +7684,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Initialize Silk Encoder state */
 //	/*********************************/
 
+//go:nocheckptr
 func Opus_silk_control_audio_bandwidth(tls *libc.TLS, psEncC uintptr, encControl uintptr) (r int32) {
 	var fs_Hz OpusT_opus_int32
 	var fs_kHz, orig_kHz, v1 int32
@@ -7855,6 +7905,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Maximum time before allowing a bandwidth transition */
 
+//go:nocheckptr
 func Opus_silk_control_encoder(tls *libc.TLS, psEnc uintptr, encControl uintptr, allow_bw_switch int32, channelNb int32, force_fs_kHz int32) (r int32) {
 	var fs_kHz, ret int32
 	_, _ = fs_kHz, ret
@@ -7909,6 +7960,7 @@ func Opus_silk_control_encoder(tls *libc.TLS, psEnc uintptr, encControl uintptr,
 	return ret
 }
 
+//go:nocheckptr
 func Opus_silk_corrMatrix_FLP(tls *libc.TLS, x uintptr, L int32, Order int32, XX uintptr, arch int32) {
 	var energy float64
 	var j, lag int32
@@ -7958,6 +8010,7 @@ const LBRR_SPEECH_ACTIVITY_THRES1 = 0.3
 const SPEECH_ACTIVITY_DTX_THRES3 = 0.05
 const WARPING_MULTIPLIER2 = "0.015f"
 
+//go:nocheckptr
 func Opus_silk_corrVector_FLP(tls *libc.TLS, x uintptr, t uintptr, L int32, Order int32, Xt uintptr, arch int32) {
 	var lag int32
 	var ptr1 uintptr
@@ -7980,6 +8033,7 @@ func Opus_silk_corrVector_FLP(tls *libc.TLS, x uintptr, t uintptr, L int32, Orde
 //
 //	/* Calculates correlation matrix X'*X */
 
+//go:nocheckptr
 func Opus_silk_decode_core(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, xq uintptr, pulses uintptr, arch int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -8712,6 +8766,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Decode frame */
 //	/****************/
 
+//go:nocheckptr
 func Opus_silk_decode_frame(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, pOut uintptr, pN uintptr, lostFlag int32, condCoding int32, arch int32) (r int32) {
 	var L, mv_len, ret int32
 	var _saved_stack, psDecCtrl, pulses, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
@@ -8946,6 +9001,7 @@ func Opus_silk_decode_frame(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, pO
 //
 //	/* Decode parameters from payload */
 
+//go:nocheckptr
 func Opus_silk_decode_indices(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, FrameIndex int32, decode_LBRR int32, condCoding int32) {
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
@@ -9075,6 +9131,7 @@ func Opus_silk_decode_indices(tls *libc.TLS, psDec uintptr, psRangeDec uintptr, 
 //	/* Decode quantization indices of excitation */
 //	/*********************************************/
 
+//go:nocheckptr
 func Opus_silk_decode_parameters(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, condCoding int32) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -9160,6 +9217,7 @@ func Opus_silk_decode_parameters(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr
 //
 //	/* Decode side-information parameters from payload */
 
+//go:nocheckptr
 func Opus_silk_decode_pitch(tls *libc.TLS, lagIndex OpusT_opus_int16, contourIndex OpusT_opus_int8, pitch_lags uintptr, Fs_kHz int32, nb_subfr int32) {
 	var Lag_CB_ptr uintptr
 	var cbk_size, k, lag, max_lag, min_lag, v2, v3, v4, v5, v6 int32
@@ -9284,6 +9342,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */
 
+//go:nocheckptr
 func Opus_silk_decode_pulses(tls *libc.TLS, psRangeDec uintptr, pulses uintptr, signalType int32, quantOffsetType int32, frame_length int32) {
 	bp := tls.Alloc(80)
 	defer tls.Free(80)
@@ -9383,6 +9442,7 @@ func Opus_silk_decode_pulses(tls *libc.TLS, psRangeDec uintptr, pulses uintptr, 
 //
 //	/* Set decoder sampling rate */
 
+//go:nocheckptr
 func Opus_silk_decode_signs(tls *libc.TLS, psRangeDec uintptr, pulses uintptr, length int32, signalType int32, quantOffsetType int32, sum_pulses uintptr) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -9460,6 +9520,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Reset Decoder State  */
 //	/************************/
 
+//go:nocheckptr
 func Opus_silk_decoder_set_fs(tls *libc.TLS, psDec uintptr, fs_kHz int32, fs_API_Hz OpusT_opus_int32) (r int32) {
 	var frame_length, ret int32
 	_, _ = frame_length, ret
@@ -9584,6 +9645,7 @@ type OpusT_silk_decoder = struct {
 /* Decoder functions */
 /*********************/
 
+//go:nocheckptr
 func Opus_silk_encode_do_VAD_FLP(tls *libc.TLS, psEnc uintptr, activity int32) {
 	var activity_threshold int32
 	_ = activity_threshold
@@ -9626,6 +9688,7 @@ func Opus_silk_encode_do_VAD_FLP(tls *libc.TLS, psEnc uintptr, activity int32) {
 //	/* Encode frame */
 //	/****************/
 
+//go:nocheckptr
 func Opus_silk_encode_frame_FLP(tls *libc.TLS, psEnc uintptr, pnBytesOut uintptr, psRangeEnc uintptr, condCoding int32, maxBits int32, useCBR int32) (r int32) {
 	bp := tls.Alloc(3568)
 	defer tls.Free(3568)
@@ -10148,6 +10211,7 @@ func Opus_silk_encode_frame_FLP(tls *libc.TLS, psEnc uintptr, pnBytesOut uintptr
 //
 //	/* Low-Bitrate Redundancy (LBRR) encoding. Reuse all parameters but encode excitation at lower bitrate  */
 
+//go:nocheckptr
 func Opus_silk_encode_indices(tls *libc.TLS, psEncC uintptr, psRangeEnc uintptr, FrameIndex int32, encode_LBRR int32, condCoding int32) {
 	bp := tls.Alloc(48)
 	defer tls.Free(48)
@@ -10300,6 +10364,7 @@ func Opus_silk_encode_indices(tls *libc.TLS, psEncC uintptr, psRangeEnc uintptr,
 /* Encode quantization indices of excitation */
 /*********************************************/
 
+//go:nocheckptr
 func Opus_silk_encode_pulses(tls *libc.TLS, psRangeEnc uintptr, signalType int32, quantOffsetType int32, pulses uintptr, frame_length int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -10729,6 +10794,7 @@ func Opus_silk_encode_pulses(tls *libc.TLS, psRangeEnc uintptr, signalType int32
 //
 //	/* Gain scalar quantization with hysteresis, uniform on log scale */
 
+//go:nocheckptr
 func Opus_silk_encode_signs(tls *libc.TLS, psRangeEnc uintptr, pulses uintptr, length int32, signalType int32, quantOffsetType int32, sum_pulses uintptr) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -10774,6 +10840,7 @@ func Opus_silk_encode_signs(tls *libc.TLS, psRangeEnc uintptr, pulses uintptr, l
 //
 //	/* Decodes signs of excitation */
 
+//go:nocheckptr
 func Opus_silk_energy_FLP(tls *libc.TLS, data uintptr, dataSize int32) (r float64) {
 	var i int32
 	var result float64
@@ -10804,6 +10871,7 @@ func Opus_silk_energy_FLP(tls *libc.TLS, data uintptr, dataSize int32) (r float6
 //
 //	/* inner product of two silk_float arrays, with result as double */
 
+//go:nocheckptr
 func Opus_silk_find_LPC_FLP(tls *libc.TLS, psEncC uintptr, NLSF_Q15 uintptr, x uintptr, minInvGain float32, arch int32) {
 	bp := tls.Alloc(1696)
 	defer tls.Free(1696)
@@ -10971,6 +11039,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Maximum time before allowing a bandwidth transition */
 
+//go:nocheckptr
 func Opus_silk_find_LTP_FLP(tls *libc.TLS, XX uintptr, xX uintptr, r_ptr uintptr, lag uintptr, subfr_length int32, nb_subfr int32, arch int32) {
 	var XX_ptr, lag_ptr, xX_ptr uintptr
 	var k int32
@@ -11111,6 +11180,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /* Maximum time before allowing a bandwidth transition */
 
+//go:nocheckptr
 func Opus_silk_find_pitch_lags_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, res uintptr, x uintptr, arch int32) {
 	bp := tls.Alloc(1744)
 	defer tls.Free(1744)
@@ -11198,6 +11268,7 @@ const MAX_PREDICTION_POWER_GAIN_AFTER_RESET1 = 100
 //
 //	/* Find LPC and LTP coefficients */
 
+//go:nocheckptr
 func Opus_silk_find_pred_coefs_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, res_pitch uintptr, x uintptr, condCoding int32) {
 	bp := tls.Alloc(2064)
 	defer tls.Free(2064)
@@ -11289,6 +11360,7 @@ const MAX_PREDICTION_POWER_GAIN_AFTER_RESET2 = "1e2f"
 //
 //	/* 16th order LPC analysis filter, does not write first 16 samples */
 
+//go:nocheckptr
 func Opus_silk_gains_ID(tls *libc.TLS, ind uintptr, nb_subfr int32) (r OpusT_opus_int32) {
 	var gainsID OpusT_opus_int32
 	var k int32
@@ -11309,6 +11381,7 @@ func Opus_silk_gains_ID(tls *libc.TLS, ind uintptr, nb_subfr int32) (r OpusT_opu
 //
 //	/* Interpolate two vectors */
 
+//go:nocheckptr
 func Opus_silk_gains_dequant(tls *libc.TLS, gain_Q16 uintptr, ind uintptr, prev_ind uintptr, conditional int32, nb_subfr int32) {
 	var double_step_size_threshold, ind_tmp, k, v2, v3, v4, v6 int32
 	var v11, v12, v13 OpusT_opus_int32
@@ -11372,6 +11445,7 @@ func Opus_silk_gains_dequant(tls *libc.TLS, gain_Q16 uintptr, ind uintptr, prev_
 //
 //	/* Compute unique identifier of gain indices vector */
 
+//go:nocheckptr
 func Opus_silk_gains_quant(tls *libc.TLS, ind uintptr, gain_Q16 uintptr, prev_ind uintptr, conditional int32, nb_subfr int32) {
 	var double_step_size_threshold, k, v2, v3, v4, v5, v6 int32
 	var v11 uintptr
@@ -11487,6 +11561,7 @@ func Opus_silk_gains_quant(tls *libc.TLS, ind uintptr, gain_Q16 uintptr, prev_in
 //
 //	/* Gains scalar dequantization, uniform on log scale */
 
+//go:nocheckptr
 func Opus_silk_init_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 	/* Clear the entire encoder state, except anything copied */
 	libc.Xmemset(tls, psDec, 0, libc.Uint64FromInt64(4392))
@@ -11502,6 +11577,7 @@ const silk_int16_MAX3 = 32767
 //	/* Core decoder. Performs inverse NSQ operation LTP + LPC */
 //	/**********************************************************/
 
+//go:nocheckptr
 func Opus_silk_init_encoder(tls *libc.TLS, psEnc uintptr, arch int32) (r int32) {
 	var ret int32
 	_ = ret
@@ -11544,6 +11620,7 @@ const WARPING_MULTIPLIER1 = 0.015
 //
 //	/* Control encoder */
 
+//go:nocheckptr
 func Opus_silk_inner_prod_aligned_scale(tls *libc.TLS, inVec1 uintptr, inVec2 uintptr, scale int32, len1 int32) (r OpusT_opus_int32) {
 	var i int32
 	var sum OpusT_opus_int32
@@ -11623,6 +11700,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Approximation of 128 * log2() (very close inverse of silk_log2lin()) */
 //	/* Convert input to a log scale    */
 
+//go:nocheckptr
 func Opus_silk_inner_product_FLP_c(tls *libc.TLS, data1 uintptr, data2 uintptr, dataSize int32) (r float64) {
 	var i int32
 	var result float64
@@ -11652,6 +11730,7 @@ func Opus_silk_inner_product_FLP_c(tls *libc.TLS, data1 uintptr, data2 uintptr, 
 //
 //	/* step up function, converts reflection coefficients to prediction coefficients */
 
+//go:nocheckptr
 func Opus_silk_insertion_sort_decreasing_FLP(tls *libc.TLS, a uintptr, idx uintptr, L int32, K int32) {
 	var i, j int32
 	var value float32
@@ -11720,6 +11799,7 @@ func Opus_silk_insertion_sort_decreasing_FLP(tls *libc.TLS, a uintptr, idx uintp
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_insertion_sort_increasing(tls *libc.TLS, a uintptr, idx uintptr, L int32, K int32) {
 	var i, j int32
 	var value OpusT_opus_int32
@@ -11788,6 +11868,7 @@ func Opus_silk_insertion_sort_increasing(tls *libc.TLS, a uintptr, idx uintptr, 
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_insertion_sort_increasing_all_values_int16(tls *libc.TLS, a uintptr, L int32) {
 	var i, j, value int32
 	_, _, _ = i, j, value
@@ -11878,6 +11959,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Compute number of bits to right shift the sum of squares of a vector */
 //	/* of int16s to make it fit in an int32                                 */
 
+//go:nocheckptr
 func Opus_silk_interpolate(tls *libc.TLS, xi uintptr, x0 uintptr, x1 uintptr, ifact_Q2 int32, d int32) {
 	var i int32
 	_ = i
@@ -11903,6 +11985,7 @@ const silk_int16_MAX7 = 32767
 //
 //	/* Helper function, interpolates the filter taps */
 
+//go:nocheckptr
 func Opus_silk_k2a_FLP(tls *libc.TLS, A uintptr, rc uintptr, order OpusT_opus_int32) {
 	var k, n int32
 	var rck, tmp1, tmp2 float32
@@ -11964,6 +12047,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* test if LPC coefficients are stable (all poles within unit circle)   */
 //	/* this code is based on silk_a2k_FLP()                                 */
 
+//go:nocheckptr
 func Opus_silk_lin2log(tls *libc.TLS, inLin OpusT_opus_int32) (r1 OpusT_opus_int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -12069,6 +12153,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Approximation of 2^() (very close inverse of silk_lin2log()) */
 //	/* Convert input to a linear scale    */
 
+//go:nocheckptr
 func Opus_silk_log2lin(tls *libc.TLS, inLog_Q7 OpusT_opus_int32) (r OpusT_opus_int32) {
 	var frac_Q7, out OpusT_opus_int32
 	_, _ = frac_Q7, out
@@ -12107,6 +12192,7 @@ const silk_int16_MAX19 = 32767
    this should be safe in pretty much all cases, even though it is not technically
    C89-compliant. */
 
+//go:nocheckptr
 func Opus_silk_noise_shape_analysis_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, pitch_res uintptr, x2 uintptr) {
 	bp := tls.Alloc(1168)
 	defer tls.Free(1168)
@@ -12434,6 +12520,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Processing of gains */
 
+//go:nocheckptr
 func Opus_silk_pitch_analysis_core_FLP(tls *libc.TLS, frame uintptr, pitch_out uintptr, lagIndex uintptr, contourIndex uintptr, LTPCorr uintptr, prevLag int32, search_thres1 float32, search_thres2 float32, Fs_kHz int32, complexity int32, nb_subfr int32, arch int32) (r int32) {
 	bp := tls.Alloc(13680)
 	defer tls.Free(13680)
@@ -13120,6 +13207,7 @@ func Opus_silk_pitch_analysis_core_FLP(tls *libc.TLS, frame uintptr, pitch_out u
 //	 * case 4*12*5 = 240 correlations, but more likely around 120.
 //	 ***********************************************************************/
 
+//go:nocheckptr
 func Opus_silk_process_NLSFs(tls *libc.TLS, psEncC uintptr, PredCoef_Q12 uintptr, pNLSF_Q15 uintptr, prev_NLSFq_Q15 uintptr) {
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
@@ -13191,6 +13279,7 @@ const silk_int16_MAX15 = 32767
 //
 //	/* Convert Left/Right stereo signal to adaptive Mid/Side representation */
 
+//go:nocheckptr
 func Opus_silk_process_NLSFs_FLP(tls *libc.TLS, psEncC uintptr, PredCoef uintptr, NLSF_Q15 uintptr, prev_NLSF_Q15 uintptr) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -13221,6 +13310,7 @@ func Opus_silk_process_NLSFs_FLP(tls *libc.TLS, psEncC uintptr, PredCoef uintptr
 //	/* Floating-point Silk NSQ wrapper      */
 //	/****************************************/
 
+//go:nocheckptr
 func Opus_silk_process_gains_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, condCoding int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -13303,6 +13393,7 @@ func Opus_silk_process_gains_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr
 //
 //	/* Add noise to matrix diagonal */
 
+//go:nocheckptr
 func Opus_silk_quant_LTP_gains(tls *libc.TLS, B_Q14 uintptr, cbk_index uintptr, periodicity_index uintptr, sum_log_gain_Q7 uintptr, pred_gain_dB_Q7 uintptr, XX_Q17 uintptr, xX_Q17 uintptr, subfr_len int32, nb_subfr int32, arch int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -13405,6 +13496,7 @@ func Opus_silk_quant_LTP_gains(tls *libc.TLS, B_Q14 uintptr, cbk_index uintptr, 
 //
 //	/* Entropy constrained matrix-weighted VQ, hard-coded to 5-element vectors, for a single input data vector */
 
+//go:nocheckptr
 func Opus_silk_quant_LTP_gains_FLP(tls *libc.TLS, B uintptr, cbk_index uintptr, periodicity_index uintptr, sum_log_gain_Q7 uintptr, pred_gain_dB uintptr, XX uintptr, xX uintptr, subfr_len int32, nb_subfr int32, arch int32) {
 	bp := tls.Alloc(528)
 	defer tls.Free(528)
@@ -13451,6 +13543,7 @@ func Opus_silk_quant_LTP_gains_FLP(tls *libc.TLS, B uintptr, cbk_index uintptr, 
 //
 //	/* compute autocorrelation */
 
+//go:nocheckptr
 func Opus_silk_regularize_correlations_FLP(tls *libc.TLS, XX uintptr, xx uintptr, noise float32, D int32) {
 	var i int32
 	_ = i
@@ -13472,6 +13565,7 @@ const REGULARIZATION_FACTOR = 1e-08
 //
 //	/* Residual energy: nrg = wxx - 2 * wXx * c + c' * wXX * c */
 
+//go:nocheckptr
 func Opus_silk_resampler(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) (r int32) {
 	var nSamples int32
 	_ = nSamples
@@ -13525,6 +13619,7 @@ var silk_resampler_up2_hq_11 = [3]OpusT_opus_int16{
 //
 //	/* Downsample by a factor 2/3, low quality */
 
+//go:nocheckptr
 func Opus_silk_resampler_down2(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var X, Y, in32, k, len2, out32 OpusT_opus_int32
 	var v2, v3 int32
@@ -13592,6 +13687,7 @@ var silk_resampler_up2_hq_13 = [3]OpusT_opus_int16{
 //
 //	/* Second order AR filter with single delay elements */
 
+//go:nocheckptr
 func Opus_silk_resampler_down2_3(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var _saved_stack, buf, buf_ptr, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var counter, nSamplesIn, res_Q6 OpusT_opus_int32
@@ -13771,6 +13867,7 @@ var silk_resampler_up2_hq_12 = [3]OpusT_opus_int16{
 //
 //	/* Downsample by a factor 2 */
 
+//go:nocheckptr
 func Opus_silk_resampler_init(tls *libc.TLS, S uintptr, Fs_Hz_in OpusT_opus_int32, Fs_Hz_out OpusT_opus_int32, forEnc int32) (r int32) {
 	var up2x, v1, v2 int32
 	_, _, _ = up2x, v1, v2
@@ -13894,6 +13991,7 @@ func Opus_silk_resampler_init(tls *libc.TLS, S uintptr, Fs_Hz_in OpusT_opus_int3
 //	/* Resampler: convert from one sampling rate to another */
 //	/* Input and output sampling rate are at most 48000 Hz  */
 
+//go:nocheckptr
 func Opus_silk_resampler_private_AR2(tls *libc.TLS, S uintptr, out_Q8 uintptr, in uintptr, A_Q14 uintptr, len1 OpusT_opus_int32) {
 	var k, out32 OpusT_opus_int32
 	_, _ = k, out32
@@ -13926,6 +14024,7 @@ var silk_resampler_up2_hq_14 = [3]OpusT_opus_int16{
 	2: int16(libc.Int32FromInt32(55542) - libc.Int32FromInt32(65536)),
 }
 
+//go:nocheckptr
 func Opus_silk_resampler_private_IIR_FIR(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var S, _saved_stack, buf, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var index_increment_Q16, max_index_Q16, nSamplesIn OpusT_opus_int32
@@ -14067,6 +14166,7 @@ var silk_resampler_up2_hq_16 = [3]OpusT_opus_int16{
 //	/* Uses 2nd order allpass filters for the 2x upsampling, followed by a      */
 //	/* notch filter just above Nyquist.                                         */
 
+//go:nocheckptr
 func Opus_silk_resampler_private_down_FIR(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, inLen OpusT_opus_int32) {
 	var FIR_Coefs, S, _saved_stack, buf, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var index_increment_Q16, max_index_Q16, nSamplesIn OpusT_opus_int32
@@ -14204,6 +14304,7 @@ var silk_resampler_up2_hq_15 = [3]OpusT_opus_int16{
 	2: int16(libc.Int32FromInt32(55542) - libc.Int32FromInt32(65536)),
 }
 
+//go:nocheckptr
 func Opus_silk_resampler_private_up2_HQ(tls *libc.TLS, S uintptr, out uintptr, in uintptr, len1 OpusT_opus_int32) {
 	var X, Y, in32, k, out32_1, out32_2 OpusT_opus_int32
 	var v2, v3 int32
@@ -14280,6 +14381,7 @@ func Opus_silk_resampler_private_up2_HQ(tls *libc.TLS, S uintptr, out uintptr, i
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_resampler_private_up2_HQ_wrapper(tls *libc.TLS, SS uintptr, out uintptr, in uintptr, len1 OpusT_opus_int32) {
 	var S uintptr
 	_ = S
@@ -14396,6 +14498,7 @@ var sigm_LUT_neg_Q15 = [6]OpusT_opus_int32{
 	5: int32(219),
 }
 
+//go:nocheckptr
 func Opus_silk_reset_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 	var v1 int32
 	_ = v1
@@ -14419,6 +14522,7 @@ func Opus_silk_reset_decoder(tls *libc.TLS, psDec uintptr) (r int32) {
 //	/* Init Decoder State   */
 //	/************************/
 
+//go:nocheckptr
 func Opus_silk_residual_energy_FLP(tls *libc.TLS, nrgs uintptr, x uintptr, a uintptr, gains uintptr, subfr_length int32, nb_subfr int32, LPC_order int32) {
 	bp := tls.Alloc(768)
 	defer tls.Free(768)
@@ -14443,6 +14547,7 @@ func Opus_silk_residual_energy_FLP(tls *libc.TLS, nrgs uintptr, x uintptr, a uin
 //
 //	/* Autocorrelations for a warped frequency axis */
 
+//go:nocheckptr
 func Opus_silk_residual_energy_covar_FLP(tls *libc.TLS, c uintptr, wXX uintptr, wXx uintptr, wxx float32, D int32) (r float32) {
 	var i, j, k int32
 	var nrg, regularization, tmp float32
@@ -14516,6 +14621,7 @@ func Opus_silk_residual_energy_covar_FLP(tls *libc.TLS, c uintptr, wXX uintptr, 
 //	/* Calculates residual energies of input subframes where all subframes have LPC_order   */
 //	/* of preceding samples                                                                 */
 
+//go:nocheckptr
 func Opus_silk_scale_copy_vector_FLP(tls *libc.TLS, data_out uintptr, data_in uintptr, gain float32, dataSize int32) {
 	var dataSize4, i int32
 	_, _ = dataSize4, i
@@ -14546,6 +14652,7 @@ func Opus_silk_scale_copy_vector_FLP(tls *libc.TLS, data_out uintptr, data_in ui
 //
 //	/* multiply a vector by a constant */
 
+//go:nocheckptr
 func Opus_silk_scale_vector_FLP(tls *libc.TLS, data1 uintptr, gain float32, dataSize int32) {
 	var dataSize4, i int32
 	_, _ = dataSize4, i
@@ -14572,6 +14679,7 @@ func Opus_silk_scale_vector_FLP(tls *libc.TLS, data1 uintptr, gain float32, data
 	}
 }
 
+//go:nocheckptr
 func Opus_silk_schur_FLP(tls *libc.TLS, refl_coef uintptr, auto_corr uintptr, order int32) (r float32) {
 	bp := tls.Alloc(400)
 	defer tls.Free(400)
@@ -14626,6 +14734,7 @@ func Opus_silk_schur_FLP(tls *libc.TLS, refl_coef uintptr, auto_corr uintptr, or
 	return float32(*(*float64)(unsafe.Pointer(bp + 1*8)))
 }
 
+//go:nocheckptr
 func Opus_silk_shell_decoder(tls *libc.TLS, pulses0 uintptr, psRangeDec uintptr, pulses4 int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -17822,6 +17931,7 @@ const silk_uint8_MAX1 = 255
 //	/* Initialization of the Silk VAD */
 //	/**********************************/
 
+//go:nocheckptr
 func Opus_silk_shell_encoder(tls *libc.TLS, psRangeEnc uintptr, pulses0 uintptr) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -17857,6 +17967,7 @@ func Opus_silk_shell_encoder(tls *libc.TLS, psRangeEnc uintptr, pulses0 uintptr)
 //
 //	/* Shell decoder, operates on one shell code frame of 16 pulses */
 
+//go:nocheckptr
 func Opus_silk_sigm_Q15(tls *libc.TLS, in_Q5 int32) (r int32) {
 	var ind int32
 	_ = ind
@@ -17941,6 +18052,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /* Redefine macro functions with extensive assertion in DEBUG mode.
    As functions can't be undefined, this file can't work with SigProcFIX_MacroCount.h */
 
+//go:nocheckptr
 func Opus_silk_stereo_LR_to_MS(tls *libc.TLS, state uintptr, x1 uintptr, x2 uintptr, ix uintptr, mid_only_flag uintptr, mid_side_rates_bps uintptr, total_rate_bps OpusT_opus_int32, prev_speech_act_Q8 int32, toMono int32, fs_kHz int32, frame_length int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -18715,6 +18827,7 @@ _147:
 //
 //	/* Convert adaptive Mid/Side representation to Left/Right stereo signal */
 
+//go:nocheckptr
 func Opus_silk_stereo_MS_to_LR(tls *libc.TLS, state uintptr, x1 uintptr, x2 uintptr, pred_Q13 uintptr, fs_kHz int32, frame_length int32) {
 	var delta0_Q13, delta1_Q13, denom_Q16, n, v2, v3 int32
 	var diff, pred0_Q13, pred1_Q13, sum OpusT_opus_int32
@@ -18872,6 +18985,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Check encoder control struct */
 
+//go:nocheckptr
 func Opus_silk_stereo_decode_mid_only(tls *libc.TLS, psRangeDec uintptr, decode_only_mid uintptr) {
 	/* Decode flag that only mid channel is coded */
 	*(*int32)(unsafe.Pointer(decode_only_mid)) = Opus_ec_dec_icdf(tls, psRangeDec, uintptr(unsafe.Pointer(&Opus_silk_stereo_only_code_mid_iCDF)), uint32(8))
@@ -18881,6 +18995,7 @@ func Opus_silk_stereo_decode_mid_only(tls *libc.TLS, psRangeDec uintptr, decode_
 //
 //	/* Entropy code the mid/side quantization indices */
 
+//go:nocheckptr
 func Opus_silk_stereo_decode_pred(tls *libc.TLS, psRangeDec uintptr, pred_Q13 uintptr) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -18921,6 +19036,7 @@ func Opus_silk_stereo_decode_pred(tls *libc.TLS, psRangeDec uintptr, pred_Q13 ui
 //
 //	/* Decode mid-only flag */
 
+//go:nocheckptr
 func Opus_silk_stereo_encode_mid_only(tls *libc.TLS, psRangeEnc uintptr, mid_only_flag OpusT_opus_int8) {
 	/* Encode flag that only mid channel is coded */
 	Opus_ec_enc_icdf(tls, psRangeEnc, int32(mid_only_flag), uintptr(unsafe.Pointer(&Opus_silk_stereo_only_code_mid_iCDF)), uint32(8))
@@ -18930,6 +19046,7 @@ func Opus_silk_stereo_encode_mid_only(tls *libc.TLS, psRangeEnc uintptr, mid_onl
 //
 //	/* Find least-squares prediction gain for one signal based on another and quantize it */
 
+//go:nocheckptr
 func Opus_silk_stereo_encode_pred(tls *libc.TLS, psRangeEnc uintptr, ix uintptr) {
 	var n int32
 	_ = n
@@ -18960,6 +19077,7 @@ func Opus_silk_stereo_encode_pred(tls *libc.TLS, psRangeEnc uintptr, ix uintptr)
 //
 //	/* Entropy code the mid-only flag */
 
+//go:nocheckptr
 func Opus_silk_stereo_find_predictor(tls *libc.TLS, ratio_Q14 uintptr, x2 uintptr, y1 uintptr, mid_res_amp_Q0 uintptr, length int32, smooth_coef_Q16 int32) (r1 OpusT_opus_int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -19297,6 +19415,7 @@ _78:
 //
 //	/* Quantize mid/side predictors */
 
+//go:nocheckptr
 func Opus_silk_stereo_quant_pred(tls *libc.TLS, pred_Q13 uintptr, ix uintptr) {
 	var err_Q13, err_min_Q13, low_Q13, lvl_Q13, quant_pred_Q13, step_Q13 OpusT_opus_int32
 	var i, j, n, v4 int32
@@ -19419,6 +19538,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //	/* Convert int32 coefficients to int16 coefs and make sure there's no wrap-around.
 //	   This logic is reused in _celt_lpc(). Any bug fixes should also be applied there. */
 
+//go:nocheckptr
 func Opus_silk_sum_sqr_shift(tls *libc.TLS, energy uintptr, shift uintptr, x uintptr, len1 int32) {
 	var i, shft, v4, v9 int32
 	var nrg, v1, v10, v2, v6, v7 OpusT_opus_int32
@@ -19495,6 +19615,7 @@ func Opus_silk_sum_sqr_shift(tls *libc.TLS, energy uintptr, shift uintptr, x uin
 //
 //	/* Decode mid/side predictors */
 
+//go:nocheckptr
 func Opus_silk_warped_autocorrelation_FLP(tls *libc.TLS, corr uintptr, input uintptr, warping float32, length int32, order int32) {
 	bp := tls.Alloc(208)
 	defer tls.Free(208)
@@ -19555,6 +19676,7 @@ func Opus_silk_warped_autocorrelation_FLP(tls *libc.TLS, corr uintptr, input uin
 //
 //	/* Convert AR filter coefficients to NLSF parameters */
 
+//go:nocheckptr
 func compute_silk_rate_for_hybrid(tls *libc.TLS, rate int32, bandwidth int32, frame20ms int32, vbr int32, fec int32, channels int32) (r int32) {
 	var N, entry, i, silk_rate int32
 	var hi, lo, x0, x1 OpusT_opus_int32
@@ -19650,6 +19772,7 @@ var rate_table = [7][5]int32{
 //	/* Returns the equivalent bitrate corresponding to 20 ms frames,
 //	   complexity 10 VBR operation. */
 
+//go:nocheckptr
 func silk_A2NLSF_eval_poly(tls *libc.TLS, p uintptr, x OpusT_opus_int32, dd int32) (r OpusT_opus_int32) {
 	var n int32
 	var x_Q16, y32 OpusT_opus_int32
@@ -19678,6 +19801,7 @@ func silk_A2NLSF_eval_poly(tls *libc.TLS, p uintptr, x OpusT_opus_int32, dd int3
 	return y32
 }
 
+//go:nocheckptr
 func silk_A2NLSF_init(tls *libc.TLS, a_Q16 uintptr, P uintptr, Q uintptr, dd int32) {
 	var k int32
 	_ = k
@@ -19715,6 +19839,7 @@ func silk_A2NLSF_init(tls *libc.TLS, a_Q16 uintptr, P uintptr, Q uintptr, dd int
 //	/* Compute Normalized Line Spectral Frequencies (NLSFs) from whitening filter coefficients      */
 //	/* If not all roots are found, the a_Q16 coefficients are bandwidth expanded until convergence. */
 
+//go:nocheckptr
 func silk_A2NLSF_trans_poly(tls *libc.TLS, p uintptr, dd int32) {
 	var k, n int32
 	_, _ = k, n
@@ -19741,6 +19866,7 @@ func silk_A2NLSF_trans_poly(tls *libc.TLS, p uintptr, dd int32) {
 //	/* Helper function for A2NLSF(..) */
 //	/* Polynomial evaluation          */
 
+//go:nocheckptr
 func silk_CNG_exc(tls *libc.TLS, exc_Q14 uintptr, exc_buf_Q14 uintptr, length int32, rand_seed uintptr) {
 	var exc_mask, i, idx int32
 	var seed OpusT_opus_int32
@@ -19765,6 +19891,7 @@ func silk_CNG_exc(tls *libc.TLS, exc_Q14 uintptr, exc_buf_Q14 uintptr, length in
 	*(*OpusT_opus_int32)(unsafe.Pointer(rand_seed)) = seed
 }
 
+//go:nocheckptr
 func silk_LBRR_encode_FLP(tls *libc.TLS, psEnc uintptr, psEncCtrl uintptr, xfw uintptr, condCoding int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -20023,6 +20150,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* LPC analysis */
 
+//go:nocheckptr
 func silk_LPC_analysis_filter10_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32) {
 	var LPC_pred float32
 	var ix int32
@@ -20046,6 +20174,7 @@ func silk_LPC_analysis_filter10_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintp
 //
 //	/* 8th order LPC analysis filter, does not write first 8 samples */
 
+//go:nocheckptr
 func silk_LPC_analysis_filter12_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32) {
 	var LPC_pred float32
 	var ix int32
@@ -20069,6 +20198,7 @@ func silk_LPC_analysis_filter12_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintp
 //
 //	/* 10th order LPC analysis filter, does not write first 10 samples */
 
+//go:nocheckptr
 func silk_LPC_analysis_filter16_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32) {
 	var LPC_pred float32
 	var ix int32
@@ -20092,6 +20222,7 @@ func silk_LPC_analysis_filter16_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintp
 //
 //	/* 12th order LPC analysis filter, does not write first 12 samples */
 
+//go:nocheckptr
 func silk_LPC_analysis_filter6_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32) {
 	var LPC_pred float32
 	var ix int32
@@ -20120,6 +20251,7 @@ func silk_LPC_analysis_filter6_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintpt
 //	/* first Order output samples are set to zero   */
 //	/************************************************/
 
+//go:nocheckptr
 func silk_LPC_analysis_filter8_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintptr, s uintptr, length int32) {
 	var LPC_pred float32
 	var ix int32
@@ -20143,6 +20275,7 @@ func silk_LPC_analysis_filter8_FLP(tls *libc.TLS, r_LPC uintptr, PredCoef uintpt
 //
 //	/* 6th order LPC analysis filter, does not write first 6 samples */
 
+//go:nocheckptr
 func silk_LP_interpolate_filter_taps(tls *libc.TLS, B_Q28 uintptr, A_Q28 uintptr, ind int32, fac_Q16 OpusT_opus_int32) {
 	var na, nb, v3, v4 int32
 	_, _, _, _ = na, nb, v3, v4
@@ -20213,6 +20346,7 @@ func silk_LP_interpolate_filter_taps(tls *libc.TLS, B_Q28 uintptr, A_Q28 uintptr
 //	/* Start by setting psEncC->mode <> 0;                      */
 //	/* Deactivate by setting psEncC->mode = 0;                  */
 
+//go:nocheckptr
 func silk_NLSF2A_find_poly(tls *libc.TLS, out uintptr, cLSF uintptr, dd int32) {
 	var ftmp OpusT_opus_int32
 	var k, n int32
@@ -20243,6 +20377,7 @@ func silk_NLSF2A_find_poly(tls *libc.TLS, out uintptr, cLSF uintptr, dd int32) {
 //
 //	/* compute whitening filter coefficients from normalized line spectral frequencies */
 
+//go:nocheckptr
 func silk_NLSF_residual_dequant(tls *libc.TLS, x_Q10 uintptr, indices uintptr, pred_coef_Q8 uintptr, quant_step_size_Q16 int32, order OpusT_opus_int16) {
 	var i, out_Q10, pred_Q10 int32
 	_, _, _ = i, out_Q10, pred_Q10
@@ -20273,6 +20408,7 @@ func silk_NLSF_residual_dequant(tls *libc.TLS, x_Q10 uintptr, indices uintptr, p
 //	/* NLSF vector decoder */
 //	/***********************/
 
+//go:nocheckptr
 func silk_PLC_conceal(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr, frame uintptr, arch int32) {
 	bp := tls.Alloc(64)
 	defer tls.Free(64)
@@ -20866,6 +21002,7 @@ _102:
 //
 //	/* Glues concealed frames with new good received frames */
 
+//go:nocheckptr
 func silk_PLC_energy(tls *libc.TLS, energy1 uintptr, shift1 uintptr, energy2 uintptr, shift2 uintptr, exc_Q14 uintptr, prevGain_Q10 uintptr, subfr_length int32, nb_subfr int32) {
 	var _saved_stack, exc_buf, exc_buf_ptr, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var i, k, v31, v32 int32
@@ -20992,6 +21129,7 @@ func silk_PLC_energy(tls *libc.TLS, energy1 uintptr, shift1 uintptr, energy2 uin
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func silk_PLC_update(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr) {
 	var LTP_Gain_Q14, temp_LTP_Gain_Q14, tmp, tmp1 OpusT_opus_int32
 	var i, j, scale_Q10, scale_Q14, v3 int32
@@ -21078,6 +21216,7 @@ func silk_PLC_update(tls *libc.TLS, psDec uintptr, psDecCtrl uintptr) {
 	(*OpusT_silk_PLC_struct)(unsafe.Pointer(psPLC)).Fnb_subfr = (*OpusT_silk_decoder_state)(unsafe.Pointer(psDec)).Fnb_subfr
 }
 
+//go:nocheckptr
 func silk_P_Ana_calc_corr_st3(tls *libc.TLS, cross_corr_st3 uintptr, frame uintptr, start_lag int32, sf_length int32, nb_subfr int32, complexity int32, arch int32) {
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
@@ -21161,6 +21300,7 @@ func silk_P_Ana_calc_corr_st3(tls *libc.TLS, cross_corr_st3 uintptr, frame uintp
 //	/* calculated recursively.                                          */
 //	/********************************************************************/
 
+//go:nocheckptr
 func silk_P_Ana_calc_energy_st3(tls *libc.TLS, energies_st3 uintptr, frame uintptr, start_lag int32, sf_length int32, nb_subfr int32, complexity int32) {
 	var Lag_CB_ptr, Lag_range_ptr, basis_ptr, target_ptr uintptr
 	var cbk_size, delta, i, idx, j, k, lag_counter, lag_diff, nb_cbk_search int32
@@ -21248,6 +21388,7 @@ func silk_P_Ana_calc_energy_st3(tls *libc.TLS, energies_st3 uintptr, frame uintp
 //
 //	/* copy and multiply a vector by a constant */
 
+//go:nocheckptr
 func silk_QueryEncoder(tls *libc.TLS, encState uintptr, encStatus uintptr) (r int32) {
 	var psEnc, state_Fxx uintptr
 	var ret int32
@@ -21282,6 +21423,7 @@ func silk_QueryEncoder(tls *libc.TLS, encState uintptr, encStatus uintptr) (r in
 //	/* Note: if prefillFlag is set, the input must contain 10 ms of audio, irrespective of what                     */
 //	/* encControl->payloadSize_ms is set to                                                                         */
 
+//go:nocheckptr
 func silk_VAD_GetNoiseLevels(tls *libc.TLS, pX uintptr, psSilk_VAD uintptr) {
 	var coef, k, min_coef, v2, v3, v4, v5 int32
 	var inv_nrg, nl, nrg OpusT_opus_int32
@@ -21465,6 +21607,7 @@ POSSIBILITY OF SUCH DAMAGE.
 //
 //	/* Control internal sampling rate */
 
+//go:nocheckptr
 func silk_biquad_res(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S uintptr, out uintptr, len1 OpusT_opus_int32, stride int32) {
 	var A [2]OpusT_opus_val32
 	var B [3]OpusT_opus_val32
@@ -21493,6 +21636,7 @@ func silk_biquad_res(tls *libc.TLS, in uintptr, B_Q28 uintptr, A_Q28 uintptr, S 
 	}
 }
 
+//go:nocheckptr
 func silk_noise_shape_quantizer(tls *libc.TLS, NSQ uintptr, signalType int32, x_sc_Q10 uintptr, pulses uintptr, xq uintptr, sLTP_Q15 uintptr, a_Q12 uintptr, b_Q14 uintptr, AR_shp_Q13 uintptr, lag int32, HarmShapeFIRPacked_Q14 OpusT_opus_int32, Tilt_Q14 int32, LF_shp_Q14 OpusT_opus_int32, Gain_Q16 OpusT_opus_int32, Lambda_Q10 int32, offset_Q10 int32, length int32, shapingLPCOrder int32, predictLPCOrder int32, arch int32) {
 	var Gain_Q10, LPC_exc_Q14, LPC_pred_Q10, LTP_pred_Q13, exc_Q14, n_AR_Q12, n_LF_Q12, n_LTP_Q13, out, out1, q1_Q0, q1_Q10, q2_Q10, r_Q10, rd1_Q20, rd2_Q20, rr_Q10, sLF_AR_shp_Q14, tmp1, tmp11, tmp2, tmp21, xq_Q14, v5 OpusT_opus_int32
 	var i, j, rdo_offset, v13, v4, v9 int32
@@ -21727,6 +21871,7 @@ func silk_noise_shape_quantizer(tls *libc.TLS, NSQ uintptr, signalType int32, x_
 	libc.Xmemcpy(tls, NSQ+3840, NSQ+3840+uintptr(length)*4, libc.Uint64FromInt32(MAX_LPC_ORDER)*libc.Uint64FromInt64(4))
 }
 
+//go:nocheckptr
 func silk_noise_shape_quantizer_del_dec(tls *libc.TLS, NSQ uintptr, psDelDec uintptr, signalType int32, x_Q10 uintptr, pulses uintptr, xq uintptr, sLTP_Q15 uintptr, delayedGain_Q10 uintptr, a_Q12 uintptr, b_Q14 uintptr, AR_shp_Q13 uintptr, lag int32, HarmShapeFIRPacked_Q14 OpusT_opus_int32, Tilt_Q14 int32, LF_shp_Q14 OpusT_opus_int32, Gain_Q16 OpusT_opus_int32, Lambda_Q10 int32, offset_Q10 int32, length int32, subfr int32, shapingLPCOrder int32, predictLPCOrder int32, warping_Q16 int32, nStatesDelayedDecision int32, smpl_buf_idx uintptr, decisionDelay int32, arch int32) {
 	var Gain_Q10, LPC_exc_Q14, LPC_pred_Q14, LTP_pred_Q14, RDmax_Q10, RDmin_Q10, Winner_rand_state, exc_Q14, n_AR_Q14, n_LF_Q14, n_LTP_Q14, out, q1_Q0, q1_Q10, q2_Q10, r_Q10, rd1_Q10, rd2_Q10, rr_Q10, sLF_AR_shp_Q14, tmp1, tmp2, xq_Q14, v37 OpusT_opus_int32
 	var RDmax_ind, RDmin_ind, Winner_ind, i, j, k, last_smple_idx, rdo_offset, v30, v31, v32 int32
@@ -22241,6 +22386,7 @@ func silk_noise_shape_quantizer_del_dec(tls *libc.TLS, NSQ uintptr, psDelDec uin
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func silk_nsq_del_dec_scale_states(tls *libc.TLS, psEncC uintptr, NSQ uintptr, psDelDec uintptr, x16 uintptr, x_sc_Q10 uintptr, sLTP uintptr, sLTP_Q15 uintptr, subfr int32, nStatesDelayedDecision int32, LTP_scale_Q14 int32, Gains_Q16 uintptr, pitchL uintptr, signal_type int32, decisionDelay int32) {
 	var a32_nrm, b32_inv, b32_inv1, b32_nrm, b32_nrm1, err_Q32, gain_adj_Q16, inv_gain_Q26, inv_gain_Q31, result, result1, v18, v19, v2, v22, v5, v6, v9 OpusT_opus_int32
 	var a_headrm, b_headrm, b_headrm1, i, k, lag, lshift, lshift1, v1, v11, v12, v13, v14, v15, v20, v3, v4, v8 int32
@@ -22524,6 +22670,7 @@ var PLC_RAND_ATTENUATE_UV_Q15 = [2]OpusT_opus_int16{
 	1: int16(29491),
 }
 
+//go:nocheckptr
 func silk_nsq_scale_states(tls *libc.TLS, psEncC uintptr, NSQ uintptr, x16 uintptr, x_sc_Q10 uintptr, sLTP uintptr, sLTP_Q15 uintptr, subfr int32, LTP_scale_Q14 int32, Gains_Q16 uintptr, pitchL uintptr, signal_type int32) {
 	var a32_nrm, b32_inv, b32_inv1, b32_nrm, b32_nrm1, err_Q32, gain_adj_Q16, inv_gain_Q26, inv_gain_Q31, result, result1, v18, v19, v2, v22, v5, v6, v9 OpusT_opus_int32
 	var a_headrm, b_headrm, b_headrm1, i, lag, lshift, lshift1, v1, v11, v12, v13, v14, v15, v20, v3, v4, v8 int32
@@ -22773,6 +22920,7 @@ type OpusT_NSQ_sample_struct = struct {
 
 type OpusT_NSQ_sample_pair = [2]OpusT_NSQ_sample_struct
 
+//go:nocheckptr
 func silk_resampler_down2_hp(tls *libc.TLS, S uintptr, out uintptr, in uintptr, inLen int32) (r OpusT_opus_val32) {
 	var X, Y, in32, out32, out32_hp OpusT_opus_val32
 	var hp_ener OpusT_opus_val64
@@ -22816,6 +22964,7 @@ func silk_resampler_down2_hp(tls *libc.TLS, S uintptr, out uintptr, in uintptr, 
 	return hp_ener
 }
 
+//go:nocheckptr
 func silk_resampler_private_IIR_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uintptr, max_index_Q16 OpusT_opus_int32, index_increment_Q16 OpusT_opus_int32) (r uintptr) {
 	var buf_ptr, v2 uintptr
 	var index_Q16, res_Q15, table_index OpusT_opus_int32
@@ -22859,6 +23008,7 @@ func silk_resampler_private_IIR_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uin
 //
 //	/* Upsample using a combination of allpass-based 2x upsampling and FIR interpolation */
 
+//go:nocheckptr
 func silk_resampler_private_down_FIR_INTERPOL(tls *libc.TLS, out uintptr, buf uintptr, FIR_Coefs uintptr, FIR_Order int32, FIR_Fracs int32, max_index_Q16 OpusT_opus_int32, index_increment_Q16 OpusT_opus_int32) (r uintptr) {
 	var buf_ptr, interpol_ptr, v9 uintptr
 	var index_Q16, interpol_ind, res_Q6 OpusT_opus_int32
@@ -23024,6 +23174,7 @@ _5:
 //
 //	/* Resample with a 2nd order AR filter followed by FIR interpolation */
 
+//go:nocheckptr
 func silk_setup_LBRR(tls *libc.TLS, psEncC uintptr, encControl uintptr) (r int32) {
 	var LBRR_in_previous_packet, ret, v1, v2, v3, v5 int32
 	_, _, _, _, _, _ = LBRR_in_previous_packet, ret, v1, v2, v3, v5
@@ -23061,6 +23212,7 @@ const MAX_ITERATIONS_A2NLSF_FIX = 16
 //	/* Helper function for A2NLSF(..)                    */
 //	/* Transforms polynomials from cos(n*f) to cos(f)^n  */
 
+//go:nocheckptr
 func silk_setup_complexity(tls *libc.TLS, psEncC uintptr, Complexity int32) (r int32) {
 	var ret, v1, v2, v3, v5 int32
 	_, _, _, _, _ = ret, v1, v2, v3, v5
@@ -23183,6 +23335,7 @@ func silk_setup_complexity(tls *libc.TLS, psEncC uintptr, Complexity int32) (r i
 	return ret
 }
 
+//go:nocheckptr
 func silk_setup_fs(tls *libc.TLS, psEnc uintptr, fs_kHz int32, PacketSize_ms int32) (r int32) {
 	var ret, v1 int32
 	_, _ = ret, v1
@@ -23292,6 +23445,7 @@ func silk_setup_fs(tls *libc.TLS, psEnc uintptr, fs_kHz int32, PacketSize_ms int
 	return ret
 }
 
+//go:nocheckptr
 func silk_setup_resamplers(tls *libc.TLS, psEnc uintptr, fs_kHz int32) (r int32) {
 	var _saved_stack, st, temp_resampler_state, x_bufFIX, x_buf_API_fs_Hz, v1, v11, v14, v16, v18, v20, v22, v24, v3, v5, v7, v9 uintptr
 	var api_buf_samples, buf_length_ms, k, k1, new_buf_samples, old_buf_samples OpusT_opus_int32

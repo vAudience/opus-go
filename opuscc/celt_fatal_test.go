@@ -6,11 +6,13 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // Diagnostics from /tmp/opencode/celt_fatal_ref.c linked with
 // ../opus/.libs/libopus.a. C terminates with SIGABRT; the shim panics instead.
+//
+//go:nocheckptr
 func TestCeltFatalCReference(t *testing.T) {
 	for _, tc := range []struct {
 		message, file string

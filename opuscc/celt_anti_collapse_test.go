@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestAntiCollapseLocalExp2Union(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

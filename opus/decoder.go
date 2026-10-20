@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"sync"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 
-	"github.com/kazzmir/opus-go/ogg"
-	"github.com/kazzmir/opus-go/opuscc"
+	"github.com/vAudience/opus-go/ogg"
+	"github.com/vAudience/opus-go/opuscc"
 )
 
 var (

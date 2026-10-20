@@ -5,13 +5,15 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 // C expectations: /tmp/opencode/decoder_init_ref.c includes
 // ../opus/src/opus_decoder.c and links ../opus/.libs/libopus.a.
 // Each call starts with 0xa5-filled storage. Architecture dispatch is
 // intentionally not compared: the Go port disables SIMD.
+//
+//go:nocheckptr
 func TestOpusDecoderInitCReference(t *testing.T) {
 	for _, tc := range []struct{ fs, frame int32 }{
 		{48000, 120}, {24000, 60}, {16000, 40}, {12000, 30}, {8000, 20},

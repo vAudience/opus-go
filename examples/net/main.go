@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/ebitengine/oto/v3"
-	opusgo "github.com/kazzmir/opus-go"
+	opusgo "github.com/vAudience/opus-go"
 )
 
 func playURL(ctx context.Context, url string) error {

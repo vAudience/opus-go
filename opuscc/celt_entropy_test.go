@@ -5,10 +5,12 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func entropyBufferPointer(buffer []byte) uintptr {
 	return uintptr(unsafe.Pointer(&buffer[0]))
 }
 
+//go:nocheckptr
 func TestEntropyEncoderFieldAccesses(t *testing.T) {
 	buffer := make([]byte, 32)
 	var enc OpusT_ec_enc
@@ -67,6 +69,7 @@ func TestEntropyEncoderFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestEntropyDecoderFieldAccesses(t *testing.T) {
 	buffer := []byte{0x3b, 0xa1, 0x7d, 0xc4, 0x19}
 	dec := OpusT_ec_dec{

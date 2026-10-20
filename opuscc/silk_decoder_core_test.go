@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestDecodeCoreFieldAccesses(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -43,6 +44,7 @@ func TestDecodeCoreFieldAccesses(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestDecodeCoreLocalLPCArray(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -84,6 +86,7 @@ func TestDecodeCoreLocalLPCArray(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func equalInt32s(got, want []int32) bool {
 	if len(got) != len(want) {
 		return false

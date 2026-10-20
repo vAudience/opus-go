@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func combine_pulses(tls *libc.TLS, out uintptr, in uintptr, len1 int32) {
 	var k int32
 	_ = k
@@ -25,12 +26,14 @@ func combine_pulses(tls *libc.TLS, out uintptr, in uintptr, len1 int32) {
 	}
 }
 
+//go:nocheckptr
 func encode_split(tls *libc.TLS, psRangeEnc uintptr, p_child1 int32, p int32, shell_table uintptr) {
 	if p > 0 {
 		Opus_ec_enc_icdf(tls, psRangeEnc, p_child1, shell_table+uintptr(Opus_silk_shell_code_table_offsets[p]), uint32(8))
 	}
 }
 
+//go:nocheckptr
 func decode_split(tls *libc.TLS, p_child1 uintptr, p_child2 uintptr, psRangeDec uintptr, p int32, shell_table uintptr) {
 	if p > 0 {
 		*(*OpusT_opus_int16)(unsafe.Pointer(p_child1)) = int16(Opus_ec_dec_icdf(tls, psRangeDec, shell_table+uintptr(Opus_silk_shell_code_table_offsets[p]), uint32(8)))
@@ -44,6 +47,8 @@ func decode_split(tls *libc.TLS, p_child1 uintptr, p_child2 uintptr, psRangeDec 
 // C documentation
 //
 //	/* Shell encoder, operates on one shell code frame of 16 pulses */
+//
+//go:nocheckptr
 func Opus_silk_shell_encoder(tls *libc.TLS, psRangeEnc uintptr, pulses0 uintptr) {
 	var pulses1 [8]int32
 	var pulses2 [4]int32
@@ -76,6 +81,8 @@ func Opus_silk_shell_encoder(tls *libc.TLS, psRangeEnc uintptr, pulses0 uintptr)
 // C documentation
 //
 //	/* Shell decoder, operates on one shell code frame of 16 pulses */
+//
+//go:nocheckptr
 func Opus_silk_shell_decoder(tls *libc.TLS, pulses0 uintptr, psRangeDec uintptr, pulses4 int32) {
 	var pulses1 [8]OpusT_opus_int16
 	var pulses2 [4]OpusT_opus_int16

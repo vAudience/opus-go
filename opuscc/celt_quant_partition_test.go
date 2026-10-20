@@ -4,9 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestQuantPartitionRemainingBitsField(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -33,7 +34,11 @@ func TestQuantPartitionRemainingBitsField(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestQuantPartitionLocalSplitState(t *testing.T) {
+	if raceBuild {
+		t.Skip(decoderLaundersLocalsUnderRace)
+	}
 	tls := libc.NewTLS()
 	defer tls.Close()
 	setupResamplerPseudostack(tls)

@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus_opus_custom_decoder_ctl(tls *libc.TLS, st uintptr, request int32, va uintptr) (r int32) {
 	var ap OpusT_va_list
 	var decode_buffer_size, i int32
@@ -174,6 +175,7 @@ var log2_y_norm_coeff9 = [8]float32{
 	7: float32(0.9068905711174011),
 }
 
+//go:nocheckptr
 func find_best_pitch(tls *libc.TLS, xcorr uintptr, y uintptr, len1 int32, max_pitch int32, best_pitch uintptr) {
 	var Syy, xcorr16, v3 OpusT_opus_val32
 	var best_den [2]OpusT_opus_val32
@@ -233,6 +235,7 @@ func find_best_pitch(tls *libc.TLS, xcorr uintptr, y uintptr, len1 int32, max_pi
 	}
 }
 
+//go:nocheckptr
 func celt_fir5(tls *libc.TLS, x uintptr, num uintptr, N int32) {
 	var i int32
 	var mem0, mem1, mem2, mem3, mem4, sum OpusT_opus_val32
@@ -269,6 +272,7 @@ func celt_fir5(tls *libc.TLS, x uintptr, num uintptr, N int32) {
 	}
 }
 
+//go:nocheckptr
 func Opus_pitch_downsample(tls *libc.TLS, x uintptr, x_lp uintptr, len1 int32, C int32, factor int32, arch int32) {
 	var c1, tmp OpusT_opus_val16
 	var i, offset int32
@@ -334,6 +338,8 @@ func Opus_pitch_downsample(tls *libc.TLS, x uintptr, x_lp uintptr, len1 int32, C
 // C documentation
 //
 //	/* Pure C implementation. */
+//
+//go:nocheckptr
 func Opus_celt_pitch_xcorr_c(tls *libc.TLS, _x uintptr, _y uintptr, xcorr uintptr, len1 int32, max_pitch int32, arch int32) {
 	_ = arch
 	/*The EDSP version requires that max_pitch is at least 1, and that _x is
@@ -440,6 +446,7 @@ func Opus_celt_pitch_xcorr_c(tls *libc.TLS, _x uintptr, _y uintptr, xcorr uintpt
 	}
 }
 
+//go:nocheckptr
 func Opus_pitch_search(tls *libc.TLS, x_lp uintptr, y1 uintptr, len1 int32, max_pitch int32, pitch uintptr, arch int32) {
 	var _saved_stack, st, x_lp4, xcorr, y_lp4, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var a, b, c, sum, xy, v81 OpusT_opus_val32
@@ -745,6 +752,7 @@ func Opus_pitch_search(tls *libc.TLS, x_lp uintptr, y1 uintptr, len1 int32, max_
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func compute_pitch_gain(tls *libc.TLS, xy OpusT_opus_val32, xx OpusT_opus_val32, yy OpusT_opus_val32) (r OpusT_opus_val16) {
 	return xy / float32(libc.Xsqrt(tls, float64(float32(1)+OpusT_opus_val32(xx*yy))))
 }
@@ -766,6 +774,7 @@ var second_check = [16]int32{
 	15: int32(2),
 }
 
+//go:nocheckptr
 func Opus_remove_doubling(tls *libc.TLS, x2 uintptr, maxperiod int32, minperiod int32, N2 int32, T0_ uintptr, prev_period int32, prev_gain OpusT_opus_val16, arch int32) (r OpusT_opus_val16) {
 	var T, T0, T1, T1b, i, i1, i2, k, minperiod0, offset, v5 int32
 	var _saved_stack, st, yy_lookup, v1, v10, v12, v14, v16, v18, v20, v22, v24, v3, v6, v8 uintptr
@@ -1203,6 +1212,7 @@ const Q15ONE2 = "1.0f"
    URL="http://www.stanford.edu/class/ee398/handouts/papers/Moffat98ArithmCoding.pdf"
   }*/
 
+//go:nocheckptr
 func ec_write_byte(tls *libc.TLS, _this uintptr, _value uint32) (r int32) {
 	var v1 OpusT_opus_uint32
 	_ = v1
@@ -1216,6 +1226,7 @@ func ec_write_byte(tls *libc.TLS, _this uintptr, _value uint32) (r int32) {
 	return 0
 }
 
+//go:nocheckptr
 func ec_write_byte_at_end(tls *libc.TLS, _this uintptr, _value uint32) (r int32) {
 	var v1 OpusT_opus_uint32
 	_ = v1
@@ -1241,6 +1252,8 @@ func ec_write_byte_at_end(tls *libc.TLS, _this uintptr, _value uint32) (r int32)
 //	   32-bit systems.
 //	  The alternative is to truncate the range in order to force a carry, but
 //	   requires similar carry tracking in the decoder, needlessly slowing it down.*/
+//
+//go:nocheckptr
 func ec_enc_carry_out(tls *libc.TLS, _this uintptr, _c int32) {
 	var carry int32
 	var sym uint32
@@ -1270,6 +1283,7 @@ func ec_enc_carry_out(tls *libc.TLS, _this uintptr, _c int32) {
 	}
 }
 
+//go:nocheckptr
 func ec_enc_normalize(tls *libc.TLS, _this uintptr) {
 	/*If the range is too small, output some bits and rescale it.*/
 	for (*OpusT_ec_enc)(unsafe.Pointer(_this)).Frng <= uint32(1)<<(int32(EC_CODE_BITS)-int32(1))>>int32(EC_SYM_BITS) {
@@ -1281,6 +1295,7 @@ func ec_enc_normalize(tls *libc.TLS, _this uintptr) {
 	}
 }
 
+//go:nocheckptr
 func Opus_ec_enc_init(tls *libc.TLS, _this uintptr, _buf uintptr, _size OpusT_opus_uint32) {
 	(*OpusT_ec_enc)(unsafe.Pointer(_this)).Fbuf = _buf
 	(*OpusT_ec_enc)(unsafe.Pointer(_this)).Fend_offs = uint32(0)
@@ -1297,6 +1312,7 @@ func Opus_ec_enc_init(tls *libc.TLS, _this uintptr, _buf uintptr, _size OpusT_op
 	(*OpusT_ec_enc)(unsafe.Pointer(_this)).Ferror1 = 0
 }
 
+//go:nocheckptr
 func Opus_ec_encode(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _ft uint32) {
 	var r, v1, v2 OpusT_opus_uint32
 	_, _, _ = r, v1, v2
@@ -1313,6 +1329,7 @@ func Opus_ec_encode(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _ft ui
 	ec_enc_normalize(tls, _this)
 }
 
+//go:nocheckptr
 func Opus_ec_encode_bin(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _bits uint32) {
 	var r OpusT_opus_uint32
 	_ = r
@@ -1329,6 +1346,8 @@ func Opus_ec_encode_bin(tls *libc.TLS, _this uintptr, _fl uint32, _fh uint32, _b
 // C documentation
 //
 //	/*The probability of having a "one" is 1/(1<<_logp).*/
+//
+//go:nocheckptr
 func Opus_ec_enc_bit_logp(tls *libc.TLS, _this uintptr, _val int32, _logp uint32) {
 	var l, r, s OpusT_opus_uint32
 	var v1 uint32
@@ -1349,6 +1368,7 @@ func Opus_ec_enc_bit_logp(tls *libc.TLS, _this uintptr, _val int32, _logp uint32
 	ec_enc_normalize(tls, _this)
 }
 
+//go:nocheckptr
 func Opus_ec_enc_icdf(tls *libc.TLS, _this uintptr, _s int32, _icdf uintptr, _ftb uint32) {
 	var r OpusT_opus_uint32
 	_ = r
@@ -1362,6 +1382,7 @@ func Opus_ec_enc_icdf(tls *libc.TLS, _this uintptr, _s int32, _icdf uintptr, _ft
 	ec_enc_normalize(tls, _this)
 }
 
+//go:nocheckptr
 func Opus_ec_enc_icdf16(tls *libc.TLS, _this uintptr, _s int32, _icdf uintptr, _ftb uint32) {
 	var r OpusT_opus_uint32
 	_ = r
@@ -1375,6 +1396,7 @@ func Opus_ec_enc_icdf16(tls *libc.TLS, _this uintptr, _s int32, _icdf uintptr, _
 	ec_enc_normalize(tls, _this)
 }
 
+//go:nocheckptr
 func Opus_ec_enc_uint(tls *libc.TLS, _this uintptr, _fl OpusT_opus_uint32, _ft OpusT_opus_uint32) {
 	var fl, ft uint32
 	var ftb int32
@@ -1396,6 +1418,7 @@ func Opus_ec_enc_uint(tls *libc.TLS, _this uintptr, _fl OpusT_opus_uint32, _ft O
 	}
 }
 
+//go:nocheckptr
 func Opus_ec_enc_bits(tls *libc.TLS, _this uintptr, _fl OpusT_opus_uint32, _bits uint32) {
 	var used int32
 	var window OpusT_ec_window
@@ -1419,6 +1442,7 @@ func Opus_ec_enc_bits(tls *libc.TLS, _this uintptr, _fl OpusT_opus_uint32, _bits
 	(*OpusT_ec_enc)(unsafe.Pointer(_this)).Fnbits_total = int32(uint32((*OpusT_ec_enc)(unsafe.Pointer(_this)).Fnbits_total) + _bits)
 }
 
+//go:nocheckptr
 func Opus_ec_enc_patch_initial_bits(tls *libc.TLS, _this uintptr, _val uint32, _nbits uint32) {
 	var mask uint32
 	var shift int32
@@ -1446,6 +1470,7 @@ func Opus_ec_enc_patch_initial_bits(tls *libc.TLS, _this uintptr, _val uint32, _
 	}
 }
 
+//go:nocheckptr
 func Opus_ec_enc_shrink(tls *libc.TLS, _this uintptr, _size OpusT_opus_uint32) {
 	if !((*OpusT_ec_enc)(unsafe.Pointer(_this)).Foffs+(*OpusT_ec_enc)(unsafe.Pointer(_this)).Fend_offs <= _size) {
 		Opus_celt_fatal(tls, __ccgo_ts+4780, __ccgo_ts+4699, int32(249))
@@ -1454,6 +1479,7 @@ func Opus_ec_enc_shrink(tls *libc.TLS, _this uintptr, _size OpusT_opus_uint32) {
 	(*OpusT_ec_enc)(unsafe.Pointer(_this)).Fstorage = _size
 }
 
+//go:nocheckptr
 func Opus_ec_enc_done(tls *libc.TLS, _this uintptr) {
 	var end, msk OpusT_opus_uint32
 	var l, used int32
@@ -1945,6 +1971,7 @@ var small_energy_icdf = [3]uint8{
 	1: uint8(1),
 }
 
+//go:nocheckptr
 func loss_distortion(tls *libc.TLS, eBands uintptr, oldEBands uintptr, start int32, end int32, len1 int32, C int32) (r OpusT_opus_val32) {
 	var c, i, v1 int32
 	var d OpusT_celt_glog
@@ -1976,6 +2003,7 @@ func loss_distortion(tls *libc.TLS, eBands uintptr, oldEBands uintptr, start int
 	return v4
 }
 
+//go:nocheckptr
 func quant_coarse_energy_impl(tls *libc.TLS, m uintptr, start int32, end int32, eBands uintptr, oldEBands uintptr, budget OpusT_opus_int32, tell OpusT_opus_int32, prob_model uintptr, error1 uintptr, enc uintptr, C int32, LM int32, intra int32, max_decay OpusT_celt_glog, lfe int32) (r int32) {
 	var badness, bits_left, c, i, pi, qi, qi0, v2, v7, v9 int32
 	var beta, coef OpusT_opus_val16
@@ -2125,6 +2153,7 @@ func quant_coarse_energy_impl(tls *libc.TLS, m uintptr, start int32, end int32, 
 	return v2
 }
 
+//go:nocheckptr
 func Opus_quant_coarse_energy(tls *libc.TLS, m uintptr, start int32, end int32, effEnd int32, eBands uintptr, oldEBands uintptr, budget OpusT_opus_uint32, error1 uintptr, enc uintptr, C int32, LM int32, nbAvailableBytes int32, force_intra int32, delayedIntra uintptr, two_pass int32, loss_rate int32, lfe int32) {
 	var _saved_stack, error_intra, intra_bits, intra_buf, oldEBands_intra, st, v1, v10, v12, v14, v16, v18, v20, v22, v24, v26, v3, v5 uintptr
 	var badness1, badness2, intra, v6 int32
@@ -2420,6 +2449,7 @@ func Opus_quant_coarse_energy(tls *libc.TLS, m uintptr, start int32, end int32, 
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_quant_fine_energy(tls *libc.TLS, m uintptr, start int32, end int32, oldEBands uintptr, error1 uintptr, prev_quant uintptr, extra_quant uintptr, enc uintptr, C int32) {
 	var c, i, q2, v3 int32
 	var extra, prev OpusT_opus_int16
@@ -2473,6 +2503,7 @@ func Opus_quant_fine_energy(tls *libc.TLS, m uintptr, start int32, end int32, ol
 	}
 }
 
+//go:nocheckptr
 func Opus_quant_energy_finalise(tls *libc.TLS, m uintptr, start int32, end int32, oldEBands uintptr, error1 uintptr, fine_quant uintptr, fine_priority uintptr, bits_left int32, enc uintptr, C int32) {
 	var c, i, prio, q2, v3, v5 int32
 	var offset OpusT_celt_glog
@@ -2519,6 +2550,7 @@ func Opus_quant_energy_finalise(tls *libc.TLS, m uintptr, start int32, end int32
 	}
 }
 
+//go:nocheckptr
 func Opus_unquant_coarse_energy(tls *libc.TLS, m uintptr, start int32, end int32, oldEBands uintptr, intra int32, dec uintptr, C int32, LM int32) {
 	var beta, coef OpusT_opus_val16
 	var budget, tell OpusT_opus_int32
@@ -2593,6 +2625,7 @@ func Opus_unquant_coarse_energy(tls *libc.TLS, m uintptr, start int32, end int32
 	}
 }
 
+//go:nocheckptr
 func Opus_unquant_fine_energy(tls *libc.TLS, m uintptr, start int32, end int32, oldEBands uintptr, prev_quant uintptr, extra_quant uintptr, dec uintptr, C int32) {
 	var c, i, q2, v3 int32
 	var extra, prev OpusT_opus_int16
@@ -2637,6 +2670,7 @@ func Opus_unquant_fine_energy(tls *libc.TLS, m uintptr, start int32, end int32, 
 	}
 }
 
+//go:nocheckptr
 func Opus_unquant_energy_finalise(tls *libc.TLS, m uintptr, start int32, end int32, oldEBands uintptr, fine_quant uintptr, fine_priority uintptr, bits_left int32, dec uintptr, C int32) {
 	var c, i, prio, q2, v3 int32
 	var offset OpusT_celt_glog
@@ -2676,6 +2710,7 @@ func Opus_unquant_energy_finalise(tls *libc.TLS, m uintptr, start int32, end int
 	}
 }
 
+//go:nocheckptr
 func Opus_amp2Log2(tls *libc.TLS, m uintptr, effEnd int32, end int32, bandE uintptr, bandLogE uintptr, C int32) {
 	var c, i, v1 int32
 	var integer, range_idx OpusT_opus_int32

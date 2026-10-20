@@ -8,9 +8,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestMultistreamPacketValidateCReference(t *testing.T) {
 	// C-generated results include self-delimited zero-length frames, multi-frame
 	// packets, mismatched durations, missing streams and malformed framing.

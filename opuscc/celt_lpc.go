@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus__celt_lpc(tls *libc.TLS, _lpc uintptr, ac uintptr, p int32) {
 	var error1, r, rr, tmp1, tmp2 OpusT_opus_val32
 	var i, j int32
@@ -61,6 +62,7 @@ func Opus__celt_lpc(tls *libc.TLS, _lpc uintptr, ac uintptr, p int32) {
 	}
 }
 
+//go:nocheckptr
 func Opus_celt_fir_c(tls *libc.TLS, x1 uintptr, num uintptr, y1 uintptr, N int32, ord int32, arch int32) {
 	var _saved_stack, rnum, st, v1, v11, v13, v15, v17, v19, v21, v23, v25, v27, v3, v31, v32, v33, v35, v36, v37, v5, v7, v9 uintptr
 	var i, j, j1, v34, v47, v50 int32
@@ -305,6 +307,7 @@ func Opus_celt_fir_c(tls *libc.TLS, x1 uintptr, num uintptr, y1 uintptr, N int32
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_celt_iir(tls *libc.TLS, _x uintptr, den uintptr, _y uintptr, N int32, ord int32, mem uintptr, arch int32) {
 	var _saved_stack, rden, st, y1, v1, v11, v13, v15, v17, v19, v21, v23, v25, v27, v29, v3, v31, v33, v35, v37, v39, v5, v7, v9 uintptr
 	var i, j, j1, v60, v73, v76 int32
@@ -650,6 +653,7 @@ func Opus_celt_iir(tls *libc.TLS, _x uintptr, den uintptr, _y uintptr, N int32, 
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus__celt_autocorr(tls *libc.TLS, x uintptr, ac uintptr, window uintptr, overlap int32, lag int32, n int32, arch int32) (r int32) {
 	var _saved_stack, st, xptr, xx, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var d OpusT_opus_val32

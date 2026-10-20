@@ -6,9 +6,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func mustHex(t *testing.T, s string) []byte {
 	t.Helper()
 	b, err := hex.DecodeString(s)
@@ -18,6 +19,7 @@ func mustHex(t *testing.T, s string) []byte {
 	return b
 }
 
+//go:nocheckptr
 func fnv1aFloats(samples []float32) uint32 {
 	h := uint32(2166136261)
 	var buf [4]byte
@@ -45,6 +47,7 @@ type silkDecodeCall struct {
 	first8       [8]uint32
 }
 
+//go:nocheckptr
 func runSilkPacket(t *testing.T, tls *libc.TLS, memory uintptr, control *OpusT_silk_DecControlStruct, pcm []float32, pkt []byte) []silkDecodeCall {
 	t.Helper()
 	payload := pkt[1:]
@@ -64,6 +67,7 @@ func runSilkPacket(t *testing.T, tls *libc.TLS, memory uintptr, control *OpusT_s
 	return calls
 }
 
+//go:nocheckptr
 func checkSilkCalls(t *testing.T, tag string, got, want []silkDecodeCall) {
 	t.Helper()
 	if len(got) != len(want) {
@@ -80,6 +84,8 @@ func checkSilkCalls(t *testing.T, tag string, got, want []silkDecodeCall) {
 // and 1: mono NB 60 ms) through Opus_silk_Decode the way opus_decode_frame
 // does, then exercises the packet-loss path, and compares against values
 // produced by the C reference implementation.
+//
+//go:nocheckptr
 func TestSilkDecodeRealPacketsMonoAndPLC(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -220,6 +226,8 @@ func TestSilkDecodeRealPacketsMonoAndPLC(t *testing.T) {
 
 // Stereo SILK packets 602/603 of testvector02.bit (stereo NB 60 ms) decoded
 // on a fresh decoder, compared against the C reference implementation.
+//
+//go:nocheckptr
 func TestSilkDecodeRealPacketsStereo(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -349,7 +357,11 @@ func TestSilkDecodeRealPacketsStereo(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestSilkDecodeLostFrameState(t *testing.T) {
+	if raceBuild {
+		t.Skip(decoderLaundersLocalsUnderRace)
+	}
 	tls := libc.NewTLS()
 	defer tls.Close()
 	setupResamplerPseudostack(tls)

@@ -6,12 +6,13 @@ import (
 	"reflect"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
 var _ reflect.Type
 var _ unsafe.Pointer
 
+//go:nocheckptr
 func Opus__celt_autocorr(tls *libc.TLS, x uintptr, ac uintptr, window uintptr, overlap int32, lag int32, n int32, arch int32) (r int32) {
 	var _saved_stack, st, xptr, xx, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr
 	var d OpusT_opus_val32
@@ -592,6 +593,7 @@ var small_energy_icdf = [3]uint8{
 	1: uint8(1),
 }
 
+//go:nocheckptr
 func Opus__celt_lpc(tls *libc.TLS, _lpc uintptr, ac uintptr, p int32) {
 	var error1, r, rr, tmp1, tmp2 OpusT_opus_val32
 	var i, j int32
@@ -641,10 +643,12 @@ func Opus__celt_lpc(tls *libc.TLS, _lpc uintptr, ac uintptr, p int32) {
 	}
 }
 
+//go:nocheckptr
 func Opus_celt_decode_with_ec(tls *libc.TLS, st uintptr, data uintptr, len1 int32, pcm uintptr, frame_size int32, dec uintptr, accum int32) (r int32) {
 	return Opus_celt_decode_with_ec_dred(tls, st, data, len1, pcm, frame_size, dec, accum)
 }
 
+//go:nocheckptr
 func Opus_celt_decode_with_ec_dred(tls *libc.TLS, st1 uintptr, data uintptr, len1 int32, pcm uintptr, frame_size int32, dec uintptr, accum int32) (r int32) {
 	bp := tls.Alloc(96)
 	defer tls.Free(96)
@@ -1742,6 +1746,7 @@ func Opus_celt_decode_with_ec_dred(tls *libc.TLS, st1 uintptr, data uintptr, len
 	return frame_size / (*OpusT_OpusCustomDecoder)(unsafe.Pointer(st1)).Fdownsample
 }
 
+//go:nocheckptr
 func Opus_celt_decoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	var mode uintptr
 	_ = mode
@@ -1749,6 +1754,7 @@ func Opus_celt_decoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	return opus_custom_decoder_get_size(tls, mode, channels)
 }
 
+//go:nocheckptr
 func Opus_celt_decoder_init(tls *libc.TLS, st uintptr, sampling_rate OpusT_opus_int32, channels int32) (r int32) {
 	var ret int32
 	_ = ret
@@ -1765,6 +1771,7 @@ func Opus_celt_decoder_init(tls *libc.TLS, st uintptr, sampling_rate OpusT_opus_
 	return r
 }
 
+//go:nocheckptr
 func Opus_celt_encode_with_ec(tls *libc.TLS, st1 uintptr, pcm uintptr, frame_size1 int32, compressed uintptr, nbCompressedBytes int32, enc uintptr) (r int32) {
 	bp := tls.Alloc(112)
 	defer tls.Free(112)
@@ -4274,6 +4281,7 @@ var intensity_histeresis = [21]OpusT_opus_val16{
 	20: libc.Float32FromInt32(8),
 }
 
+//go:nocheckptr
 func Opus_celt_encoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	var mode uintptr
 	_ = mode
@@ -4281,6 +4289,7 @@ func Opus_celt_encoder_get_size(tls *libc.TLS, channels int32) (r int32) {
 	return opus_custom_encoder_get_size(tls, mode, channels)
 }
 
+//go:nocheckptr
 func Opus_celt_encoder_init(tls *libc.TLS, st uintptr, sampling_rate OpusT_opus_int32, channels int32, arch int32) (r int32) {
 	var ret int32
 	_ = ret
@@ -4292,6 +4301,7 @@ func Opus_celt_encoder_init(tls *libc.TLS, st uintptr, sampling_rate OpusT_opus_
 	return OPUS_OK
 }
 
+//go:nocheckptr
 func Opus_celt_fatal(tls *libc.TLS, str uintptr, file uintptr, line int32) {
 	bp := tls.Alloc(32)
 	defer tls.Free(32)
@@ -4341,6 +4351,7 @@ var log2_y_norm_coeff8 = [8]float32{
 	7: libc.Float32FromFloat32(0.9068905711174011),
 }
 
+//go:nocheckptr
 func Opus_celt_fir_c(tls *libc.TLS, x1 uintptr, num uintptr, y1 uintptr, N int32, ord int32, arch int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -4587,6 +4598,7 @@ func Opus_celt_fir_c(tls *libc.TLS, x1 uintptr, num uintptr, y1 uintptr, N int32
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_celt_float2int16_c(tls *libc.TLS, in uintptr, out uintptr, cnt int32) {
 	var i int32
 	var v2, v3, v4 float32
@@ -4617,6 +4629,7 @@ func Opus_celt_float2int16_c(tls *libc.TLS, in uintptr, out uintptr, cnt int32) 
 	}
 }
 
+//go:nocheckptr
 func Opus_celt_iir(tls *libc.TLS, _x uintptr, den uintptr, _y uintptr, N int32, ord int32, mem uintptr, arch int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -4964,6 +4977,7 @@ func Opus_celt_iir(tls *libc.TLS, _x uintptr, den uintptr, _y uintptr, N int32, 
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func Opus_celt_lcg_rand(tls *libc.TLS, seed OpusT_opus_uint32) (r OpusT_opus_uint32) {
 	return uint32(1664525)*seed + uint32(1013904223)
 }
@@ -4973,6 +4987,7 @@ func Opus_celt_lcg_rand(tls *libc.TLS, seed OpusT_opus_uint32) (r OpusT_opus_uin
 //	/* This is a cos() approximation designed to be bit-exact on any platform. Bit exactness
 //	   with this approximation is important because it has an impact on the bit allocation */
 
+//go:nocheckptr
 func Opus_celt_pitch_xcorr_c(tls *libc.TLS, _x uintptr, _y uintptr, xcorr uintptr, len1 int32, max_pitch int32, arch int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -5128,6 +5143,7 @@ func Opus_celt_pitch_xcorr_c(tls *libc.TLS, _x uintptr, _y uintptr, xcorr uintpt
 	}
 }
 
+//go:nocheckptr
 func Opus_celt_preemphasis(tls *libc.TLS, pcmp uintptr, inp uintptr, N int32, CC int32, upsample int32, coef uintptr, mem uintptr, clip int32) {
 	var Nu, i int32
 	var coef0 OpusT_opus_val16
@@ -5204,6 +5220,7 @@ func Opus_celt_preemphasis(tls *libc.TLS, pcmp uintptr, inp uintptr, N int32, CC
 	*(*OpusT_celt_sig)(unsafe.Pointer(mem)) = m
 }
 
+//go:nocheckptr
 func Opus_validate_celt_decoder(tls *libc.TLS, st uintptr) {
 	if !((*OpusT_OpusCustomDecoder)(unsafe.Pointer(st)).Fmode == Opus_opus_custom_mode_create(tls, int32(48000), int32(960), libc.UintptrFromInt32(0))) {
 		Opus_celt_fatal(tls, __ccgo_ts+4348, __ccgo_ts+4420, int32(147))
@@ -5267,6 +5284,7 @@ func Opus_validate_celt_decoder(tls *libc.TLS, st uintptr) {
 	}
 }
 
+//go:nocheckptr
 func celt_decode_lost(tls *libc.TLS, st1 uintptr, N int32, LM int32) {
 	bp := tls.Alloc(240)
 	defer tls.Free(240)
@@ -5846,6 +5864,7 @@ func celt_decode_lost(tls *libc.TLS, st1 uintptr, N int32, LM int32) {
 	(*OpusT_opus_ccgo_pseudostack_state)(unsafe.Pointer(v3)).Fglobal_stack = _saved_stack
 }
 
+//go:nocheckptr
 func celt_fir5(tls *libc.TLS, x uintptr, num uintptr, N int32) {
 	var i int32
 	var mem0, mem1, mem2, mem3, mem4, sum OpusT_opus_val32
@@ -5882,6 +5901,7 @@ func celt_fir5(tls *libc.TLS, x uintptr, num uintptr, N int32) {
 	}
 }
 
+//go:nocheckptr
 func celt_plc_pitch_search(tls *libc.TLS, st1 uintptr, decode_mem uintptr, C int32, arch int32) (r int32) {
 	bp := tls.Alloc(16)
 	defer tls.Free(16)
@@ -5983,6 +6003,7 @@ func celt_plc_pitch_search(tls *libc.TLS, st1 uintptr, decode_mem uintptr, C int
 	return *(*int32)(unsafe.Pointer(bp))
 }
 
+//go:nocheckptr
 func celt_synthesis(tls *libc.TLS, mode uintptr, X uintptr, out_syn uintptr, oldBandE uintptr, start int32, effEnd int32, C int32, CC int32, isTransient int32, LM int32, downsample int32, silence int32, arch int32) {
 	var B, M, N, NB, b, c, i, nbEBands, overlap, shift, v33 int32
 	var _saved_stack, freq, freq2, freq21, st, v1, v11, v13, v15, v17, v19, v21, v23, v3, v5, v7, v9 uintptr

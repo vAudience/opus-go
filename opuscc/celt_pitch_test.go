@@ -5,9 +5,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestPitchDownsampleLocalArrays(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -28,6 +29,7 @@ func TestPitchDownsampleLocalArrays(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestPitchSearchLocalBestPitch(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -44,6 +46,7 @@ func TestPitchSearchLocalBestPitch(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestRemoveDoublingLocalCorrelations(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -62,6 +65,7 @@ func TestRemoveDoublingLocalCorrelations(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestCeltFIRLocalSums(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()
@@ -81,6 +85,7 @@ func TestCeltFIRLocalSums(t *testing.T) {
 	}
 }
 
+//go:nocheckptr
 func TestCeltIIRLocalSums(t *testing.T) {
 	tls := libc.NewTLS()
 	defer tls.Close()

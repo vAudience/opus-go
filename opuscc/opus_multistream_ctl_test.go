@@ -7,9 +7,10 @@ import (
 	"testing"
 	"unsafe"
 
-	libc "github.com/kazzmir/opus-go/libcshim"
+	libc "github.com/vAudience/opus-go/libcshim"
 )
 
+//go:nocheckptr
 func TestMultistreamDecoderCtlCReference(t *testing.T) {
 	// C-generated transcript covers one coupled and two mono streams, including
 	// distinct per-stream state to detect first-stream queries and XOR mistakes.

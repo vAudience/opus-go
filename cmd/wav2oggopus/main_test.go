@@ -9,8 +9,8 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/kazzmir/opus-go/ogg"
-	"github.com/kazzmir/opus-go/opus"
+	"github.com/vAudience/opus-go/ogg"
+	"github.com/vAudience/opus-go/opus"
 )
 
 const testHz = 440.0

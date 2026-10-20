@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+//go:nocheckptr
 func TestVADInitFieldAccesses(t *testing.T) {
 	state := OpusT_silk_VAD_state{
 		FAnaState:        [2]OpusT_opus_int32{111, -222},
