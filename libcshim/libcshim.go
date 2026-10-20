@@ -61,6 +61,9 @@ type TLS struct {
 
 	heapMu sync.Mutex
 	heap   map[uintptr]*heapAlloc
+	// closed is set by Close: Xmalloc then fails (returns 0) and Xfree does
+	// nothing, so a closed TLS can never map memory nobody will unmap.
+	closed bool
 	// arena is the chunk small allocations are currently carved from. A chunk
 	// is unmapped as soon as its last allocation is freed (or rewound, if it
 	// is the current one), so a long-lived TLS doing malloc/free pairs holds
@@ -113,6 +116,12 @@ func (t *TLS) Close() {
 		return
 	}
 	t.heapMu.Lock()
+	if t.closed {
+		t.heapMu.Unlock()
+		return
+	}
+	t.closed = true
+	runtime.SetFinalizer(t, nil)
 	for _, a := range t.heap {
 		if a.chunk == nil {
 			osFree(a.buf)
@@ -250,6 +259,9 @@ func Xmalloc(tls *TLS, size uint64) uintptr {
 
 	tls.heapMu.Lock()
 	defer tls.heapMu.Unlock()
+	if tls.closed {
+		return 0
+	}
 	if tls.heap == nil {
 		tls.heap = make(map[uintptr]*heapAlloc)
 	}
@@ -272,14 +284,12 @@ func Xmalloc(tls *TLS, size uint64) uintptr {
 			tls.chunks = make(map[*arenaChunk]struct{})
 		}
 		tls.chunks[c] = struct{}{}
-		// The chunk it replaces stays mapped only while something in it is
-		// live.
-		if old := tls.arena; old != nil && old.live == 0 {
-			tls.releaseChunkLocked(old)
-		}
-		// A mapping is page-aligned, so every offset that is a multiple of
-		// 16 stays 16-byte aligned, and fresh mapped memory is zero.
-		tls.arena, tls.arenaOff = c, 0
+		// Carving starts at the chunk's first 16-byte aligned address: a
+		// mapping is page-aligned already, but the Go-heap fallback's slice
+		// carries no such guarantee. Fresh memory from either is zero.
+		// (A chunk being replaced is never empty here: an emptied current
+		// chunk is rewound by Xfree, so it would have had room.)
+		tls.arena, tls.arenaOff = c, int(alignedAddr(mapped)-uintptr(unsafe.Pointer(unsafe.SliceData(mapped))))
 	}
 	buf := tls.arena.buf[tls.arenaOff : tls.arenaOff+n : tls.arenaOff+n]
 	tls.arenaOff += n
@@ -309,6 +319,9 @@ func Xfree(tls *TLS, p uintptr) {
 	}
 	tls.heapMu.Lock()
 	defer tls.heapMu.Unlock()
+	if tls.closed {
+		return
+	}
 	a := tls.heap[p]
 	if a == nil {
 		return
@@ -327,10 +340,12 @@ func Xfree(tls *TLS, p uintptr) {
 		tls.releaseChunkLocked(c)
 		return
 	}
-	// The current chunk is empty: rewind it. Xmalloc promises zeroed memory,
-	// so the carved prefix is cleared before it is handed out again.
-	clear(c.buf[:tls.arenaOff])
-	tls.arenaOff = 0
+	// The current chunk is empty: rewind it to its first aligned address.
+	// Xmalloc promises zeroed memory, so the carved prefix is cleared before
+	// it is handed out again.
+	start := int(alignedAddr(c.buf) - uintptr(unsafe.Pointer(unsafe.SliceData(c.buf))))
+	clear(c.buf[start:tls.arenaOff])
+	tls.arenaOff = start
 }
 
 //go:nocheckptr

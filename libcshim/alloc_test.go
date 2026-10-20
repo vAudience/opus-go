@@ -160,3 +160,18 @@ func TestMemoryIsOffHeap(t *testing.T) {
 	_ = *(*byte)(unsafe.Pointer(p))
 	_ = *(*byte)(unsafe.Pointer(tls.Alloc(16)))
 }
+
+// TestClosedTLSMapsNothing: after Close, Xmalloc fails like a NULL malloc and
+// Xfree is inert — a closed TLS must never map memory nobody will unmap.
+func TestClosedTLSMapsNothing(t *testing.T) {
+	tls := NewTLS()
+	p := Xmalloc(tls, 32)
+	tls.Close()
+	if q := Xmalloc(tls, 32); q != 0 {
+		t.Fatalf("Xmalloc on a closed TLS returned %#x, want 0", q)
+	}
+	Xfree(tls, p) // must not panic or unmap anything
+	if tls.heap != nil || tls.chunks != nil {
+		t.Fatal("a closed TLS grew new regions")
+	}
+}

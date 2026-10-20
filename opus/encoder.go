@@ -194,8 +194,14 @@ func (e *Encoder) Encode(pcm []int16, frameSize int, packet []byte) (int, error)
 		return 0, errors.New("opus: packet buffer is empty")
 	}
 
-	pcmPtr := copyIn(e.tls, &e.pcmBuf, pcm[:nNeeded])
-	outPtr := e.packetBuf.ensure(e.tls, len(packet))
+	pcmPtr, err := copyIn(e.tls, &e.pcmBuf, pcm[:nNeeded])
+	if err != nil {
+		return 0, err
+	}
+	outPtr, err := e.packetBuf.ensure(e.tls, len(packet))
+	if err != nil {
+		return 0, err
+	}
 
 	ret := opusccenc.Opus_opus_encode(e.tls, e.st, pcmPtr, int32(frameSize), outPtr, opusccenc.OpusT_opus_int32(len(packet)))
 	if ret < 0 {
